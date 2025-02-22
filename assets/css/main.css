@@ -1,5 +1,5 @@
 @import url("fontawesome-all.min.css");
-@import url("https://fonts.googleapis.com/css?family=Crete+Round:400,400italic,700,700italic");
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,700italic|Open+Sans+Condensed:700");
 
 /*
 	TXT by HTML5 UP
@@ -98,7 +98,7 @@ input, select, textarea {
 		}
 
 	body, input, textarea, select {
-		font-family: 'Crete Round', sans-serif;
+		font-family: 'Open Sans', sans-serif;
 		font-weight: 400;
 		color: #6b7770;
 		font-size: 13pt;
@@ -106,7 +106,7 @@ input, select, textarea {
 	}
 
 	h1, h2, h3, h4, h5, h6 {
-		font-family: 'Crete Round Condensed', sans-serif;
+		font-family: 'Open Sans Condensed', sans-serif;
 		font-weight: 700;
 		text-transform: uppercase;
 		color: #6b7770;
@@ -206,7 +206,7 @@ input, select, textarea {
 
 	header > p {
 		display: block;
-		font-family: 'Crete Round Condensed', sans-serif;
+		font-family: 'Open Sans Condensed', sans-serif;
 		font-weight: 700;
 		text-transform: uppercase;
 		color: #c1cac5;
@@ -1788,7 +1788,7 @@ input, select, textarea {
 	.button {
 		-webkit-appearance: none;
 		display: inline-block;
-		font-family: 'Crete Round Condensed', sans-serif;
+		font-family: 'Open Sans Condensed', sans-serif;
 		font-weight: 700;
 		text-transform: uppercase;
 		text-decoration: none;
@@ -2095,7 +2095,7 @@ input, select, textarea {
 	form label {
 		display: block;
 		margin: 0 0 1em 0;
-		font-family: 'Crete Round Condensed', sans-serif;
+		font-family: 'Open Sans Condensed', sans-serif;
 		font-weight: 700;
 		text-transform: uppercase;
 		color: #6b7770;
@@ -2180,7 +2180,7 @@ input, select, textarea {
 				text-align: left;
 				padding: 0.5em 1em 0.5em 1em;
 				margin: 0 0 1em 0;
-				font-family: 'Crete Round Condensed', sans-serif;
+				font-family: 'Open Sans Condensed', sans-serif;
 				font-weight: 700;
 				text-transform: uppercase;
 				color: #6b7770;
@@ -2305,7 +2305,7 @@ input, select, textarea {
 	#header {
 		text-align: center;
 		font-size: 2em;
-		font-family: 'Crete Round Condensed', sans-serif;
+		font-family: 'Open Sans Condensed', sans-serif;
 		font-weight: 700;
 		text-transform: uppercase;
 		padding: 2em 0;
@@ -2354,7 +2354,7 @@ input, select, textarea {
 		height: 3.25em;
 		line-height: 3.25em;
 		text-align: center;
-		font-family: 'Crete Round Condensed', sans-serif;
+		font-family: 'Open Sans Condensed', sans-serif;
 		font-weight: 700;
 		text-transform: uppercase;
 		cursor: default;
@@ -2423,7 +2423,7 @@ input, select, textarea {
 		border-radius: 6px;
 		line-height: 2.75em;
 		text-align: center;
-		font-family: 'Crete Round Condensed', sans-serif;
+		font-family: 'Open Sans Condensed', sans-serif;
 		font-weight: 700;
 		text-transform: uppercase;
 		padding: 1em 0;
@@ -2506,7 +2506,7 @@ input, select, textarea {
 
 			#banner .content p {
 				display: block;
-				font-family: 'Crete Round Condensed', sans-serif;
+				font-family: 'Open Sans Condensed', sans-serif;
 				font-weight: 700;
 				text-transform: uppercase;
 				color: #575d59;
@@ -2784,7 +2784,7 @@ input, select, textarea {
 				#titleBar .title {
 					display: block;
 					position: relative;
-					font-family: 'Crete Round Condensed', sans-serif;
+					font-family: 'Open Sans Condensed', sans-serif;
 					font-weight: 700;
 					text-transform: uppercase;
 					font-size: 1.25em;
@@ -2865,7 +2865,7 @@ input, select, textarea {
 				background-image: url("images/overlay.png"), linear-gradient(top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5));
 				background-repeat: repeat, no-repeat;
 				background-size: auto, 100% 100%;
-				font-family: 'Crete Round Condensed', sans-serif;
+				font-family: 'Open Sans Condensed', sans-serif;
 				font-weight: 700;
 				text-transform: uppercase;
 				font-size: 1.25em;
