@@ -2090,11 +2090,13 @@ input, select, textarea {
 .special-images {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: center; /* Zentriert die Bilderreihe */
+    align-items: center; /* Sorgt für vertikale Zentrierung */
     gap: 20px;
     list-style: none;
     padding: 0;
-    margin: -2em 0 4em -2em;
+    margin: 0 auto; /* Zentriert die gesamte Liste */
+    max-width: 100%;
 }
 
 .special-images li {
