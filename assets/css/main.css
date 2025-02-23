@@ -2041,8 +2041,8 @@ input, select, textarea {
 
 /* Special für Profilbilder Werners*/
 	.special img {
-		    width: 50px;  /* Größe anpassen, falls nötig */
-		    height: 50px;
+		    width: 100px;  /* Größe anpassen, falls nötig */
+		    height: 100px;
 		    border-radius: 50%;  /* Rundes Design */
 		    object-fit: cover;  /* Bild bleibt proportional */
 		    display: block;
