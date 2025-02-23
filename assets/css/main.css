@@ -2040,13 +2040,30 @@ input, select, textarea {
 				}
 
 /* Special für Profilbilder Werners*/
+	.special {
+	    text-align: center;
+	}
+	
+	.special li {
+	    display: inline-block;
+	    text-align: center;
+	    margin: 10px;
+	}
+	
 	.special img {
-		    width: 100px;  /* Größe anpassen, falls nötig */
-		    height: 100px;
-		    border-radius: 50%;  /* Rundes Design */
-		    object-fit: cover;  /* Bild bleibt proportional */
-		    display: block;
-		    margin: 0 auto;
+	    width: 50px;  /* Größe anpassen */
+	    height: 50px;
+	    border-radius: 50%;  /* Rundes Design */
+	    object-fit: cover;
+	    display: block;
+	    margin: 0 auto;
+	}
+	
+	.special .caption {
+	    display: block;
+	    margin-top: 5px;  /* Abstand zum Bild */
+	    font-size: 14px;  /* Schriftgröße */
+	    color: #6b7770;  /* Dunkelgrauer Farbton */
 	}
 
 
