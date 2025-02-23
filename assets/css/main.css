@@ -2051,7 +2051,7 @@ input, select, textarea {
 	}
 	
 	.special img {
-	    width: 950px;  /* Größe anpassen */
+	    width: 95px;  /* Größe anpassen */
 	    height: 95px;
 	    border-radius: 50%;  /* Rundes Design */
 	    object-fit: cover;
@@ -2066,6 +2066,16 @@ input, select, textarea {
 	    color: #6b7770;  /* Gleiche Farbe */
 	    text-align: center;
 	    font-weight: normal;  /* Keine Fettschrift, falls nicht nötig */
+	}
+
+/* Special für Profilbilder Werners klein*/
+	.special.small img {
+	    width: 50px;  
+	    height: 50px;
+	    border-radius: 50%;  /* Runde Bilder */
+	    object-fit: cover;
+	    display: block;
+	    margin: 0 auto;
 	}
 
 
