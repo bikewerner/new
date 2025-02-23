@@ -2823,7 +2823,7 @@ input, select, textarea {
 						position: absolute;
 						left: 0;
 						top: 0;
-						background: #6b7770; <!-- Farbe von Navigationsleiste im Handy. Geändert von Mintgrün zu dunklem Grau -->
+						background: #e60909; <!-- Farbe von Navigationsleiste im Handy. Geändert von Mintgrün zu dunklem Grau -->
 						width: 44px;
 						height: 44px;
 						content: '\f0c9';
