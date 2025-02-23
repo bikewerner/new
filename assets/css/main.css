@@ -2080,7 +2080,7 @@ input, select, textarea {
 	.special.small .caption {
 	    display: block;
 	    margin-top: 5px; /* Abstand zum Bild */
-	    font-size: 1.25em;  /* manuell eingestellt */
+	    font-size: 0.75em;  /* manuell eingestellt */
 	    color: #6b7770; 
 	    text-align: center;
 	    font-weight: normal;  /* Falls nötig, kein Fettgedruckt */
