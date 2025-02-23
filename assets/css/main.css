@@ -2085,6 +2085,37 @@ input, select, textarea {
 	    text-align: center;
 	    font-weight: normal;  /* Falls nötig, kein Fettgedruckt */
 	}
+/* Neue Klasse zur Darstellung von Bildern mit flexibler Größe */
+.special-images {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: -2em 0 4em -2em;
+}
+
+.special-images li {
+    flex: 1 1 auto; /* Flexible Größe abhängig von der Anzahl der Bilder */
+    max-width: 200px;
+    text-align: center;
+    position: relative;
+}
+
+.special-images img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.special-images span {
+    display: block;
+    margin-top: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+}
 
 
 /* Meta */
