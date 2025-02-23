@@ -2540,7 +2540,7 @@ input, select, textarea {
 
 	#main {
 		background: #fff;
-		border-top: solid 5px #fc0526; <!-- Farbe von Balken über Main. Geändert von Grün zu Rot  -->
+		border-top: solid 5px #c1cac5; <!-- Farbe von Balken über Main. Geändert von Mintgrün zu Dunklem Grau  -->
 		border-bottom: solid 5px #c1cac5;
 		border-top-width: 35px;
 		border-bottom-width: 10px;
