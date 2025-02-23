@@ -2823,7 +2823,7 @@ input, select, textarea {
 						position: absolute;
 						left: 0;
 						top: 0;
-						background: #b1ddab;
+						background: #c1cac5; <!-- Farbe von Home in Navigationsleiste. Geändert von Mintgrün zu Rot  -->
 						width: 44px;
 						height: 44px;
 						content: '\f0c9';
