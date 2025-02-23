@@ -2412,7 +2412,7 @@ input, select, textarea {
 			}
 
 			#nav li.current a {
-				background: #c1cac5; <!-- Farbe von Home in Navigationsleiste. Geändert von Mintgrün zu dunklem Grau -->
+				background: #c1cac5; <!-- Farbe von Home in Navigationsleiste in Desktopbrowser. Geändert von Mintgrün zu dunklem Grau -->
 				color: #fff;
 			}
 
@@ -2823,7 +2823,7 @@ input, select, textarea {
 						position: absolute;
 						left: 0;
 						top: 0;
-						background: #b1ddab;
+						background: #c1cac5; <!-- Farbe von Navigationsleiste im Handy. Geändert von Mintgrün zu dunklem Grau -->
 						width: 44px;
 						height: 44px;
 						content: '\f0c9';
