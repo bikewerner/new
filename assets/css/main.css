@@ -2105,9 +2105,9 @@ input, select, textarea {
 
 .special-images img {
     width: 100%;
-    height: auto;
+    height: 100px; /* Feste Höhe für einheitliche Form */
     border-radius: 50%; /* Macht die Bilder rund */
-    object-fit: cover;
+    object-fit: cover; /* Stellt sicher, dass das Bild den runden Rahmen ausfüllt */
 }
 
 .special-images span {
