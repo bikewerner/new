@@ -2039,6 +2039,17 @@ input, select, textarea {
 					background: #b9d2ce;
 				}
 
+/* Special für Profilbilder Werners*/
+	.special img {
+		    width: 50px;  /* Größe anpassen, falls nötig */
+		    height: 50px;
+		    border-radius: 50%;  /* Rundes Design */
+		    object-fit: cover;  /* Bild bleibt proportional */
+		    display: block;
+		    margin: 0 auto;
+	}
+
+
 /* Meta */
 
 	ul.meta {
