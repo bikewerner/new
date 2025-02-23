@@ -2098,7 +2098,7 @@ input, select, textarea {
 
 .special-images li {
     flex: 1 1 auto; /* Flexible Größe abhängig von der Anzahl der Bilder */
-    max-width: 200px;
+    max-width: 150px;
     text-align: center;
     position: relative;
 }
@@ -2106,7 +2106,8 @@ input, select, textarea {
 .special-images img {
     width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: 50%; /* Macht die Bilder rund */
+    object-fit: cover;
 }
 
 .special-images span {
@@ -2114,7 +2115,7 @@ input, select, textarea {
     margin-top: 8px;
     font-size: 1em;
     font-weight: bold;
-    color: #333;
+    color: #6b7770;
 }
 
 
