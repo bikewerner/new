@@ -2051,8 +2051,8 @@ input, select, textarea {
 	}
 	
 	.special img {
-	    width: 100px;  /* Größe anpassen */
-	    height: 100px;
+	    width: 950px;  /* Größe anpassen */
+	    height: 95px;
 	    border-radius: 50%;  /* Rundes Design */
 	    object-fit: cover;
 	    display: block;
