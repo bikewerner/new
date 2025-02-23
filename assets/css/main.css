@@ -2816,14 +2816,14 @@ input, select, textarea {
 						font-family: 'Font Awesome 5 Free';
 						font-weight: 900;
 					}
-
+					/* Farbe von Navigationsleiste im Handy. Geändert von Mintgrün zu dunklem Grau */			
 					#titleBar .toggle:before {
 						display: inline-block;
 						text-decoration: none;
 						position: absolute;
 						left: 0;
 						top: 0;
-						background: #6b7770;
+						background: #6b7770; 
 						width: 44px;
 						height: 44px;
 						content: '\f0c9';
