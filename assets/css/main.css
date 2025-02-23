@@ -2085,6 +2085,7 @@ input, select, textarea {
 	    text-align: center;
 	    font-weight: normal;  /* Falls nötig, kein Fettgedruckt */
 	}
+
 /* Neue Klasse zur Darstellung von Bildern mit flexibler Größe */
 .special-images {
     display: flex;
@@ -2104,7 +2105,7 @@ input, select, textarea {
 }
 
 .special-images img {
-    width: 100%;
+    width: 100px; /* Feste Breite für einheitliche Form */
     height: 100px; /* Feste Höhe für einheitliche Form */
     border-radius: 50%; /* Macht die Bilder rund */
     object-fit: cover; /* Stellt sicher, dass das Bild den runden Rahmen ausfüllt */
