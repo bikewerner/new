@@ -70,24 +70,37 @@
 											<p>Touren: 8</p>
 											<p>Strecke: 405 km</p>
 											<p>Höhenmeter: 5360 m</p>
+											<p>Platte Reifen: 2</p>
 											-->
-										    <script>
-											    window.onload = () => fetch("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B2").then(res => res.text()).then(text => document.getElementById("strecke").innerText = text.trim().replace(/^"|"$/g, '') + ' km');
-											    window.onload = () => fetch("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=C2").then(res => res.text()).then(text => document.getElementById("hoehenmeter").innerText = text.trim().replace(/^"|"$/g, '') + ' m');
-											    window.onload = () => fetch("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=K2").then(res => res.text()).then(text => document.getElementById("kalorien").innerText = text.trim().replace(/^"|"$/g, '') + ' kcal');
-											    window.onload = () => fetch("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=K2").then(res => res.text()).then(text => document.getElementById("pedalumdrehungen").innerText = text.trim().replace(/^"|"$/g, '') );
-											    window.onload = () => fetch("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=I2").then(res => res.text()).then(text => document.getElementById("GeschwindigkeitBew").innerText = text.trim().replace(/^"|"$/g, '') + ' km/h');
-											    window.onload = () => fetch("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=D2").then(res => res.text()).then(text => document.getElementById("ZeitBew").innerText = text.trim().replace(/^"|"$/g, '') + ' h');
-											    window.onload = () => fetch("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=C2").then(res => res.text()).then(text => document.getElementById("pausen").innerText = text.trim().replace(/^"|"$/g, '') + ' h');
-										    </script>
+										        <script>
+											        window.onload = () => {
+											            const fetchData = (url, elementId, suffix = '') => {
+											                fetch(url)
+											                    .then(res => res.text())
+											                    .then(text => document.getElementById(elementId).innerText = text.trim().replace(/^"|"$/g, '') + suffix);
+											            };
+											
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=N2", "tourenanzahl");
+												    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B2", "strecke", " km");	
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=C2", "hoehenmeter", " m");
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=K2", "kalorien", " kcal");
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=L2", "pedalumdrehungen");
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=I2", "GeschwindigkeitBew", " km/h");
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=D2", "ZeitBew", " h");
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=N2", "pausen", " h");
+												    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=M2", "platten", " h");
+											        };
+											</script>
+											<p>Touren: <span id="tourenanzahl">Lade Daten...</span></p>
 											<p>Strecke: <span id="strecke">Lade Daten...</span></p>
 											<p>Höhenmeter: <span id="hoehenmeter">Lade Daten...</span></p>
+											<p>Zeit in Bewegung: <span id="ZeitBew">Lade Daten...</span></p>
 											<p>Geschwindigkeit in Bewegung: <span id="GeschwindigkeitBew">Lade Daten...</span></p>
 											<p>Verbrauchte Kalorien: <span id="kalorien">Lade Daten...</span></p>
-											<p>Pedalumdrehungen: <span id="pedalumdrehungen">Lade Daten...</span></p>
-											<p>Zeit in Bewegung: <span id="ZeitBew">Lade Daten...</span></p>
 											<p>Pausen: <span id="pausen">Lade Daten...</span></p>
-											<p>Platte Reifen: 2</p>
+											<p>Pedalumdrehungen: <span id="pedalumdrehungen">Lade Daten...</span></p>
+											<p>Platte Reifen: <span id="platten">Lade Daten...</span></p>
+											
                     								</div>
 									</section>
 
