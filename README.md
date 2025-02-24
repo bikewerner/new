@@ -11,7 +11,8 @@ ruhpolding.html
 
 wernerstats.html
 
-
+Folgende Seite ist Die Navigationsleiste und wird zentral verwaltet:
+nav.html
 
 
 In diesem google sheet werden die Wernerstats bearbeitet undd ann automatisch auf der Homepage geupdatet:
