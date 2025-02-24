@@ -57,13 +57,21 @@
 				</nav>
 				-->
 
-				<div id="navbar"></div>
-				
 				<script>
-				    fetch("nav.html")
-				        .then(response => response.text())
-				        .then(data => document.getElementById("navbar").innerHTML = data);
+				    document.addEventListener("DOMContentLoaded", function () {
+				        fetch("nav.html")
+				            .then(response => response.text())
+				            .then(data => {
+				                document.getElementById("navbar").innerHTML = data;
+				
+				                // Warte kurz, um sicherzustellen, dass CSS angewendet wird
+				                setTimeout(() => {
+				                    document.getElementById("navbar").classList.add("loaded");
+				                }, 100);
+				            });
+				    });
 				</script>
+
 
 
 
