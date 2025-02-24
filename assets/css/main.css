@@ -2290,8 +2290,12 @@ input, select, textarea {
 			margin: 0 0 1.5em 0;
 		}
 
+	/* Touren und Geplante Touren grau hinterlegen zusammen mit zugehörigem Datum und Text */
 	.box.feature {
-		text-align: center;
+	    text-align: center;
+	    background-color: #f2f5f3; /* Hellgrau */
+	    padding: 10px; /* Falls gewünscht, um den Inhalt besser hervorzuheben */
+	    border-radius: 5px; /* Optional für abgerundete Ecken */
 	}
 
 	.box.post header {
