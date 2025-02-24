@@ -2295,7 +2295,7 @@ input, select, textarea {
 	    text-align: center;
 	    background-color: #f2f5f3; /* Hellgrau */
 	    padding: 10px; /* Falls gewünscht, um den Inhalt besser hervorzuheben */
-	    border-radius: 5px; /* Optional für abgerundete Ecken */
+	    border-radius: 8px; /* Abgerundete Ecken */
 	}
 
 	.box.post header {
