@@ -66,33 +66,40 @@
 				-->
 				<div id="nav-container"></div>
 				
-				<div id="nav-container"></div>
-				
 				<script>
 				    document.addEventListener("DOMContentLoaded", function () {
 				        fetch("nav.html")
 				            .then(response => response.text())
 				            .then(data => {
 				                document.getElementById("nav-container").innerHTML = data;
-				                initializeNav(); // Menü initialisieren
+				                
+				                // Warte kurz, bevor das mobile Menü initialisiert wird
+				                setTimeout(initNav, 200);
 				            });
 				
-				        function initializeNav() {
+				        function initNav() {
 				            if (typeof jQuery !== "undefined") {
 				                jQuery(function ($) {
-				                    // Dropdown-Menü aktivieren
+				                    // Desktop Dropdown-Menü aktivieren
 				                    $('#nav > ul').dropotron({
 				                        alignment: 'center'
 				                    });
 				
-				                    // Mobile Navigation erneut aktivieren
-				                    if ($('#nav').length) {
-				                        $('#nav').removeClass('nav-loaded').addClass('nav-loaded');
+				                    // Mobile Navigation neu initialisieren (Falls ein mobiles Menü vorhanden ist)
+				                    if ($("#nav").length) {
+				                        $("#nav").removeClass("nav-loaded").addClass("nav-loaded");
 				                    }
 				
-				                    // Falls dein Theme ein Slide-Menü verwendet, manuell erneut aufrufen
+				                    // Falls dein Theme ein mobiles Menü-Skript hat, manuell aufrufen
 				                    if (typeof window.navInit === "function") {
 				                        window.navInit();
+				                    }
+				
+				                    // Prüfen, ob das mobile Menü existiert, wenn ja: Initialisieren
+				                    if ($(".mobile-menu-toggle").length) {
+				                        $(".mobile-menu-toggle").off("click").on("click", function () {
+				                            $("body").toggleClass("mobile-menu-open");
+				                        });
 				                    }
 				                });
 				            } else {
@@ -101,6 +108,7 @@
 				        }
 				    });
 				</script>
+
 
 
 			
