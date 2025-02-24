@@ -71,7 +71,7 @@
 											<p>Höhenmeter: 5360 m</p>
 											
 										    <script>
-											window.onload = () => fetch("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=C2").then(res => res.text()).then(text => document.getElementById("hoehenmeter").innerText = text.trim() + " m");
+											window.onload = () => fetch("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=C2").then(res => res.text()).then(text => document.getElementById("hoehenmeter").innerText = text.trim().replace(/^"|"$/g, '') + ' m');
 										    </script>
 											<p>Höhenmeter Google: <span id="hoehenmeter">Lade Daten...</span></p>
 
