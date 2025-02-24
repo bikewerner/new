@@ -26,6 +26,7 @@
 				</header>
 
 			<!-- Nav -->
+				<!--
 				<nav id="nav">
 					<ul>
 						<li class="current"><a href="index.html">Home</a></li>
@@ -54,6 +55,26 @@
 						</li>
 					</ul>
 				</nav>
+				-->
+
+				<div id="navbar"></div>
+				
+				<script>
+				    fetch("nav.html")
+				        .then(response => response.text())
+				        .then(data => document.getElementById("navbar").innerHTML = data);
+				</script>
+
+
+
+
+
+
+
+
+
+
+			
 
 			<!-- Main -->
 				<section id="main">
