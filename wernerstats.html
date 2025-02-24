@@ -57,32 +57,17 @@
 				</nav>
 				-->
 
+				<div id="nav-container"></div>
 				<script>
-				    document.addEventListener("DOMContentLoaded", function () {
-				        fetch("nav.html")
-				            .then(response => response.text())
-				            .then(data => {
-				                document.getElementById("navbar").innerHTML = data;
-				
-				                // Warte kurz, um sicherzustellen, dass CSS angewendet wird
-				                setTimeout(() => {
-				                    document.getElementById("navbar").classList.add("loaded");
-				                }, 100);
-				            });
-				    });
+				    fetch("nav.html")
+				        .then(response => response.text())
+				        .then(data => document.getElementById("nav-container").innerHTML = data);
 				</script>
 
 
 
 
-
-
-
-
-
-
-
-			
+				
 
 			<!-- Main -->
 				<section id="main">
