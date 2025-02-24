@@ -2040,52 +2040,6 @@ input, select, textarea {
 				}
 
 /* Special für Profilbilder Werners*/
-	.special {
-	    text-align: center;
-	}
-	
-	.special li {
-	    display: inline-block;
-	    text-align: center;
-	    margin: 10px;
-	}
-	
-	.special img {
-	    width: 105px;  /* Größe anpassen */
-	    height: 105px;
-	    border-radius: 50%;  /* Rundes Design */
-	    object-fit: cover;
-	    display: block;
-	    margin: 0 auto;
-	}
-	
-	.special .caption {
-	    display: block;
-	    margin-top: 5px;  /* Abstand zum Bild */
-	    font-size: 1.65em;  /* Gleiche Größe wie die Touren-Beschreibung */
-	    color: #6b7770;  /* Gleiche Farbe */
-	    text-align: center;
-	    font-weight: normal;  /* Keine Fettschrift, falls nicht nötig */
-	}
-
-/* Special für Profilbilder Werners klein*/
-	.special.small img {
-	    width: 50px;  
-	    height: 50px;
-	    border-radius: 50%;  /* Runde Bilder */
-	    object-fit: cover;
-	    display: block;
-	    margin: 0 auto;
-	}
-	.special.small .caption {
-	    display: block;
-	    margin-top: 5px; /* Abstand zum Bild */
-	    font-size: 0.75em;  /* manuell eingestellt */
-	    color: #6b7770; 
-	    text-align: center;
-	    font-weight: normal;  /* Falls nötig, kein Fettgedruckt */
-	}
-
 /* Neue Klasse zur Darstellung von Bildern mit flexibler Größe */
 .special-images {
     display: flex;
