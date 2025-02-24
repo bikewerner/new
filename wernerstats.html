@@ -66,29 +66,40 @@
 				-->
 				<div id="nav-container"></div>
 				
+				<div id="nav-container"></div>
+				
 				<script>
-				    fetch("nav.html")
-				        .then(response => response.text())
-				        .then(data => {
-				            document.getElementById("nav-container").innerHTML = data;
-				            initNav(); // Navigation nach dem Laden initialisieren
-				        });
-				
-				    function initNav() {
-				        if (typeof jQuery !== "undefined") {
-				            // Falls jQuery verfügbar ist, Dropotron erneut ausführen
-				            jQuery(function($) {
-				                $('#nav > ul').dropotron({
-				                    alignment: 'center'
-				                });
+				    document.addEventListener("DOMContentLoaded", function () {
+				        fetch("nav.html")
+				            .then(response => response.text())
+				            .then(data => {
+				                document.getElementById("nav-container").innerHTML = data;
+				                initializeNav(); // Menü initialisieren
 				            });
-				        }
 				
-				        if (typeof window.navInit === "function") {
-				            // Falls dein Template eine eigene JS-Funktion für das Menü hat
-				            window.navInit();
+				        function initializeNav() {
+				            if (typeof jQuery !== "undefined") {
+				                jQuery(function ($) {
+				                    // Dropdown-Menü aktivieren
+				                    $('#nav > ul').dropotron({
+				                        alignment: 'center'
+				                    });
+				
+				                    // Mobile Navigation erneut aktivieren
+				                    if ($('#nav').length) {
+				                        $('#nav').removeClass('nav-loaded').addClass('nav-loaded');
+				                    }
+				
+				                    // Falls dein Theme ein Slide-Menü verwendet, manuell erneut aufrufen
+				                    if (typeof window.navInit === "function") {
+				                        window.navInit();
+				                    }
+				                });
+				            } else {
+				                console.error("jQuery wurde nicht gefunden!");
+				            }
 				        }
-				    }
+				    });
 				</script>
 
 
