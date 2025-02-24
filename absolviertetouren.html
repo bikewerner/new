@@ -64,11 +64,18 @@
 
 								<!-- Features -->
 									<section class="box features">
-										<h2 class="major"><span>Übersicht - komoot</span></h2>
+										<h2 class="major"><span>Wernerstats</span></h2>
 										<div align=center>
 											<p>Touren: 8</p>
-											<p>Gesamte Strecke: 405 km</p>
-											<p>Gesamte Höhenmeter: 5360 m</p>
+											<p>Strecke: 405 km</p>
+											<p>Höhenmeter: 5360 m</p>
+											
+										    <script>
+											window.onload = () => fetch("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=C2").then(res => res.text()).then(text => document.getElementById("hoehenmeter").innerText = text.trim() + " m");
+										    </script>
+											<p>Höhenmeter Google: <span id="hoehenmeter">Lade Daten...</span></p>
+
+											
 											<p>Platte Reifen: 2</p>
                     								</div>
 									</section>
