@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>Bike Werners - Wernerstats</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<!-- Bike Werner Logo -->
+				<br>
+				<br>
+				<div align="center">
+					<img src="images/BikeWernerLogo.png" alt="" width="33%" height="auto"><br>	
+				</div>
+			
+				<header id="header">
+					<div class="logo container">
+						<div>
+							<h1><a href="#" id="logo">Absolvierte Touren</a></h1>
+						</div>
+					</div>
+				</header>
+
+			<!-- Nav -->
+				<nav id="nav">
+					<ul>
+						<li class="current"><a href="index.html">Home</a></li>
+						<li>
+							<a href="#">Geplante Touren</a>
+							<ul>
+								<li><a href="#">Mai 2025</a></li>
+								<li><a href="#">Juli 2025</a></li>
+								<li><a href="#">September 2025</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">Absolvierte Touren</a>
+							<ul>
+								<li><a href="ruhpolding.html">Ruhpolding 2024</a></li>
+								<li><a href="ettal.html">Ettal 2024</a></li>
+								<li><a href="badwiessee.html">Bad Wiessee 2023</a></li>
+								<li><a href="bodenmais.html">Bodenmais 2023</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">Sonstiges</a>
+							<ul>
+								<li><a href="wernerstats.html">Wernerstats</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+
+			<!-- Main -->
+				<section id="main">
+					<div class="container">
+						<div class="row gtr-200">
+							
+							<div class="col-12">
+
+								<!-- Features -->
+									<section class="box features">
+										<h2 class="major"><span>Wernerstats</span></h2>
+										<div align=center>
+											<!-- 
+											<p>Touren: 8</p>
+											<p>Strecke: 405 km</p>
+											<p>Höhenmeter: 5360 m</p>
+											<p>Platte Reifen: 2</p>
+											-->
+										        <script>
+											        window.onload = () => {
+											            const fetchData = (url, elementId, suffix = '') => {
+											                fetch(url)
+											                    .then(res => res.text())
+											                    .then(text => document.getElementById(elementId).innerText = text.trim().replace(/^"|"$/g, '') + suffix);
+											            };
+											
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=O2", "tourenanzahl");
+												          fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B2", "strecke", " km");	
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=C2", "hoehenmeter", " m");
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=K2", "kalorien", " kcal");
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=L2", "pedalumdrehungen");
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=I2", "GeschwindigkeitBew", " km/h");
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=D2", "ZeitBew", " h");
+											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=N2", "pausen", " h");
+												          fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=M2", "platten");
+											        };
+      											</script>
+          											<p>Touren: <span id="tourenanzahl">Lade Daten...</span></p>
+          											<p>Strecke: <span id="strecke">Lade Daten...</span></p>
+          											<p>Höhenmeter: <span id="hoehenmeter">Lade Daten...</span></p>
+          											<p>Zeit in Bewegung: <span id="ZeitBew">Lade Daten...</span></p>
+          											<p>Pausen: <span id="pausen">Lade Daten...</span></p>
+          											<p>Geschwindigkeit in Bewegung: <span id="GeschwindigkeitBew">Lade Daten...</span></p>
+          											<p>Verbrauchte Kalorien: <span id="kalorien">Lade Daten...</span></p>
+          											<p>Pedalumdrehungen: <span id="pedalumdrehungen">Lade Daten...</span></p>
+          											<p>Platte Reifen: <span id="platten">Lade Daten...</span></p>
+    											
+                   		</div>
+									</section>
+
+							</div>
+							
+						</div>
+					</div>
+				</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="container">
+						<!-- Copyright -->
+							<div id="copyright">
+								<ul class="menu">
+									<li>&copy; Bike Werners. All rights reserved</li>
+								</ul>
+							</div>
+
+					</div>
+				</footer>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
