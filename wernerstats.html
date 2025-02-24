@@ -56,15 +56,43 @@
 					</ul>
 				</nav>
 				-->
-
+				<!-- funktioniert nur im Browser, nicht im HAndy
 				<div id="nav-container"></div>
 				<script>
 				    fetch("nav.html")
 				        .then(response => response.text())
 				        .then(data => document.getElementById("nav-container").innerHTML = data);
 				</script>
+				-->
+				<div id="nav-container"></div>
+				
+				<script>
+				    fetch("nav.html")
+				        .then(response => response.text())
+				        .then(data => {
+				            document.getElementById("nav-container").innerHTML = data;
+				            initNav(); // Navigation nach dem Laden initialisieren
+				        });
+				
+				    function initNav() {
+				        if (typeof jQuery !== "undefined") {
+				            // Falls jQuery verfügbar ist, Dropotron erneut ausführen
+				            jQuery(function($) {
+				                $('#nav > ul').dropotron({
+				                    alignment: 'center'
+				                });
+				            });
+				        }
+				
+				        if (typeof window.navInit === "function") {
+				            // Falls dein Template eine eigene JS-Funktion für das Menü hat
+				            window.navInit();
+				        }
+				    }
+				</script>
 
 
+			
 
 
 				
