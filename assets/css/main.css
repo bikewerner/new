@@ -2048,7 +2048,7 @@ input, select, textarea {
 	}
 /* Neue Klasse zur Darstellung von Texten in Wernerstats mit weniger Zeilenabstand*/
 .wernerstats p {
-    line-height: 1.2; /* Standard ist 1.5, hier enger setzen */
+    line-height: 1.5; /* Standard ist 1.5 */
     margin: 2px 0; /* Zusätzlichen Abstand oben/unten reduzieren */
 }
 
