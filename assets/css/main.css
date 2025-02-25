@@ -2042,7 +2042,7 @@ input, select, textarea {
 
 /* Neue Klasse zur Darstellung von Bildern in Überschrift bei Wernerstats */
 .title-icon {
-	    height: 1.5em; /* 1.5-mal so hoch wie die Schriftgröße */
+	    height: 2em; /* 2-mal so hoch wie die Schriftgröße */
 	    vertical-align: middle; /* Vertikale Ausrichtung */
 	    margin-right: 10px; /* Abstand zwischen Bild und Text */
 	}
