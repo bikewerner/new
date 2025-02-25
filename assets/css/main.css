@@ -2039,6 +2039,16 @@ input, select, textarea {
 					background: #b9d2ce;
 				}
 
+
+/* Neue Klasse zur Darstellung von Bildern in Überschrift bei Wernerstats */
+.title-icon {
+	    height: 1.5em; /* 1.5-mal so hoch wie die Schriftgröße */
+	    vertical-align: middle; /* Vertikale Ausrichtung */
+	    margin-right: 10px; /* Abstand zwischen Bild und Text */
+	}
+
+
+
 /* Special für Profilbilder Werners*/
 /* Neue Klasse zur Darstellung von Bildern mit flexibler Größe */
 .special-images {
