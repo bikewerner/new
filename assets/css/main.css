@@ -2090,6 +2090,20 @@ input, select, textarea {
     color: #6b7770;
 }
 
+/* Effekt für Bilder hüpfen beim hovern */
+.special-images li {
+    -moz-transition: top .15s ease-in-out;
+    -webkit-transition: top .15s ease-in-out;
+    -ms-transition: top .15s ease-in-out;
+    transition: top .15s ease-in-out;
+    position: relative;
+    text-align: center;
+    top: 0;
+}
+
+.special-images li:hover {
+    top: -1em;
+}
 
 /* Meta */
 
