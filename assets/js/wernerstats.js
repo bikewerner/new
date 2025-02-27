@@ -1,5 +1,5 @@
 window.onload = () => {
-    const url = "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B1:AA7";
+    const url = "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W2:AA7";
 
     fetch(url)
         .then(res => res.text())
@@ -16,14 +16,20 @@ window.onload = () => {
                 "WalzerPlatten", "WCPlatten", "WindelPlatten", "WuPlatten", "WurstPlatten"
             ];
 
-            // Extrahiere AnzahlTouren aus der Zelle B1 (erste Zeile, erste Spalte)
-            const anzahlTouren = rows[0][1]; // B1
-            if (anzahlTouren) {
-                document.getElementById("AnzahlTouren").innerText = anzahlTouren.replace(/^"|"$/g, ''); // Setze den Wert für AnzahlTouren
-            }
+            // Extrahiere AnzahlTouren aus der Zelle B1 (Zelle B1 ist nicht Teil von W2:AA7, also separat behandeln)
+            const anzahlTourenUrl = "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B1";
+            fetch(anzahlTourenUrl)
+                .then(res => res.text())
+                .then(text => {
+                    const anzahlTouren = text.trim().split("\n")[0].split(",")[0]; // B1 auslesen
+                    if (anzahlTouren) {
+                        document.getElementById("AnzahlTouren").innerText = anzahlTouren.replace(/^"|"$/g, ''); // Wert für AnzahlTouren setzen
+                    }
+                })
+                .catch(error => console.error("Fehler beim Laden von AnzahlTouren:", error));
 
-            // Daten zu den Elementen zuweisen
-            rows.slice(1).forEach((row, rowIndex) => {  // Beginnt mit der zweiten Zeile, um W2:AA7 abzurufen
+            // Daten zu den Elementen zuweisen (Nur W2:AA7)
+            rows.forEach((row, rowIndex) => {
                 row.forEach((cell, colIndex) => {
                     const id = ids[rowIndex * row.length + colIndex]; 
                     if (id) {
@@ -40,6 +46,7 @@ window.onload = () => {
         })
         .catch(error => console.error("Fehler beim Laden der Daten:", error));
 };
+
 
 
 
