@@ -1,3 +1,4 @@
+/*
 window.onload = () => {
     // Funktion, um einzelne Daten abzufragen und zuzuweisen
     const fetchData = (url, elementId, suffix = '') => {
@@ -80,12 +81,12 @@ window.onload = () => {
         })
         .catch(error => console.error("Fehler beim Laden der CSV-Daten:", error));
 };
+*/
 
 
 
 
-
-/* alte Version -> Zuweisungen nicht korrekt
+/* alte Version -> Zuweisungen nicht korrekt */
 window.onload = () => {
 const url = "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W2:AA7";
 
@@ -96,11 +97,12 @@ fetch(url)
 
         // IDs in derselben Reihenfolge wie in der Tabelle
         const ids = [
-            "WalzerBerg", "WalzerSprint", "WalzerTeilnahmen", "WalzerKilometer", "WalzerHoehenmeter", "WalzerPlatten",
-            "WCBerg", "WCSprint", "WCTeilnahmen", "WCKilometer", "WCHoehenmeter", "WCPlatten",
-            "WindelBerg", "WindelSprint", "WindelTeilnahmen", "WindelKilometer", "WindelHoehenmeter", "WindelPlatten",
-            "WuBerg", "WuSprint", "WuTeilnahmen", "WuKilometer", "WuHoehenmeter", "WuPlatten",
-            "WurstBerg", "WurstSprint", "WurstTeilnahmen", "WurstKilometer", "WurstHoehenmeter", "WurstPlatten"
+            "WalzerBerg", "WCBerg", "WindelBerg", "WuBerg", "WurstBerg",
+            "WalzerSprint", "WCSprint", "WindelSprint", "WuSprint", "WurstSprint",
+            "WalzerTeilnahmen", "WCTeilnahmen", "WindelTeilnahmen", "WuTeilnahmen", "WurstTeilnahmen",
+            "WalzerKilometer", "WCKilometer", "WindelKilometer", "WuKilometer", "WurstKilometer",
+            "WalzerHoehenmeter", "WCHoehenmeter", "WindelHoehenmeter", "WuHoehenmeter", "WurstHoehenmeter",
+            "WalzerPlatten", "WCPlatten", "WindelPlatten", "WuPlatten", "WurstPlatten"
         ];
 
         // Daten zu den Elementen zuweisen
@@ -115,4 +117,4 @@ fetch(url)
     })
     .catch(error => console.error("Fehler beim Laden der Daten:", error));
 };
-*/
+
