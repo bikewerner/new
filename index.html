@@ -112,6 +112,26 @@
 										        <span>Wurst</span>
 										    </li>
 										</ul>
+
+										<!-- Werner Daten aus Googlesheet auslesen-->
+										<script>
+											window.onload = () => {
+											    const fetchData = (url, elementId, suffix = '') => {
+												fetch(url)
+												    .then(res => res.text())
+												    .then(text => document.getElementById(elementId).innerText = text.trim().replace(/^"|"$/g, '') + suffix);
+											    };
+													fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B1", "AnzahlTouren");
+
+													fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W2", "WalzerBerg");
+													fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W3", "WalzerSprint");	
+													fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W4", "WalzerTeilnahmen", " / ");
+													fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W5", "WalzerKilometer", " km");
+													fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W6", "WalzerHoehenmeter", " m");
+													fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W7", "WalzerPlatten");
+											};
+										</script>
+
 										
 										<!-- Overlays für Bildinfos -->
 										<div id="info-walzer" class="overlay">
@@ -121,16 +141,16 @@
 													<h3>Walzer Werner</h3>
 													<p class="trikot-container">
 													    <span>
-													        <img src="images/trikotberg.png" alt="Icon" class="title-icon">: 1
+													        <img src="images/trikotberg.png" alt="Icon" class="title-icon">: <span id="WalzerBerg">Lade Daten...</span>
 													    </span>
 													    <span>
-													        <img src="images/trikotsprint.png" alt="Icon" class="title-icon">: -  
+													        <img src="images/trikotsprint.png" alt="Icon" class="title-icon">: <span id="WalzerSprint">Lade Daten...</span>  
 													    </span>
 													</p>
-													<p>Teilnahmen: 4/4</p>
-													<p>Kilometer: 500 km</p>    
-													<p>Höhenmeter: 300hm</p>
-													<p>Platten: 0</p>
+													<p>Teilnahmen: <span id="WalzerTeilnahmen">Lade Daten...</span><span id="AnzahlTouren">Lade Daten...</span></p>
+													<p>Kilometer: <span id="WalzerKilometer">Lade Daten...</span></p>
+													<p>Höhenmeter: <span id="WalzerHoehenmeter">Lade Daten...</span></p>
+													<p>Platten: <span id="WalzerPlatten">Lade Daten...</span></p>
 											    </div> 
 										    </div>
 										</div>
