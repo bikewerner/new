@@ -4,6 +4,8 @@ window.onload = () => {
         fetch(url)
             .then(res => res.text())
             .then(text => {
+                // Hier prüfen wir den Text, um sicherzustellen, dass die Daten korrekt geladen werden
+                console.log(`Laden der Daten für ${elementId}:`, text);
                 document.getElementById(elementId).innerText = text.trim().replace(/^"|"$/g, '') + suffix;
             })
             .catch(error => console.error("Fehler beim Laden der Daten:", error));
@@ -19,8 +21,14 @@ window.onload = () => {
     fetch(url)
         .then(res => res.text())
         .then(text => {
+            // Debug-Ausgabe, um zu prüfen, wie der CSV-Text aussieht
+            console.log("CSV-Daten:", text);
+
             // CSV-Daten in ein Array umwandeln
             const rows = text.trim().split('\n').map(row => row.split(','));
+
+            // Prüfen, wie die Daten jetzt aussehen
+            console.log("Verarbeitete Zeilen:", rows);
 
             // Mapping der Zellen basierend auf der Tabelle
             const dataMapping = {
