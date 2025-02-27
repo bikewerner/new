@@ -89,6 +89,7 @@
 										-->
 										
 										<!-- Werner Profilbilder mit Unterschrift -->
+										<!--
 										<ul class="special-images">
 										    <li>
 										        <img src="images/walzer.jpg" alt="Walzer">
@@ -112,6 +113,69 @@
 										        <span>Wurst</span>
 										    </li>
 										</ul>
+										-->
+
+										<ul class="special-images">
+										    <li>
+										        <img src="images/walzer.jpg" alt="Walzer" onclick="openOverlay('info-walzer')">
+										        <span>Walzer</span>
+										    </li>
+										    <li>
+										        <img src="images/wc.jpg" alt="WC" onclick="openOverlay('info-wc')">
+										        <span>WC</span>
+										    </li>
+										    <li>
+										        <img src="images/windel.jpg" alt="Windel" onclick="openOverlay('info-windel')">
+										        <span>Windel</span>
+										    </li>
+										    <br>    
+										    <li>
+										        <img src="images/wu.jpg" alt="Wu" onclick="openOverlay('info-wu')">
+										        <span>Wu</span>
+										    </li>
+										    <li>
+										        <img src="images/wurst.jpg" alt="Wurst" onclick="openOverlay('info-wurst')">
+										        <span>Wurst</span>
+										    </li>
+										</ul>
+										
+										<!-- Overlays für Bildinfos -->
+										<div id="info-walzer" class="overlay">
+										    <div class="overlay-content">
+										        <span class="close-btn" onclick="closeOverlay('info-walzer')">&times;</span>
+										        <p>Beschreibung für Walzer.</p>
+										    </div>
+										</div>
+										
+										<div id="info-wc" class="overlay">
+										    <div class="overlay-content">
+										        <span class="close-btn" onclick="closeOverlay('info-wc')">&times;</span>
+										        <p>Beschreibung für WC.</p>
+										    </div>
+										</div>
+										
+										<div id="info-windel" class="overlay">
+										    <div class="overlay-content">
+										        <span class="close-btn" onclick="closeOverlay('info-windel')">&times;</span>
+										        <p>Beschreibung für Windel.</p>
+										    </div>
+										</div>
+										
+										<div id="info-wu" class="overlay">
+										    <div class="overlay-content">
+										        <span class="close-btn" onclick="closeOverlay('info-wu')">&times;</span>
+										        <p>Beschreibung für Wu.</p>
+										    </div>
+										</div>
+										
+										<div id="info-wurst" class="overlay">
+										    <div class="overlay-content">
+										        <span class="close-btn" onclick="closeOverlay('info-wurst')">&times;</span>
+										        <p>Beschreibung für Wurst.</p>
+										    </div>
+										</div>
+
+										
 									</section>
 
 							</div>
@@ -266,6 +330,7 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="overlay.js"></script>
 
 	</body>
 </html>
