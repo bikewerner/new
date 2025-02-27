@@ -113,7 +113,8 @@
 										    </li>
 										</ul>
 
-										<!-- Werner Daten aus Googlesheet auslesen-->
+										<!-- Werner Daten aus Googlesheet auslesen -->
+										<!-- 
 										<script>
 											window.onload = () => {
 											    const fetchData = (url, elementId, suffix = '') => {
@@ -159,6 +160,62 @@
 													fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AA7", "WurstPlatten");
 											};
 										</script>
+										 -->
+
+
+
+										<script>
+										    window.onload = () => {
+										        // Arrays mit den URLs und den zugehörigen Element-IDs und Suffixen
+										        const data = [
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B1", elementId: "AnzahlTouren" },
+											    { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W2", elementId: "WalzerBerg" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W3", elementId: "WalzerSprint" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W4", elementId: "WalzerTeilnahmen", suffix: " / " },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W5", elementId: "WalzerKilometer", suffix: " km" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W6", elementId: "WalzerHoehenmeter", suffix: " m" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W7", elementId: "WalzerPlatten" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=X2", elementId: "WCBerg" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=X3", elementId: "WCSprint" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=X4", elementId: "WCTeilnahmen", suffix: " / " },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=X5", elementId: "WCKilometer", suffix: " km" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=X6", elementId: "WCHoehenmeter", suffix: " m" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=X7", elementId: "WCPlatten" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Y2", elementId: "WindelBerg" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Y3", elementId: "WindelSprint" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Y4", elementId: "WindelTeilnahmen", suffix: " / " },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Y5", elementId: "WindelKilometer", suffix: " km" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Y6", elementId: "WindelHoehenmeter", suffix: " m" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Y7", elementId: "WindelPlatten" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Z2", elementId: "WuBerg" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Z3", elementId: "WuSprint" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Z4", elementId: "WuTeilnahmen", suffix: " / " },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Z5", elementId: "WuKilometer", suffix: " km" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Z6", elementId: "WuHoehenmeter", suffix: " m" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=Z7", elementId: "WuPlatten" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AA2", elementId: "WurstBerg" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AA3", elementId: "WurstSprint" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AA4", elementId: "WurstTeilnahmen", suffix: " / " },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AA5", elementId: "WurstKilometer", suffix: " km" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AA6", elementId: "WurstHoehenmeter", suffix: " m" },
+										            { url: "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AA7", elementId: "WurstPlatten" }
+										        ];
+										
+										        // Funktion zum Abrufen und Einfügen von Daten
+										        const fetchData = (url, elementId, suffix = '') => {
+										            fetch(url)
+										                .then(res => res.text())
+										                .then(text => document.getElementById(elementId).innerText = text.trim().replace(/^"|"$/g, '') + suffix);
+										        };
+										
+										        // Alle Daten abrufen
+										        data.forEach(item => fetchData(item.url, item.elementId, item.suffix));
+										    };
+										</script>
+
+
+
+										
 
 										
 										<!-- Overlays für Bildinfos -->
