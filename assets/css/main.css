@@ -2039,6 +2039,8 @@ input, select, textarea {
 					background: #b9d2ce;
 				}
 
+/* ---------------------START eigene CSS Klassen----------------------------*/
+
 
 /* Neue Klasse zur Darstellung von Bildern in Überschrift bei Wernerstats */
 .title-icon {
@@ -2104,6 +2106,43 @@ input, select, textarea {
 .special-images li:hover {
     top: -1em;
 }
+
+
+/* Overlay-Hintergrund für Werner Profilbilder*/
+.overlay {
+    display: none; /* Standardmäßig versteckt */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Inhalt des Overlays */
+.overlay-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+    max-width: 400px;
+    margin: auto;
+}
+
+/* Schließen-Button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* ---------------------ENDE eigene CSS Klassen----------------------------*/
 
 /* Meta */
 
