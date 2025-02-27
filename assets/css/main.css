@@ -2044,10 +2044,18 @@ input, select, textarea {
 
 /* Neue Klasse zur Darstellung von Bildern in Überschrift bei Wernerstats */
 .title-icon {
-	    height: 2em; /* 2-mal so hoch wie die Schriftgröße */
-	    vertical-align: middle; /* Vertikale Ausrichtung */
-	    margin-right: 10px; /* Abstand zwischen Bild und Text */
-	}
+    height: 2em; /* 2-mal so hoch wie die Schriftgröße */
+    vertical-align: middle; /* Vertikale Ausrichtung */
+    margin-right: 10px; /* Abstand zwischen Bild und Text */
+}
+
+/* Erweiterung für abstand wenn berg und sprinttrikot in einer zeile sind -> bei klicken auf werners*/
+.trikot-container {
+    display: flex;
+    align-items: center;
+    gap: 30px; /* Abstand zwischen den beiden Gruppen (Bild + Text) */
+}
+
 /* Neue Klasse zur Darstellung von Texten in Wernerstats mit weniger Zeilenabstand*/
 .wernerstats p {
     line-height: 2.25; /* Standard ist 1.5 */
