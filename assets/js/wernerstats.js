@@ -24,53 +24,55 @@ window.onload = () => {
 
             // Mapping der Zellen basierend auf der Tabelle
             const dataMapping = {
-                "WalzerBerg": rows[0][0],
-                "WCBerg": rows[0][1],
-                "WindelBerg": rows[0][2],
-                "WuBerg": rows[0][3],
-                "WurstBerg": rows[0][4],
+                "WalzerBerg": { value: rows[0][0], suffix: '' },
+                "WCBerg": { value: rows[0][1], suffix: '' },
+                "WindelBerg": { value: rows[0][2], suffix: '' },
+                "WuBerg": { value: rows[0][3], suffix: '' },
+                "WurstBerg": { value: rows[0][4], suffix: '' },
 
-                "WalzerSprint": rows[1][0],
-                "WCSprint": rows[1][1],
-                "WindelSprint": rows[1][2],
-                "WuSprint": rows[1][3],
-                "WurstSprint": rows[1][4],
+                "WalzerSprint": { value: rows[1][0], suffix: '' },
+                "WCSprint": { value: rows[1][1], suffix: '' },
+                "WindelSprint": { value: rows[1][2], suffix: '' },
+                "WuSprint": { value: rows[1][3], suffix: '' },
+                "WurstSprint": { value: rows[1][4], suffix: '' },
 
-                "WalzerTeilnahmen": rows[2][0],
-                "WCTeilnahmen": rows[2][1],
-                "WindelTeilnahmen": rows[2][2],
-                "WuTeilnahmen": rows[2][3],
-                "WurstTeilnahmen": rows[2][4],
+                "WalzerTeilnahmen": { value: rows[2][0], suffix: ' / ' },
+                "WCTeilnahmen": { value: rows[2][1], suffix: ' / ' },
+                "WindelTeilnahmen": { value: rows[2][2], suffix: ' / ' },
+                "WuTeilnahmen": { value: rows[2][3], suffix: ' / ' },
+                "WurstTeilnahmen": { value: rows[2][4], suffix: ' / ' },
 
-                "WalzerKilometer": rows[3][0],
-                "WCKilometer": rows[3][1],
-                "WindelKilometer": rows[3][2],
-                "WuKilometer": rows[3][3],
-                "WurstKilometer": rows[3][4],
+                "WalzerKilometer": { value: rows[3][0], suffix: ' km' },
+                "WCKilometer": { value: rows[3][1], suffix: ' km' },
+                "WindelKilometer": { value: rows[3][2], suffix: ' km' },
+                "WuKilometer": { value: rows[3][3], suffix: ' km' },
+                "WurstKilometer": { value: rows[3][4], suffix: ' km' },
 
-                "WalzerHoehenmeter": rows[4][0],
-                "WCHoehenmeter": rows[4][1],
-                "WindelHoehenmeter": rows[4][2],
-                "WuHoehenmeter": rows[4][3],
-                "WurstHoehenmeter": rows[4][4],
+                "WalzerHoehenmeter": { value: rows[4][0], suffix: ' m' },
+                "WCHoehenmeter": { value: rows[4][1], suffix: ' m' },
+                "WindelHoehenmeter": { value: rows[4][2], suffix: ' m' },
+                "WuHoehenmeter": { value: rows[4][3], suffix: ' m' },
+                "WurstHoehenmeter": { value: rows[4][4], suffix: ' m' },
 
-                "WalzerPlatten": rows[5][0],
-                "WCPlatten": rows[5][1],
-                "WindelPlatten": rows[5][2],
-                "WuPlatten": rows[5][3],
-                "WurstPlatten": rows[5][4],
+                "WalzerPlatten": { value: rows[5][0], suffix: '' },
+                "WCPlatten": { value: rows[5][1], suffix: '' },
+                "WindelPlatten": { value: rows[5][2], suffix: '' },
+                "WuPlatten": { value: rows[5][3], suffix: '' },
+                "WurstPlatten": { value: rows[5][4], suffix: '' },
             };
 
             // Werte den HTML-Elementen zuweisen
             for (let key in dataMapping) {
                 const element = document.getElementById(key);
                 if (element) {
-                    element.innerText = dataMapping[key] !== "-" ? dataMapping[key] : "Keine Daten";
+                    const { value, suffix } = dataMapping[key];
+                    element.innerText = value !== "-" ? value + suffix : "Keine Daten";
                 }
             }
         })
         .catch(error => console.error("Fehler beim Laden der CSV-Daten:", error));
 };
+
 
 
 
