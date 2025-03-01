@@ -54,4 +54,10 @@ window.onload = () => {
     fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=X11", "ZeitBew", " h");
     fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AG11", "pausen", " h");
     fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B2", "platten");
+
+    // Responsive Tabelle
+    const tableContainer = document.querySelector(".table-container");
+    if (tableContainer) {
+        tableContainer.style.overflowX = "auto";
+    }
 };
