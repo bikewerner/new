@@ -147,13 +147,13 @@
 										    <table id="wernerTable">
 										        <thead>
 										            <tr>
-										                <th onclick="sortTable(0)">Name <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(1)">Teilnahmen <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(2)">Kilometer <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(3)">Höhenmeter <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(4)">Bergwertung <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(5)">Sprintwertung <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(6)">Platten <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(0, true)">Name <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(1, false)">Teilnahmen <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(2, false)">Kilometer <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(3, false)">Höhenmeter <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(4, false)">Bergwertung <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(5, false)">Sprintwertung <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(6, false)">Platten <span class="sort-indicator">▲▼</span></th>
 										            </tr>
 										        </thead>
 										        <tbody>
@@ -175,9 +175,15 @@
 										            table.dataset.sortAsc = ascending;
 										            
 										            rows.sort((rowA, rowB) => {
-										                let cellA = rowA.cells[n].innerText.replace(/\D/g, "");
-										                let cellB = rowB.cells[n].innerText.replace(/\D/g, "");
-										                return ascending ? cellA - cellB : cellB - cellA;
+										                let cellA = rowA.cells[n].innerText.trim();
+										                let cellB = rowB.cells[n].innerText.trim();
+										                
+										                if (!isText) {
+										                    cellA = cellA.replace(/\D/g, "");
+										                    cellB = cellB.replace(/\D/g, "");
+										                }
+										                
+										                return ascending ? (cellA > cellB ? 1 : -1) : (cellA < cellB ? 1 : -1);
 										            });
 										            
 										            rows.forEach(row => tbody.appendChild(row));
