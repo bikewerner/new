@@ -20,8 +20,9 @@
     }
 
     #splash-screen img {
-      max-width: 90%;
-      max-height: 90%;
+      width: 100%;  /* Bildbreite auf 100% setzen */
+      height: auto; /* Höhe proportional anpassen */
+      object-fit: cover; /* Optional, um sicherzustellen, dass das Bild den Bildschirm füllt, ohne verzerrt zu werden */
     }
   </style>
 </head>
