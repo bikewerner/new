@@ -2150,6 +2150,51 @@ input, select, textarea {
     cursor: pointer;
 }
 
+
+
+/* Tabelle bei Wernerstats */
+/* Grundstil für die Tabelle */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid #aaa;
+    min-width: 600px; /* Mindestens so breit wie nötig */
+}
+
+/* Gestaltung von Tabellenzellen */
+th, td {
+    border: 1px solid #aaa;
+    padding: 8px;
+    text-align: left;
+}
+
+/* Kopfzeilen (th) Styling */
+th {
+    background-color: #d3d3d3;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Erster Tabellenspalte */
+td:first-child, th:first-child {
+    background-color: #d3d3d3;
+    font-weight: bold;
+}
+
+/* Sortierindikator (Pfeil) */
+.sort-indicator {
+    position: absolute;
+    right: 8px;
+    font-size: 12px;
+}
+
+/* Responsives Design für die Tabelle */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
 /* ---------------------ENDE eigene CSS Klassen----------------------------*/
 
 /* Meta */
