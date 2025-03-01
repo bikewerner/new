@@ -16,20 +16,6 @@ window.onload = () => {
                 "WalzerPlatten", "WCPlatten", "WindelPlatten", "WuPlatten", "WurstPlatten"
             ];
 
-            // Extrahiere AnzahlTouren aus der Zelle B1 (Zelle B1 ist nicht Teil von W2:AA7, also separat behandeln)
-            const anzahlTourenUrl = "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B1";
-            fetch(anzahlTourenUrl)
-                .then(res => res.text())
-                .then(text => {
-                    const anzahlTouren = text.trim().split("\n")[0].split(",")[0]; // B1 auslesen
-                    if (anzahlTouren) {
-                        document.querySelectorAll(".AnzahlTouren").forEach(el => {
-                            el.innerText = anzahlTouren.replace(/^"|"$/g, ''); // Alle Instanzen updaten
-                        });
-                    }
-                })
-                .catch(error => console.error("Fehler beim Laden von AnzahlTouren:", error));
-
             // Daten zu den Elementen zuweisen (Nur W2:AA7)
             rows.forEach((row, rowIndex) => {
                 row.forEach((cell, colIndex) => {
@@ -47,4 +33,27 @@ window.onload = () => {
             });
         })
         .catch(error => console.error("Fehler beim Laden der Daten:", error));
+
+    function fetchData(url, id, suffix = "") {
+        fetch(url)
+            .then(res => res.text())
+            .then(text => {
+                const value = text.trim().split("\n")[0].split(",")[0].replace(/^"|"$/g, '') + suffix;
+                const element = document.getElementById(id);
+                if (element) {
+                    element.innerText = value;
+                }
+            })
+            .catch(error => console.error(`Fehler beim Laden von ${id}:`, error));
+    }
+
+    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B1", "tourenanzahl");
+    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=V11", "strecke", " km");
+    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W11", "hoehenmeter", " m");
+    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AE11", "kalorien", " kcal");
+    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AF11", "pedalumdrehungen");
+    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AC11", "GeschwindigkeitBew", " km/h");
+    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=X11", "ZeitBew", " h");
+    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AG11", "pausen", " h");
+    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B2", "platten");
 };
