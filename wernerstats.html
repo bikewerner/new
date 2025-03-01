@@ -110,7 +110,7 @@
 									    </table>
 									    </div>
 									    
-									    <script>
+										<script>
 										function sortTable(columnIndex, isText) {
 										    const table = document.getElementById("wernerTable");
 										    const tbody = table.querySelector("tbody");
@@ -120,20 +120,24 @@
 										    table.dataset.sortAsc = ascending;
 										    
 										    rows.sort((rowA, rowB) => {
-											let cellA = rowA.cells[columnIndex].innerText.trim();
-											let cellB = rowB.cells[columnIndex].innerText.trim();
-											
-											if (!isText) {
-											    cellA = parseFloat(cellA.replace(/\D/g, "")) || 0;
-											    cellB = parseFloat(cellB.replace(/\D/g, "")) || 0;
-											}
-											
-											return ascending ? (cellA > cellB ? 1 : -1) : (cellA < cellB ? 1 : -1);
+										        let cellA = rowA.cells[columnIndex].innerText.trim();
+										        let cellB = rowB.cells[columnIndex].innerText.trim();
+										        
+										        if (!isText) {
+										            cellA = parseFloat(cellA.replace(/\D/g, "")) || 0;
+										            cellB = parseFloat(cellB.replace(/\D/g, "")) || 0;
+										        } else {
+										            // Verwende localeCompare für eine lexikografische Sortierung
+										            return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+										        }
+										        
+										        return ascending ? (cellA > cellB ? 1 : -1) : (cellA < cellB ? 1 : -1);
 										    });
 										    
 										    rows.forEach(row => tbody.appendChild(row));
 										}
-									    </script>
+										</script>
+
 								</section>
 
 
