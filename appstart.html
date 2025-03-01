@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PWA Splash Screen</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Bild für den Splashscreen -->
+  <div id="splash-screen">
+    <img src="images/BikeWernerLogo.png" alt="">
+  </div>
+
+  <script>
+    // Prüfen, ob die App als PWA und nicht im Webbrowser läuft
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+      // Warten, bevor zur index.html weitergeleitet wird
+      setTimeout(function() {
+        window.location.href = 'index.html'; // Weiterleitung zur Indexseite
+      }, 2000); // 2 Sekunden warten
+    } else {
+      // Im Webbrowser direkt zur index.html weiterleiten
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+</html>
