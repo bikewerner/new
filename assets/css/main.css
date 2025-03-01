@@ -2595,21 +2595,18 @@ input, select, textarea {
 
 	#banner {
 		position: relative;
-		background-image: url("images/overlay.png"), url("images/overlay.png"), url("../../images/FahrradBanner.jpg");
-		background-position: top left, top left, center center;
-		background-repeat: repeat, repeat, no-repeat;
-		background-size: auto, auto, cover;
+		background-image: url("../../images/FahrradBanner.jpg"); /* Nur das Fahrradbanner */
+		background-position: center center;
+		background-repeat: no-repeat;
+		background-size: cover;
 		z-index: 1;
 		padding: 11em 0;
 	}
 
 		#banner .content {
 			position: relative;
-			background-color: rgba(21, 28, 23, 0.85);
-			background-image: url("images/overlay.png"), url("images/highlight.png");
-			background-position: top left, center center;
-			background-size: auto, 100% 250%;
-			background-repeat: repeat, no-repeat;
+			background-color: rgba(21, 28, 23, 0.85); /* Transparente schwarze Überlagerung bleibt */
+			background-image: none; /* Entfernt overlay.png und highlight.png */
 			text-align: center;
 			margin: 0;
 			padding: 4em 0 3.5em 0;
