@@ -147,13 +147,13 @@
 										    <table id="wernerTable">
 										        <thead>
 										            <tr>
-										                <th onclick="sortTable(0)">Name <span class="sort-indicator"></span></th>
-										                <th onclick="sortTable(1)">Teilnahmen <span class="sort-indicator"></span></th>
-										                <th onclick="sortTable(2)">Kilometer <span class="sort-indicator"></span></th>
-										                <th onclick="sortTable(3)">Höhenmeter <span class="sort-indicator"></span></th>
-										                <th onclick="sortTable(4)">Bergwertung <span class="sort-indicator"></span></th>
-										                <th onclick="sortTable(5)">Sprintwertung <span class="sort-indicator"></span></th>
-										                <th onclick="sortTable(6)">Platten <span class="sort-indicator"></span></th>
+										                <th onclick="sortTable(0)">Name <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(1)">Teilnahmen <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(2)">Kilometer <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(3)">Höhenmeter <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(4)">Bergwertung <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(5)">Sprintwertung <span class="sort-indicator">▲▼</span></th>
+										                <th onclick="sortTable(6)">Platten <span class="sort-indicator">▲▼</span></th>
 										            </tr>
 										        </thead>
 										        <tbody>
@@ -181,9 +181,6 @@
 										            });
 										            
 										            rows.forEach(row => tbody.appendChild(row));
-										            
-										            document.querySelectorAll(".sort-indicator").forEach(el => el.innerText = "");
-										            table.rows[0].cells[n].querySelector(".sort-indicator").innerText = ascending ? "▲" : "▼";
 										        }
 										    </script>
 									</section>
