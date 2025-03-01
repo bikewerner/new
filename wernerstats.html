@@ -93,166 +93,129 @@
 							
 							<div class="col-12">
 
-								<!-- Features -->
-									<section class="box features">
-										<h2 class="major"><span>Tourenstats</span></h2>
-										<div align=center>
-											<!-- 
-											<p>Touren: 8</p>
-											<p>Strecke: 405 km</p>
-											<p>Höhenmeter: 5360 m</p>
-											<p>Platte Reifen: 2</p>
-											
-										        <script>
-											        window.onload = () => {
-											            const fetchData = (url, elementId, suffix = '') => {
-											                fetch(url)
-											                    .then(res => res.text())
-											                    .then(text => document.getElementById(elementId).innerText = text.trim().replace(/^"|"$/g, '') + suffix);
-											            };
-											
-											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B1", "tourenanzahl");
-												    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=V11", "strecke", " km");	
-											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=W11", "hoehenmeter", " m");
-											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AE11", "kalorien", " kcal");
-											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AF11", "pedalumdrehungen");
-											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AC11", "GeschwindigkeitBew", " km/h");
-											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=X11", "ZeitBew", " h");
-											            fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AG11", "pausen", " h");
-												    fetchData("https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=B2", "platten");
-											        };
-      											</script>
-											-->
-												<div class="wernerstats">
-													<p>Touren: <span class="tourenanzahl">Lade Daten...</span></p>
-													<p>Strecke: <span class="strecke">Lade Daten...</span></p>
-													<p>Höhenmeter: <span id="hoehenmeter">Lade Daten...</span></p>
-													<p>Zeit in Bewegung: <span id="ZeitBew">Lade Daten...</span></p>
-													<p>Pausen: <span id="pausen">Lade Daten...</span></p>
-													<p>Geschwindigkeit in Bewegung: <span id="GeschwindigkeitBew">Lade Daten...</span></p>
-													<p>Verbrauchte Kalorien: <span id="kalorien">Lade Daten...</span></p>
-													<p>Pedalumdrehungen: <span id="pedalumdrehungen">Lade Daten...</span></p>
-													<p>Platte Reifen: <span id="platten">Lade Daten...</span></p>
-												</div>
-                   								</div>
-									</section>
+							<!-- Übersicht Tourenstats -->
+								<section class="box features">
+									<h2 class="major"><span>Tourenstats</span></h2>
+									<div align=center>
+										<div class="wernerstats">
+											<p>Touren: <span class="AnzahlTouren">Lade Daten...</span></p>
+											<p>Strecke: <span class="strecke">Lade Daten...</span></p>
+											<p>Höhenmeter: <span class="hoehenmeter">Lade Daten...</span></p>
+											<p>Zeit in Bewegung: <span class="ZeitBew">Lade Daten...</span></p>
+											<p>Pausen: <span class="pausen">Lade Daten...</span></p>
+											<p>Geschwindigkeit in Bewegung: <span class="GeschwindigkeitBew">Lade Daten...</span></p>
+											<p>Verbrauchte Kalorien: <span class="kalorien">Lade Daten...</span></p>
+											<p>Pedalumdrehungen: <span class="pedalumdrehungen">Lade Daten...</span></p>
+											<p>Platte Reifen: <span class="platten">Lade Daten...</span></p>
+										</div>
+									</div>
+								</section>
 
-
-
-
-
-
-									
-									<section class="box features">
-										<h2 class="major"><span>Werners</span></h2>
-										    <table id="wernerTable">
-										        <thead>
-										            <tr>
-										                <th onclick="sortTable(0, true)">Name <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(1, false)">Teilnahmen <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(2, false)">Kilometer <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(3, false)">Höhenmeter <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(4, false)">Bergwertung <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(5, false)">Sprintwertung <span class="sort-indicator">▲▼</span></th>
-										                <th onclick="sortTable(6, false)">Platten <span class="sort-indicator">▲▼</span></th>
-										            </tr>
-										        </thead>
-										        <tbody>
-										            <tr><td>Walzer</td><td id="WalzerTeilnahmen"></td><td id="WalzerKilometer"></td><td id="WalzerHoehenmeter"></td><td id="WalzerBerg"></td><td id="WalzerSprint"></td><td id="WalzerPlatten"></td></tr>
-										            <tr><td>WC</td><td id="WCTeilnahmen"></td><td id="WCKilometer"></td><td id="WCHoehenmeter"></td><td id="WCBerg"></td><td id="WCSprint"></td><td id="WCPlatten"></td></tr>
-										            <tr><td>Windel</td><td id="WindelTeilnahmen"></td><td id="WindelKilometer"></td><td id="WindelHoehenmeter"></td><td id="WindelBerg"></td><td id="WindelSprint"></td><td id="WindelPlatten"></td></tr>
-										            <tr><td>Wu</td><td id="WuTeilnahmen"></td><td id="WuKilometer"></td><td id="WuHoehenmeter"></td><td id="WuBerg"></td><td id="WuSprint"></td><td id="WuPlatten"></td></tr>
-										            <tr><td>Wurst</td><td id="WurstTeilnahmen"></td><td id="WurstKilometer"></td><td id="WurstHoehenmeter"></td><td id="WurstBerg"></td><td id="WurstSprint"></td><td id="WurstPlatten"></td></tr>
-										        </tbody>
-										    </table>
+								<!-- Tabelle mit Wernerstats -->
+								<section class="box features">
+									<h2 class="major"><span>Wernerstats</span></h2>
+									    <table id="wernerTable">
+										<thead>
+										    <tr>
+											<th onclick="sortTable(0, true)">Name <span class="sort-indicator">▲▼</span></th>
+											<th onclick="sortTable(1, false)">Teilnahmen <span class="sort-indicator">▲▼</span></th>
+											<th onclick="sortTable(2, false)">Kilometer <span class="sort-indicator">▲▼</span></th>
+											<th onclick="sortTable(3, false)">Höhenmeter <span class="sort-indicator">▲▼</span></th>
+											<th onclick="sortTable(4, false)">Bergwertung <span class="sort-indicator">▲▼</span></th>
+											<th onclick="sortTable(5, false)">Sprintwertung <span class="sort-indicator">▲▼</span></th>
+											<th onclick="sortTable(6, false)">Platten <span class="sort-indicator">▲▼</span></th>
+										    </tr>
+										</thead>
+										<tbody>
+										    <tr><td>Walzer</td><td id="WalzerTeilnahmen"></td><td id="WalzerKilometer"></td><td id="WalzerHoehenmeter"></td><td id="WalzerBerg"></td><td id="WalzerSprint"></td><td id="WalzerPlatten"></td></tr>
+										    <tr><td>WC</td><td id="WCTeilnahmen"></td><td id="WCKilometer"></td><td id="WCHoehenmeter"></td><td id="WCBerg"></td><td id="WCSprint"></td><td id="WCPlatten"></td></tr>
+										    <tr><td>Windel</td><td id="WindelTeilnahmen"></td><td id="WindelKilometer"></td><td id="WindelHoehenmeter"></td><td id="WindelBerg"></td><td id="WindelSprint"></td><td id="WindelPlatten"></td></tr>
+										    <tr><td>Wu</td><td id="WuTeilnahmen"></td><td id="WuKilometer"></td><td id="WuHoehenmeter"></td><td id="WuBerg"></td><td id="WuSprint"></td><td id="WuPlatten"></td></tr>
+										    <tr><td>Wurst</td><td id="WurstTeilnahmen"></td><td id="WurstKilometer"></td><td id="WurstHoehenmeter"></td><td id="WurstBerg"></td><td id="WurstSprint"></td><td id="WurstPlatten"></td></tr>
+										</tbody>
+									    </table>
+									    
+									    <script>
+										function sortTable(columnIndex, isText) {
+										    const table = document.getElementById("wernerTable");
+										    const tbody = table.querySelector("tbody");
+										    const rows = Array.from(tbody.rows);
+										    let ascending = table.dataset.sortCol == columnIndex ? !(table.dataset.sortAsc === "true") : true;
+										    table.dataset.sortCol = columnIndex;
+										    table.dataset.sortAsc = ascending;
 										    
-										    <script>
-										        function sortTable(columnIndex, isText) {
-										            const table = document.getElementById("wernerTable");
-										            const tbody = table.querySelector("tbody");
-										            const rows = Array.from(tbody.rows);
-										            let ascending = table.dataset.sortCol == columnIndex ? !(table.dataset.sortAsc === "true") : true;
-										            table.dataset.sortCol = columnIndex;
-										            table.dataset.sortAsc = ascending;
-										            
-										            rows.sort((rowA, rowB) => {
-										                let cellA = rowA.cells[columnIndex].innerText.trim();
-										                let cellB = rowB.cells[columnIndex].innerText.trim();
-										                
-										                if (!isText) {
-										                    cellA = parseFloat(cellA.replace(/\D/g, "")) || 0;
-										                    cellB = parseFloat(cellB.replace(/\D/g, "")) || 0;
-										                }
-										                
-										                return ascending ? (cellA > cellB ? 1 : -1) : (cellA < cellB ? 1 : -1);
-										            });
-										            
-										            rows.forEach(row => tbody.appendChild(row));
-										        }
-										    </script>
-									</section>
+										    rows.sort((rowA, rowB) => {
+											let cellA = rowA.cells[columnIndex].innerText.trim();
+											let cellB = rowB.cells[columnIndex].innerText.trim();
+											
+											if (!isText) {
+											    cellA = parseFloat(cellA.replace(/\D/g, "")) || 0;
+											    cellB = parseFloat(cellB.replace(/\D/g, "")) || 0;
+											}
+											
+											return ascending ? (cellA > cellB ? 1 : -1) : (cellA < cellB ? 1 : -1);
+										    });
+										    
+										    rows.forEach(row => tbody.appendChild(row));
+										}
+									    </script>
+								</section>
 
 
+								<!-- Wertungstrokits - Bergwerner -->
+								<section class="box features">
+									<h2 class="major"><span>Wertungstrikots</span></h2>
+									<div align=center>
+										<div style="background-color: #f2f5f3; padding: 10px; border-radius: 8px;">
+										    <br>
+											<h3>
+											    <img src="images/trikotberg.png" alt="Icon" class="title-icon">
+											     Berg Werner
+											</h3>
+										    <br>
+										    <ul class="special-images">
+											<li>
+											    <img src="images/walzer.jpg" alt="Walzer">
+											    <span>Walzer</span>
+											</li>
+										    </ul>
+										    <br>
 
-
-
-
-
-
-								
-
-									<section class="box features">
-										<h2 class="major"><span>Wertungstrikots</span></h2>
-										<div align=center>
-											<div style="background-color: #f2f5f3; padding: 10px; border-radius: 8px;">
-											    <br>
-											    	<h3>
-												    <img src="images/trikotberg.png" alt="Icon" class="title-icon">
-												     Berg Werner
-												</h3>
-											    <br>
-											    <ul class="special-images">
-											        <li>
-											            <img src="images/walzer.jpg" alt="Walzer">
-											            <span>Walzer</span>
-											        </li>
-											    </ul>
-											    <br>
-
-												<div class="wernerstats">
-												    <p style="font-size: 1.2em; font-weight: bold;">Historie</p>
-												    <p>Ruhpolding 2024: Walzer</p>
-												</div>
-									
+											<div class="wernerstats">
+											    <p style="font-size: 1.2em; font-weight: bold;">Historie</p>
+											    <p>Ruhpolding 2024: Walzer</p>
 											</div>
-                   								</div>
-									</section>
 								
-									<section class="box features">
-										<div align=center>
-											<div style="background-color: #f2f5f3; padding: 10px; border-radius: 8px;">
-											    <br>
-											    	<h3>
-												    <img src="images/trikotsprint.png" alt="Icon" class="title-icon">
-												     Sprint Werner
-												</h3>
-											    <br>
-											    <ul class="special-images">
-											        <li>
-											            <img src="images/pic01.jpg">
-											            <span>-</span>
-											        </li>
-											    </ul>
-											    <br>
+										</div>
+									</div>
+								</section>
 
-												<div class="wernerstats">
-												    <p style="font-size: 1.2em; font-weight: bold;">Historie</p>
-												    <p>-</p>
-												</div>
-									
+								<!-- Sprintwerner -->
+								<section class="box features">
+									<div align=center>
+										<div style="background-color: #f2f5f3; padding: 10px; border-radius: 8px;">
+										    <br>
+											<h3>
+											    <img src="images/trikotsprint.png" alt="Icon" class="title-icon">
+											     Sprint Werner
+											</h3>
+										    <br>
+										    <ul class="special-images">
+											<li>
+											    <img src="images/pic01.jpg">
+											    <span>-</span>
+											</li>
+										    </ul>
+										    <br>
+
+											<div class="wernerstats">
+											    <p style="font-size: 1.2em; font-weight: bold;">Historie</p>
+											    <p>-</p>
 											</div>
-                   								</div>
-									</section>
+								
+										</div>
+									</div>
+								</section>
 								
 								
 
