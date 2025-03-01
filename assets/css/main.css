@@ -2165,6 +2165,7 @@ table {
     width: 100%;
     min-width: 600px; /* Mindestens so breit wie nötig */
     border-collapse: collapse;
+    table-layout: fixed; /* sorgt dafür, dass alle Spalten gleichmäßig verteilt sind */
 }
 
 /* Tabellenzellen */
@@ -2172,6 +2173,7 @@ th, td {
     border: 1px solid #aaa;
     padding: 8px;
     text-align: left;
+    word-wrap: break-word; /* verhindert, dass der Text überläuft */
 }
 
 /* Fixiere die erste Spalte */
@@ -2199,9 +2201,8 @@ th {
 
 /* Restliche Tabellenzeilen */
 tbody {
-    display: block;
+    display: table-row-group; /* Ensures proper alignment with the header */
     width: 100%;
-    overflow-x: auto;
 }
 
 
