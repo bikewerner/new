@@ -23,10 +23,16 @@
 		            background-color: #d3d3d3;
 		            font-weight: bold;
 		            cursor: pointer;
+		            position: relative;
 		        }
 		        td:first-child, th:first-child {
 		            background-color: #d3d3d3;
 		            font-weight: bold;
+		        }
+		        .sort-indicator {
+		            position: absolute;
+		            right: 8px;
+		            font-size: 12px;
 		        }
 		    </style>
 	</head>
@@ -141,13 +147,13 @@
 										    <table id="wernerTable">
 										        <thead>
 										            <tr>
-										                <th onclick="sortTable(0)">Name</th>
-										                <th onclick="sortTable(1)">Teilnahmen</th>
-										                <th onclick="sortTable(2)">Kilometer</th>
-										                <th onclick="sortTable(3)">Höhenmeter</th>
-										                <th onclick="sortTable(4)">Bergwertung</th>
-										                <th onclick="sortTable(5)">Sprintwertung</th>
-										                <th onclick="sortTable(6)">Platten</th>
+										                <th onclick="sortTable(0)">Name <span class="sort-indicator"></span></th>
+										                <th onclick="sortTable(1)">Teilnahmen <span class="sort-indicator"></span></th>
+										                <th onclick="sortTable(2)">Kilometer <span class="sort-indicator"></span></th>
+										                <th onclick="sortTable(3)">Höhenmeter <span class="sort-indicator"></span></th>
+										                <th onclick="sortTable(4)">Bergwertung <span class="sort-indicator"></span></th>
+										                <th onclick="sortTable(5)">Sprintwertung <span class="sort-indicator"></span></th>
+										                <th onclick="sortTable(6)">Platten <span class="sort-indicator"></span></th>
 										            </tr>
 										        </thead>
 										        <tbody>
@@ -162,7 +168,8 @@
 										    <script>
 										        function sortTable(n) {
 										            const table = document.getElementById("wernerTable");
-										            let rows = Array.from(table.rows).slice(1);
+										            let tbody = table.querySelector("tbody");
+										            let rows = Array.from(tbody.rows);
 										            let ascending = table.dataset.sortCol == n ? !JSON.parse(table.dataset.sortAsc) : true;
 										            table.dataset.sortCol = n;
 										            table.dataset.sortAsc = ascending;
@@ -173,7 +180,10 @@
 										                return ascending ? cellA - cellB : cellB - cellA;
 										            });
 										            
-										            rows.forEach(row => table.appendChild(row));
+										            rows.forEach(row => tbody.appendChild(row));
+										            
+										            document.querySelectorAll(".sort-indicator").forEach(el => el.innerText = "");
+										            table.rows[0].cells[n].querySelector(".sort-indicator").innerText = ascending ? "▲" : "▼";
 										        }
 										    </script>
 									</section>
