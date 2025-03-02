@@ -1,15 +1,18 @@
 <!DOCTYPE HTML>
 <html lang="de">
-<head>
-    <title>Bike Werners - Wernerstats</title>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="assets/css/main.css" />
-    <link rel="icon" type="image/x-icon" href="images/BW.ico" />
-</head>
-<body class="homepage is-preload">
-    <div id="page-wrapper">
-        <!-- Header -->
+<html>
+	<head>
+		<title>Bike Werners - Wernerstats</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="icon" type="image/x-icon" href="images/BW.ico" />
+
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
 				<!-- Bike Werner Logo -->
 				<br>
 				<br>
@@ -26,8 +29,36 @@
 				</header>
 
 			<!-- Nav -->
+				<nav id="nav">
+					<ul>
+						<li class="current"><a href="index.html">Home</a></li>
+						<li>
+							<a href="#">Geplante Touren</a>
+							<ul>
+								<li><a href="#">Mai 2025</a></li>
+								<li><a href="#">Juli 2025</a></li>
+								<li><a href="#">September 2025</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="absolviertetouren.html">Absolvierte Touren</a>
+							<ul>
+								<li><a href="ruhpolding.html">Ruhpolding 2024</a></li>
+								<li><a href="ettal.html">Ettal 2024</a></li>
+								<li><a href="badwiessee.html">Bad Wiessee 2023</a></li>
+								<li><a href="bodenmais.html">Bodenmais 2023</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">Sonstiges</a>
+							<ul>
+								<li><a href="wernerstats.html">Wernerstats</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>	
+				
 
-        <div id="navbar-placeholder"></div>
 			<!-- Main -->
 				<section id="main">
 					<div class="container">
@@ -191,25 +222,12 @@
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script>
-			    $(document).ready(function () {
-			        $("#nav ul").dropotron({
-			            alignment: "center", // Oder "right", je nach Design
-			            offsetY: 5
-			        });
-			    });
-			</script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/wernerstats.js"></script>
-			<script>
-		            fetch('nav.html')
-		        		.then(response => response.text())
-		            	.then(data => document.getElementById('navbar-placeholder').innerHTML = data);
-        		</script>
 
 	</body>
 </html>
