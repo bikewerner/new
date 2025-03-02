@@ -16,14 +16,14 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 9999; /* Sicherstellen, dass der Splashscreen über allem liegt */
+      z-index: 9999;
     }
 
     /* Bild Styling */
-    #splash-screen img {
-      width: 100%;  /* Bildbreite füllt das Display */
-      height: auto; /* Höhe wird proportional angepasst */
-      max-width: 90vw; /* Verhindert, dass das Bild zu groß wird */
+    #splash-image {
+      width: 100%;  
+      height: auto;
+      max-width: 90vw; 
       max-height: 90vh;
       object-fit: contain;
       animation: pulseIn 1.5s ease-in-out;
@@ -47,23 +47,29 @@
 <body>
   <!-- Splashscreen-Inhalt -->
   <div id="splash-screen">
-    <img src="images/BikeWernerLogo.png" alt="">
+    <img id="splash-image" src="images/BikeWernerLogo.png" alt="">
   </div>
 
   <script>
     // Prüfen, ob die App als PWA läuft
     if (window.matchMedia('(display-mode: standalone)').matches) {
       setTimeout(function() {
-        // Zweite Animation starten (Pulsieren & Verkleinern)
-        document.getElementById("splash-image").style.animation = "pulseOut 1.5s ease-in-out forwards";
+        let splashImage = document.getElementById("splash-image");
+
+        // Sicherstellen, dass vorherige Animationen entfernt werden
+        splashImage.style.animation = "none"; 
+        splashImage.offsetHeight; // Wichtiger Trick, um die Animation zurückzusetzen
         
-        // Weiterleitung zur index.html nach 1.3 Sekunden (kurz bevor Animation endet)
+        // Jetzt die neue Animation setzen
+        splashImage.style.animation = "pulseOut 1.5s ease-in-out forwards";
+
+        // Weiterleitung zur index.html nach 1.3 Sekunden
         setTimeout(() => {
           window.location.href = 'index.html';
         }, 1300);
-      }, 2000); // 2 Sekunden warten, dann die zweite Animation starten
+      }, 2000); // Nach 2 Sekunden die zweite Animation starten
     } else {
-      // Im Webbrowser direkt zur Index-Seite weiterleiten
+      // Im Webbrowser direkt zur index.html weiterleiten
       window.location.href = 'index.html';
     }
   </script>
