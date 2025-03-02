@@ -16,7 +16,22 @@
 				.then(reg => console.log('Service Worker registered!', reg))
 				.catch(err => console.log('Service Worker registration failed:', err));
 			}
+		
+			// Prüfen, ob die Seite als PWA läuft
+			if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+				const lastClosedTime = localStorage.getItem("lastClosedTime");
+				const now = Date.now();
+				const fiveMinutes = 5 * 60 * 1000;
+		
+		        // Falls splash.html vor mehr als 5 Minuten geschlossen wurde -> Weiterleitung
+			if (!lastClosedTime || now - lastClosedTime > fiveMinutes) {
+		       		if (window.location.pathname === "/new/index.html") {
+			        window.location.href = "appstart.html";
+				}
+		        }
+		    	}
 		</script>
+		
 		<!-- Light Mode Icon Apple-->
 		<link rel="apple-touch-icon" sizes="180x180" href="/new/images/BikeWernerLogoAppleLight_180x180.png" media="(prefers-color-scheme: light)">
 		<!-- Dark Mode Icon Apple-->
