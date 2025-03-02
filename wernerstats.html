@@ -1,248 +1,204 @@
 <!DOCTYPE HTML>
 <html lang="de">
 <html>
-	<head>
-		<title>Bike Werners - Wernerstats</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<link rel="icon" type="image/x-icon" href="images/BW.ico" />
+    <head>
+        <title>Bike Werners - Wernerstats</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <link rel="icon" type="image/x-icon" href="images/BW.ico" />
+    </head>
+    <body class="homepage is-preload">
+        <div id="page-wrapper">
 
-	</head>
-	<body class="homepage is-preload">
-		<div id="page-wrapper">
+            <!-- Header -->
+            <!-- Bike Werner Logo -->
+            <br>
+            <br>
+            <div align="center">
+                <img src="images/BikeWernerLogo.png" alt="" width="33%" height="auto"><br>    
+            </div>
 
-			<!-- Header -->
-				<!-- Bike Werner Logo -->
-				<br>
-				<br>
-				<div align="center">
-					<img src="images/BikeWernerLogo.png" alt="" width="33%" height="auto"><br>	
-				</div>
-			
-				<header id="header">
-					<div class="logo container">
-						<div>
-							<h1><a href="#" id="logo">Wernerstats</a></h1>
-						</div>
-					</div>
-				</header>
+            <header id="header">
+                <div class="logo container">
+                    <div>
+                        <h1><a href="#" id="logo">Wernerstats</a></h1>
+                    </div>
+                </div>
+            </header>
 
+            <!-- Hier wird die Navigation geladen -->
+            <div id="header-container"></div>
 
+            <!-- Main -->
+            <section id="main">
+                <div class="container">
+                    <div class="row gtr-200">
+                        
+                        <div class="col-12">
 
-			        <script>
-			            // Laden der Navigationbar
-			            fetch('nav.html')
-			                .then(response => response.text())
-			                .then(data => document.getElementById('header-container').innerHTML = data)
-			                .catch(error => console.error('Fehler beim Laden des Headers:', error));
-			        </script>
+                            <!-- Übersicht Tourenstats -->
+                            <section class="box features">
+                                <h2 class="major"><span>Tourenstats</span></h2>
+                                <div align=center>
+                                    <div class="wernerstats">
+                                        <p>Touren: <span class="AnzahlTouren">Lade Daten...</span></p>
+                                        <p>Strecke: <span class="strecke">Lade Daten...</span></p>
+                                        <p>Höhenmeter: <span class="hoehenmeter">Lade Daten...</span></p>
+                                        <p>Zeit in Bewegung: <span class="ZeitBew">Lade Daten...</span></p>
+                                        <p>Pausen: <span class="pausen">Lade Daten...</span></p>
+                                        <p>Geschwindigkeit in Bewegung: <span class="GeschwindigkeitBew">Lade Daten...</span></p>
+                                        <p>Verbrauchte Kalorien: <span class="kalorien">Lade Daten...</span></p>
+                                        <p>Pedalumdrehungen: <span class="pedalumdrehungen">Lade Daten...</span></p>
+                                        <p>Platte Reifen: <span class="platten">Lade Daten...</span></p>
+                                    </div>
+                                </div>
+                            </section>
 
+                            <!-- Tabelle mit Wernerstats -->
+                            <section class="box features">
+                                <h2 class="major"><span>Wernerstats</span></h2>
+                                    <div class="table-container">
+                                    <table id="wernerTable">
+                                    <thead>
+                                        <tr>
+                                        <th onclick="sortTable(0, true)">Name <span class="sort-indicator">▲▼</span></th>
+                                        <th onclick="sortTable(1, false)">Teilnahmen <span class="sort-indicator">▲▼</span></th>
+                                        <th onclick="sortTable(2, false)">Kilometer <span class="sort-indicator">▲▼</span></th>
+                                        <th onclick="sortTable(3, false)">Höhenmeter <span class="sort-indicator">▲▼</span></th>
+                                        <th onclick="sortTable(4, false)">Bergwertung <span class="sort-indicator">▲▼</span></th>
+                                        <th onclick="sortTable(5, false)">Sprintwertung <span class="sort-indicator">▲▼</span></th>
+                                        <th onclick="sortTable(6, false)">Platten <span class="sort-indicator">▲▼</span></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr><td>Walzer</td><td id="WalzerTeilnahmen"></td><td id="WalzerKilometer"></td><td id="WalzerHoehenmeter"></td><td id="WalzerBerg"></td><td id="WalzerSprint"></td><td id="WalzerPlatten"></td></tr>
+                                        <tr><td>WC</td><td id="WCTeilnahmen"></td><td id="WCKilometer"></td><td id="WCHoehenmeter"></td><td id="WCBerg"></td><td id="WCSprint"></td><td id="WCPlatten"></td></tr>
+                                        <tr><td>Windel</td><td id="WindelTeilnahmen"></td><td id="WindelKilometer"></td><td id="WindelHoehenmeter"></td><td id="WindelBerg"></td><td id="WindelSprint"></td><td id="WindelPlatten"></td></tr>
+                                        <tr><td>Wu</td><td id="WuTeilnahmen"></td><td id="WuKilometer"></td><td id="WuHoehenmeter"></td><td id="WuBerg"></td><td id="WuSprint"></td><td id="WuPlatten"></td></tr>
+                                        <tr><td>Wurst</td><td id="WurstTeilnahmen"></td><td id="WurstKilometer"></td><td id="WurstHoehenmeter"></td><td id="WurstBerg"></td><td id="WurstSprint"></td><td id="WurstPlatten"></td></tr>
+                                    </tbody>
+                                    </table>
+                                    </div>
+                                    
+                                    <script>
+                                    function sortTable(columnIndex, isText) {
+                                        const table = document.getElementById("wernerTable");
+                                        const tbody = table.querySelector("tbody");
+                                        const rows = Array.from(tbody.rows);
+                                        let ascending = table.dataset.sortCol == columnIndex ? !(table.dataset.sortAsc === "true") : true;
+                                        table.dataset.sortCol = columnIndex;
+                                        table.dataset.sortAsc = ascending;
+                                        
+                                        rows.sort((rowA, rowB) => {
+                                            let cellA = rowA.cells[columnIndex].innerText.trim();
+                                            let cellB = rowB.cells[columnIndex].innerText.trim();
+                                            
+                                            if (!isText) {
+                                                cellA = parseFloat(cellA.replace(/\D/g, "")) || 0;
+                                                cellB = parseFloat(cellB.replace(/\D/g, "")) || 0;
+                                            } else {
+                                                return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                                            }
+                                            
+                                            return ascending ? (cellA > cellB ? 1 : -1) : (cellA < cellB ? 1 : -1);
+                                        });
+                                        
+                                        rows.forEach(row => tbody.appendChild(row));
+                                    }
+                                    </script>
 
-			
-			
-			<!-- Nav -->
-			<!--
-				<nav id="nav">
-					<ul>
-						<li class="current"><a href="index.html">Home</a></li>
-						<li>
-							<a href="#">Geplante Touren</a>
-							<ul>
-								<li><a href="#">Mai 2025</a></li>
-								<li><a href="#">Juli 2025</a></li>
-								<li><a href="#">September 2025</a></li>
-							</ul>
-						</li>
-						<li>
-							<a href="absolviertetouren.html">Absolvierte Touren</a>
-							<ul>
-								<li><a href="ruhpolding.html">Ruhpolding 2024</a></li>
-								<li><a href="ettal.html">Ettal 2024</a></li>
-								<li><a href="badwiessee.html">Bad Wiessee 2023</a></li>
-								<li><a href="bodenmais.html">Bodenmais 2023</a></li>
-							</ul>
-						</li>
-						<li>
-							<a href="#">Sonstiges</a>
-							<ul>
-								<li><a href="wernerstats.html">Wernerstats</a></li>
-							</ul>
-						</li>
-					</ul>
-				</nav>
-			-->
-				
+                            </section>
 
-			<!-- Main -->
-				<section id="main">
-					<div class="container">
-						<div class="row gtr-200">
-							
-							<div class="col-12">
+                            <!-- Wertungstrikots - Bergwerner -->
+                            <section class="box features">
+                                <h2 class="major"><span>Wertungstrikots</span></h2>
+                                <div align=center>
+                                    <div style="background-color: #f2f5f3; padding: 10px; border-radius: 8px;">
+                                        <br>
+                                        <h3>
+                                            <img src="images/trikotberg.png" alt="Icon" class="title-icon">
+                                             Berg Werner
+                                        </h3>
+                                        <br>
+                                        <ul class="special-images">
+                                        <li>
+                                            <img src="images/walzer.jpg" alt="Walzer">
+                                            <span>Walzer</span>
+                                        </li>
+                                        </ul>
+                                        <br>
 
-							<!-- Übersicht Tourenstats -->
-								<section class="box features">
-									<h2 class="major"><span>Tourenstats</span></h2>
-									<div align=center>
-										<div class="wernerstats">
-											<p>Touren: <span class="AnzahlTouren">Lade Daten...</span></p>
-											<p>Strecke: <span class="strecke">Lade Daten...</span></p>
-											<p>Höhenmeter: <span class="hoehenmeter">Lade Daten...</span></p>
-											<p>Zeit in Bewegung: <span class="ZeitBew">Lade Daten...</span></p>
-											<p>Pausen: <span class="pausen">Lade Daten...</span></p>
-											<p>Geschwindigkeit in Bewegung: <span class="GeschwindigkeitBew">Lade Daten...</span></p>
-											<p>Verbrauchte Kalorien: <span class="kalorien">Lade Daten...</span></p>
-											<p>Pedalumdrehungen: <span class="pedalumdrehungen">Lade Daten...</span></p>
-											<p>Platte Reifen: <span class="platten">Lade Daten...</span></p>
-										</div>
-									</div>
-								</section>
+                                        <div class="wernerstats">
+                                            <p style="font-size: 1.2em; font-weight: bold;">Historie</p>
+                                            <p>Ruhpolding 2024: Walzer</p>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </section>
 
-								<!-- Tabelle mit Wernerstats -->
-								<section class="box features">
-									<h2 class="major"><span>Wernerstats</span></h2>
-									    <div class="table-container">
-									    <table id="wernerTable">
-										<thead>
-										    <tr>
-											<th onclick="sortTable(0, true)">Name <span class="sort-indicator">▲▼</span></th>
-											<th onclick="sortTable(1, false)">Teilnahmen <span class="sort-indicator">▲▼</span></th>
-											<th onclick="sortTable(2, false)">Kilometer <span class="sort-indicator">▲▼</span></th>
-											<th onclick="sortTable(3, false)">Höhenmeter <span class="sort-indicator">▲▼</span></th>
-											<th onclick="sortTable(4, false)">Bergwertung <span class="sort-indicator">▲▼</span></th>
-											<th onclick="sortTable(5, false)">Sprintwertung <span class="sort-indicator">▲▼</span></th>
-											<th onclick="sortTable(6, false)">Platten <span class="sort-indicator">▲▼</span></th>
-										    </tr>
-										</thead>
-										<tbody>
-										    <tr><td>Walzer</td><td id="WalzerTeilnahmen"></td><td id="WalzerKilometer"></td><td id="WalzerHoehenmeter"></td><td id="WalzerBerg"></td><td id="WalzerSprint"></td><td id="WalzerPlatten"></td></tr>
-										    <tr><td>WC</td><td id="WCTeilnahmen"></td><td id="WCKilometer"></td><td id="WCHoehenmeter"></td><td id="WCBerg"></td><td id="WCSprint"></td><td id="WCPlatten"></td></tr>
-										    <tr><td>Windel</td><td id="WindelTeilnahmen"></td><td id="WindelKilometer"></td><td id="WindelHoehenmeter"></td><td id="WindelBerg"></td><td id="WindelSprint"></td><td id="WindelPlatten"></td></tr>
-										    <tr><td>Wu</td><td id="WuTeilnahmen"></td><td id="WuKilometer"></td><td id="WuHoehenmeter"></td><td id="WuBerg"></td><td id="WuSprint"></td><td id="WuPlatten"></td></tr>
-										    <tr><td>Wurst</td><td id="WurstTeilnahmen"></td><td id="WurstKilometer"></td><td id="WurstHoehenmeter"></td><td id="WurstBerg"></td><td id="WurstSprint"></td><td id="WurstPlatten"></td></tr>
-										</tbody>
-									    </table>
-									    </div>
-									    
-										<script>
-										function sortTable(columnIndex, isText) {
-										    const table = document.getElementById("wernerTable");
-										    const tbody = table.querySelector("tbody");
-										    const rows = Array.from(tbody.rows);
-										    let ascending = table.dataset.sortCol == columnIndex ? !(table.dataset.sortAsc === "true") : true;
-										    table.dataset.sortCol = columnIndex;
-										    table.dataset.sortAsc = ascending;
-										    
-										    rows.sort((rowA, rowB) => {
-										        let cellA = rowA.cells[columnIndex].innerText.trim();
-										        let cellB = rowB.cells[columnIndex].innerText.trim();
-										        
-										        if (!isText) {
-										            cellA = parseFloat(cellA.replace(/\D/g, "")) || 0;
-										            cellB = parseFloat(cellB.replace(/\D/g, "")) || 0;
-										        } else {
-										            // Verwende localeCompare für eine lexikografische Sortierung
-										            return ascending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
-										        }
-										        
-										        return ascending ? (cellA > cellB ? 1 : -1) : (cellA < cellB ? 1 : -1);
-										    });
-										    
-										    rows.forEach(row => tbody.appendChild(row));
-										}
-										</script>
+                            <!-- Sprintwerner -->
+                            <section class="box features">
+                                <div align=center>
+                                    <div style="background-color: #f2f5f3; padding: 10px; border-radius: 8px;">
+                                        <br>
+                                        <h3>
+                                            <img src="images/trikotsprint.png" alt="Icon" class="title-icon">
+                                             Sprint Werner
+                                        </h3>
+                                        <br>
+                                        <ul class="special-images">
+                                        <li>
+                                            <img src="images/pic01.jpg">
+                                            <span>-</span>
+                                        </li>
+                                        </ul>
+                                        <br>
 
-								</section>
+                                        <div class="wernerstats">
+                                            <p style="font-size: 1.2em; font-weight: bold;">Historie</p>
+                                            <p>-</p>
+                                        </div>
+                                    
+                                    </div>
+                                </div>
+                            </section>
 
+                        </div>
+                        
+                    </div>
+                </div>
+            </section>
 
-								<!-- Wertungstrokits - Bergwerner -->
-								<section class="box features">
-									<h2 class="major"><span>Wertungstrikots</span></h2>
-									<div align=center>
-										<div style="background-color: #f2f5f3; padding: 10px; border-radius: 8px;">
-										    <br>
-											<h3>
-											    <img src="images/trikotberg.png" alt="Icon" class="title-icon">
-											     Berg Werner
-											</h3>
-										    <br>
-										    <ul class="special-images">
-											<li>
-											    <img src="images/walzer.jpg" alt="Walzer">
-											    <span>Walzer</span>
-											</li>
-										    </ul>
-										    <br>
+            <!-- Footer -->
+            <footer id="footer">
+                <div class="container">
+                    <!-- Copyright -->
+                        <div id="copyright">
+                            <ul class="menu">
+                                <li>&copy; Bike Werners. All rights reserved</li>
+                            </ul>
+                        </div>
 
-											<div class="wernerstats">
-											    <p style="font-size: 1.2em; font-weight: bold;">Historie</p>
-											    <p>Ruhpolding 2024: Walzer</p>
-											</div>
-								
-										</div>
-									</div>
-								</section>
+                </div>
+            </footer>
 
-								<!-- Sprintwerner -->
-								<section class="box features">
-									<div align=center>
-										<div style="background-color: #f2f5f3; padding: 10px; border-radius: 8px;">
-										    <br>
-											<h3>
-											    <img src="images/trikotsprint.png" alt="Icon" class="title-icon">
-											     Sprint Werner
-											</h3>
-										    <br>
-										    <ul class="special-images">
-											<li>
-											    <img src="images/pic01.jpg">
-											    <span>-</span>
-											</li>
-										    </ul>
-										    <br>
+        </div>
 
-											<div class="wernerstats">
-											    <p style="font-size: 1.2em; font-weight: bold;">Historie</p>
-											    <p>-</p>
-											</div>
-								
-										</div>
-									</div>
-								</section>
-								
-								
+        <!-- Scripts -->
+        <script src="assets/js/jquery.min.js"></script>
+        <script src="assets/js/browser.min.js"></script>
+        <script src="assets/js/breakpoints.min.js"></script>
+        <script src="assets/js/util.js"></script>
+        <script src="assets/js/main.js"></script>
+        
+        <!-- Navigation aus nav.html laden -->
+        <script>
+            fetch('nav.html')
+                .then(response => response.text())
+                .then(data => document.getElementById('header-container').innerHTML = data);
+        </script>
 
-							</div>
-							
-						</div>
-					</div>
-				</section>
-
-			<!-- Footer -->
-				<footer id="footer">
-					<div class="container">
-						<!-- Copyright -->
-							<div id="copyright">
-								<ul class="menu">
-									<li>&copy; Bike Werners. All rights reserved</li>
-								</ul>
-							</div>
-
-					</div>
-				</footer>
-
-		</div>
-
-		<!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/jquery.dropotron.min.js"></script>
-			<script src="assets/js/jquery.scrolly.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
-			<script src="assets/js/wernerstats.js"></script>
-
-	</body>
+    </body>
 </html>
