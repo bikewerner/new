@@ -11,27 +11,12 @@
 		<!-- manifest und serviceworker fur PWA Funktionalität /> -->
 		<link rel="manifest" href="manifest.json">
 		<script>
-		    if ('serviceWorker' in navigator) {
-		        navigator.serviceWorker.register('service-worker.js')
-		        .then(reg => console.log('Service Worker registered!', reg))
-		        .catch(err => console.log('Service Worker registration failed:', err));
-		    }
-			    
-		    <!-- Abfrage, ob nach 5 min uten das Logo in der PWA neu angezeigt werden soll deaktiviert
-		    // Prüfen, ob die Seite als PWA läuft
-		    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
-		        const lastClosedTime = localStorage.getItem("lastClosedTime");
-		        const now = Date.now();
-		        const fiveMinutes = 5 * 60 * 1000;
-		
-		        // Falls splash.html vor mehr als 5 Minuten geschlossen wurde -> Direkt weiterleiten
-		        if (!lastClosedTime || now - lastClosedTime > fiveMinutes) {
-		            window.location.href = "appstart.html";
-		        }
-		    }
-		    -->
+			if ('serviceWorker' in navigator) {
+				navigator.serviceWorker.register('service-worker.js')
+				.then(reg => console.log('Service Worker registered!', reg))
+				.catch(err => console.log('Service Worker registration failed:', err));
+			}
 		</script>
-
 		<!-- Light Mode Icon Apple-->
 		<link rel="apple-touch-icon" sizes="180x180" href="/new/images/BikeWernerLogoAppleLight_180x180.png" media="(prefers-color-scheme: light)">
 		<!-- Dark Mode Icon Apple-->
