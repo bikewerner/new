@@ -191,6 +191,14 @@
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script>
+			    $(document).ready(function () {
+			        $("#nav ul").dropotron({
+			            alignment: "center", // Oder "right", je nach Design
+			            offsetY: 5
+			        });
+			    });
+			</script>
 			<script src="assets/js/jquery.scrolly.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
 			<script src="assets/js/breakpoints.min.js"></script>
@@ -198,10 +206,10 @@
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/wernerstats.js"></script>
 			<script>
-            fetch('nav.html')
-        		.then(response => response.text())
-            	.then(data => document.getElementById('navbar-placeholder').innerHTML = data);
-        	</script>
+		            fetch('nav.html')
+		        		.then(response => response.text())
+		            	.then(data => document.getElementById('navbar-placeholder').innerHTML = data);
+        		</script>
 
 	</body>
 </html>
