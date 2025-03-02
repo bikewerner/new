@@ -16,7 +16,8 @@
 		        .then(reg => console.log('Service Worker registered!', reg))
 		        .catch(err => console.log('Service Worker registration failed:', err));
 		    }
-		
+			    
+		    <!-- Abfrage, ob nach 5 min uten das Logo in der PWA neu angezeigt werden soll deaktiviert
 		    // Prüfen, ob die Seite als PWA läuft
 		    if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
 		        const lastClosedTime = localStorage.getItem("lastClosedTime");
@@ -28,6 +29,7 @@
 		            window.location.href = "appstart.html";
 		        }
 		    }
+		    -->
 		</script>
 
 		<!-- Light Mode Icon Apple-->
