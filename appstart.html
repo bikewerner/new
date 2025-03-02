@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PWA Splash Screen</title>
   <style>
-    /* CSS für den Splashscreen */
+    /* Splashscreen Container */
     #splash-screen {
       position: fixed;
       top: 0;
@@ -19,10 +19,28 @@
       z-index: 9999; /* Sicherstellen, dass der Splashscreen über allem liegt */
     }
 
+    /* Bild Styling */
     #splash-screen img {
-      width: 100%;  /* Bildbreite auf 100% setzen */
-      height: auto; /* Höhe proportional anpassen */
-      object-fit: cover; /* Optional, um sicherzustellen, dass das Bild den Bildschirm füllt, ohne verzerrt zu werden */
+      width: 100%;  /* Bildbreite füllt das Display */
+      height: auto; /* Höhe wird proportional angepasst */
+      max-width: 90vw; /* Verhindert, dass das Bild zu groß wird */
+      max-height: 90vh;
+      object-fit: contain;
+      animation: pulseIn 1.5s ease-in-out;
+    }
+
+    /* Erste Animation: Pulsieren beim Start */
+    @keyframes pulseIn {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); } /* Leicht vergrößern */
+      100% { transform: scale(1); }
+    }
+
+    /* Zweite Animation: Pulsieren + Verkleinern bei Weiterleitung */
+    @keyframes pulseOut {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); } /* Nochmal kurz pulsieren */
+      100% { transform: scale(0); opacity: 0; } /* Dann verschwinden */
     }
   </style>
 </head>
@@ -33,12 +51,17 @@
   </div>
 
   <script>
-    // Prüfen, ob die App im Standalone-Modus läuft (also als PWA)
+    // Prüfen, ob die App als PWA läuft
     if (window.matchMedia('(display-mode: standalone)').matches) {
-      // Weiterleitung nach 2 Sekunden zur Index-Seite
       setTimeout(function() {
-        window.location.href = 'index.html'; // Weiterleitung zur index.html
-      }, 2000); // 2 Sekunden warten
+        // Zweite Animation starten (Pulsieren & Verkleinern)
+        document.getElementById("splash-image").style.animation = "pulseOut 1.5s ease-in-out forwards";
+        
+        // Weiterleitung zur index.html nach 1.3 Sekunden (kurz bevor Animation endet)
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1300);
+      }, 2000); // 2 Sekunden warten, dann die zweite Animation starten
     } else {
       // Im Webbrowser direkt zur Index-Seite weiterleiten
       window.location.href = 'index.html';
