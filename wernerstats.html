@@ -28,6 +28,19 @@
 					</div>
 				</header>
 
+
+
+			        <script>
+			            // Laden der Navigationbar
+			            fetch('nav.html')
+			                .then(response => response.text())
+			                .then(data => document.getElementById('header-container').innerHTML = data)
+			                .catch(error => console.error('Fehler beim Laden des Headers:', error));
+			        </script>
+
+
+			
+			<!--
 			<!-- Nav -->
 				<nav id="nav">
 					<ul>
@@ -56,7 +69,8 @@
 							</ul>
 						</li>
 					</ul>
-				</nav>	
+				</nav>
+			-->
 				
 
 			<!-- Main -->
