@@ -12,7 +12,7 @@ Folgende Seite füllen die Homepage mit Leben:
 
 
 Folgende Seiten sind für die PWA Anwendung:
-- appstart.html
+- appstart.html (Seite bzw. Bild, dass beim Start der PWA eingeblendet wird, bevor man auf index.html kommt)
 - manifest.json
 - service-worker.js
 - offline.html (ist eingebaut, aber wird irgendwie nie aufgerufen)
