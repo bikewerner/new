@@ -1,19 +1,27 @@
 Folgende Seite ist die Home-Seite:
-index.html
+- index.html
 
 Folgende Seite füllen die Homepage mit Leben:
 
-absolviertetouren.html
-badwiessee.html
-bodenmais.html
-ettal.html
-ruhpolding.html
+- absolviertetouren.html
+- badwiessee.html
+- bodenmais.html
+- ettal.html
+- ruhpolding.html
+- wernerstats.html
 
-wernerstats.html
 
-Folgende Seite ist Die Navigationsleiste und wird zentral verwaltet:
-nav.html
+Folgende Seiten sind für die PWA Anwendung:
+- appstart.html
+- manifest.json
+- service-worker.js
+- offline.html (ist eingebaut, aber wird irgendwie nie aufgerufen)
 
+
+Folgende Seite ist Die Navigationsleiste und wird zentral verwaltet (aktuell nicht in Verwendung):
+- nav.html
+
+Das ganze Design und die Formatierung sind in  assets/css/main.css
 
 In diesem google sheet werden die Wernerstats bearbeitet undd ann automatisch auf der Homepage geupdatet:
 https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/edit?gid=1438425073#gid=1438425073
