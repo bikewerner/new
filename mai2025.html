@@ -28,73 +28,6 @@
 				</header>
 
 
-				<!-- Hier wird die Navigation geladen -->
-				<!--
-				<div id="nav"></div>
-				<script>
-					fetch("nav.html")
-						.then(response => response.text())
-						.then(data => document.getElementById("nav").innerHTML = data);
-				</script>
-				-->
-				<!--
-				<div id="nav"></div>
-				<script>
-					document.addEventListener("DOMContentLoaded", function() {
-					    function loadNav() {
-					        let navElement = document.getElementById("nav");
-					        if (!navElement) {
-					            console.error("Fehler: #nav nicht gefunden! Versuche es erneut...");
-					            setTimeout(loadNav, 100); // Wiederhole den Versuch nach 100ms
-					            return;
-					        }
-					
-					        fetch("nav.html")
-					            .then(response => response.text())
-					            .then(data => {
-					                if (!navElement) {
-					                    console.error("Fehler: #nav existiert nach Fetch nicht!");
-					                    return;
-					                }
-					                navElement.innerHTML = data;
-					                console.log("Navigation erfolgreich geladen.");
-					
-					                // Mobile Menü-Button aktivieren
-					                let menuToggle = document.getElementById("menu-toggle");
-					                let navList = navElement.querySelector("ul");
-					
-					                if (menuToggle && navList) {
-					                    menuToggle.addEventListener("click", function() {
-					                        navList.classList.toggle("open");
-					                    });
-					                }
-					
-					                // Dropdown-Menüs für Desktop aktivieren
-					                let dropdowns = navElement.querySelectorAll("li > ul");
-					                dropdowns.forEach(submenu => {
-					                    let parent = submenu.parentElement;
-					                    parent.classList.add("has-submenu");
-					
-					                    parent.addEventListener("mouseenter", function() {
-					                        submenu.style.display = "block";
-					                    });
-					
-					                    parent.addEventListener("mouseleave", function() {
-					                        submenu.style.display = "none";
-					                    });
-					                });
-					            })
-					            .catch(error => console.error("Fehler beim Laden der Navigation:", error));
-					    }
-					
-					    loadNav(); // Starte die Funktion
-					});
-				</script>
-				-->
-
-
-			
-			<!-- Nav -->
 				<nav id="nav">
 					<ul>
 						<li class="current"><a href="index.html">Home</a></li>
@@ -247,31 +180,5 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-			<script>
-			document.addEventListener("DOMContentLoaded", function () {
-			    fetch("pages/navabstouren.html")
-			        .then(response => response.text())
-			        .then(data => {
-			            let navAbsTouren = document.getElementById("nav-abs-touren");
-			            if (navAbsTouren) {
-			                navAbsTouren.innerHTML = ""; // Alte Einträge entfernen
-			                navAbsTouren.innerHTML = data;
-			                console.log("Navigation erfolgreich geladen:", data);
-			
-			                // Dropotron erneut aktivieren, aber nur einmal
-			                if (typeof jQuery !== "undefined" && jQuery.fn.dropotron) {
-			                    $("#nav > ul").dropotron("destroy"); // Bestehendes Dropotron entfernen
-			                    $("#nav > ul").dropotron({
-			                        offsetY: -10,
-			                        hoverDelay: 50,
-			                        noOpenerFade: true,  // Für mobile Geräte verbessern
-			                        expandMode: "click"  // Auf Mobilgeräten per Klick öffnen
-			                    });
-			                }
-			            }
-			        })
-			        .catch(error => console.error("Fehler beim Laden der Navigation:", error));
-			});
-			</script>
 	</body>
 </html>
