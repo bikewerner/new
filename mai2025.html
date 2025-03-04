@@ -110,10 +110,13 @@
 							<a href="absolviertetouren.html">Absolvierte Touren</a>
 								<ul id="nav-abs-touren"></ul>
 								<script>
-								    fetch("pages/navabstouren.html")
-								        .then(response => response.text())
-								        .then(data => document.getElementById("nav-abs-touren").innerHTML = data)
-								        .catch(error => console.error("Fehler beim Laden der Navigation:", error));
+									fetch("pages/navabstouren.html")
+									    .then(response => response.text())
+									    .then(data => {
+									        console.log("Geladene Navigation:", data); // Debugging
+									        document.getElementById("nav-abs-touren").innerHTML = data;
+									    })
+									    .catch(error => console.error("Fehler beim Laden der Navigation:", error));
 								</script>
 						</li>
 						<li>
