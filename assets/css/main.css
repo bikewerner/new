@@ -2192,7 +2192,7 @@ input, select, textarea {
 
 /* Spezifischer Abstand für die h3 Überschrift */
 .header-wrapper h3 {
-    padding-top: 50px; /* Erhöht den Abstand nach oben für h3 */
+    padding-top: 20px; /* Erhöht den Abstand nach oben für h3 */
 }
 	
 /* Schließen-Button */
