@@ -2455,7 +2455,7 @@ tbody {
 			margin: 0 0 1.5em 0;
 		}
 
-
+	
 	/* Touren und Geplante Touren grau hinterlegen zusammen mit zugehörigem Datum und Text */
 	.box.feature {
 	    text-align: center;
@@ -2470,14 +2470,14 @@ tbody {
 	
 	/* Titel der Box */
 	.box.feature h3 {
-	    font-size: 3em; /* Ursprüngliche Schriftgröße */
+	    font-size: 1.5em; /* Zurückgesetzt auf eine normalere Größe */
 	    margin: 0 0 0.25em 0; /* Abstände oben und unten */
 	    font-weight: bold;
 	}
 	
 	/* Text in der Box */
 	.box.feature p {
-	    font-size: 1.65em; /* Ursprüngliche Schriftgröße */
+	    font-size: 1.2em; /* Zurückgesetzt auf eine normalere Größe */
 	    margin: 0 0 0.5em 0; /* Abstände unten */
 	    color: #555; /* Ein dunklerer Grauton für den Text */
 	}
@@ -2500,6 +2500,7 @@ tbody {
 	    text-decoration: none; /* Entfernt die Unterstreichung */
 	    color: inherit; /* Erbt die Textfarbe */
 	}
+
 
 
 /* Icons */
