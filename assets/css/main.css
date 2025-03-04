@@ -2064,8 +2064,60 @@ input, select, textarea {
 
 
 
-/* Special für Profilbilder Werners*/
-/* Neue Klasse zur Darstellung von Bildern mit flexibler Größe */
+/* Special für Profilbilder Werners mit Hover Effekt*/
+.special-images-hover {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Zentriert die Bilderreihe */
+    align-items: center; /* Sorgt für vertikale Zentrierung */
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto; /* Zentriert die gesamte Liste */
+    max-width: 100%;
+}
+
+.special-images-hover li {
+    flex: 1 1 auto; /* Flexible Größe abhängig von der Anzahl der Bilder */
+    max-width: 150px;
+    text-align: center;
+    position: relative;
+}
+
+.special-images-hover img {
+    width: 100px; /* Feste Breite für einheitliche Form */
+    height: 100px; /* Feste Höhe für einheitliche Form */
+    border-radius: 50%; /* Macht die Bilder rund */
+    object-fit: cover; /* Stellt sicher, dass das Bild den runden Rahmen ausfüllt */
+}
+
+.special-images-hover span {
+    display: block;
+    margin-top: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    color: #6b7770;
+}
+
+/* Effekt für Bilder hüpfen beim hovern */
+.special-images-hover li {
+    -moz-transition: top .15s ease-in-out;
+    -webkit-transition: top .15s ease-in-out;
+    -ms-transition: top .15s ease-in-out;
+    transition: top .15s ease-in-out;
+    position: relative;
+    text-align: center;
+    top: 0;
+}
+
+.special-images-hover li:hover {
+    top: -1em;
+}
+
+
+
+
+/* Special für Profilbilder Werners ohne Hover Effekt */
 .special-images {
     display: flex;
     flex-wrap: wrap;
@@ -2100,20 +2152,12 @@ input, select, textarea {
     color: #6b7770;
 }
 
-/* Effekt für Bilder hüpfen beim hovern */
-.special-images li {
-    -moz-transition: top .15s ease-in-out;
-    -webkit-transition: top .15s ease-in-out;
-    -ms-transition: top .15s ease-in-out;
-    transition: top .15s ease-in-out;
-    position: relative;
-    text-align: center;
-    top: 0;
-}
 
-.special-images li:hover {
-    top: -1em;
-}
+
+
+
+
+
 
 
 /* Overlay-Hintergrund für Werner Profilbilder*/
