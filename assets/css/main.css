@@ -2278,12 +2278,6 @@ tbody {
     width: 100%;
 }
 
-/* Linkbox, damit ganze graue Box bei den geplanten und absolvierten Touren als Link fungiert */
-/* Entfernt die Unterstreichung der Links */
-.link-box {
-    text-decoration: none;
-    display: block; /* Stellt sicher, dass der Link als Blockelement funktioniert */
-}
 
 /* ---------------------ENDE eigene CSS Klassen----------------------------*/
 
@@ -2455,53 +2449,59 @@ tbody {
 			margin: 0 0 1.5em 0;
 		}
 
-	
 	/* Touren und Geplante Touren grau hinterlegen zusammen mit zugehörigem Datum und Text */
 	.box.feature {
 	    text-align: center;
 	    background-color: #f2f5f3; /* Hellgrau */
 	    padding: 10px; /* Falls gewünscht, um den Inhalt besser hervorzuheben */
 	    border-radius: 8px; /* Abgerundete Ecken */
-	    display: flex;
-	    flex-direction: column;
-	    justify-content: space-between;
-	    height: 100%; /* Maximiert die Höhe der Box */
-	}
-	
-	/* Titel der Box */
-	.box.feature h3 {
-	    font-size: 1.25em; /* Kleinere Schriftgröße */
-	    margin: 0 0 0.25em 0; /* Abstände oben und unten */
-	    font-weight: bold;
-	}
-	
-	/* Text in der Box */
-	.box.feature p {
-	    font-size: 1em; /* Kleinere Schriftgröße */
-	    margin: 0 0 0.5em 0; /* Abstände unten */
-	    color: #555; /* Ein dunklerer Grauton für den Text */
-	}
-	
-	/* Bildanpassungen für einheitliche Höhe */
-	.box.feature .image {
-	    max-height: 200px; /* Maximale Höhe des Bildes */
-	    overflow: hidden;
-	}
-	
-	/* Das Bild im Container */
-	.box.feature img {
-	    width: 100%;
-	    height: auto;
-	    object-fit: cover; /* Bild passt sich dem Container an */
-	}
-	
-	/* Entfernt die Unterstreichung der Links */
-	.box.feature a {
-	    text-decoration: none; /* Entfernt die Unterstreichung */
-	    color: inherit; /* Erbt die Textfarbe */
 	}
 
+	.box.post header {
+		margin: 0 0 2.5em 0;
+	}
 
+	.box.post h3 {
+		font-size: 3em;
+		margin: 0 0 0.25em 0;
+	}
+
+	.box.post header > p {
+		font-size: 1.65em;
+		margin: 0 0 0.5em 0;
+	}
+
+	.box.post ul.meta {
+		margin: 0 0 0.5em 0;
+	}
+
+	.box.post-summary h3 {
+		line-height: 1em;
+		margin: 0 0 0.75em 0;
+	}
+
+	.box.post-summary .meta {
+		margin: 0;
+		line-height: 1em;
+	}
+
+	.box.page-content header {
+		margin: 0 0 2.5em 0;
+	}
+
+	.box.page-content h2 {
+		font-size: 3em;
+		margin: 0 0 0.5em 0;
+	}
+
+	.box.page-content header > p {
+		font-size: 1.65em;
+		margin: 0 0 0.5em 0;
+	}
+
+	.box.page-content ul.meta {
+		margin: 0 0 0.5em 0;
+	}
 
 /* Icons */
 
