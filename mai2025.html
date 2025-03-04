@@ -45,7 +45,8 @@
 				        .then(data => {
 				            let navElement = document.getElementById("nav");
 				            if (navElement) {
-				                navElement.innerHTML = data;
+				                navElement.insertAdjacentHTML("beforeend", data);
+				                console.log("Navigation erfolgreich geladen.");
 				            } else {
 				                console.error("Element #nav nicht gefunden!");
 				            }
@@ -53,6 +54,8 @@
 				        .catch(error => console.error("Fehler beim Laden der Navigation:", error));
 				});
 				</script>
+
+
 			
 			<!-- Nav -->
 				<!--
