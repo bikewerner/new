@@ -2177,11 +2177,14 @@ input, select, textarea {
 /* Inhalt des Overlays */
 .overlay-content {
     background: white;
-    padding: 20px;
+    padding: 30px;
     border-radius: 10px;
     text-align: center;
     position: relative;
-    max-width: 400px;
+    max-width: 600px; /* Erhöht die maximale Breite */
+    max-height: 80vh; /* Begrenzt die Höhe auf 80% des Viewports */
+    width: 90%; /* Nutzt 90% der Breite des Bildschirms */
+    overflow-y: auto; /* Falls der Inhalt zu groß ist, wird gescrollt */
     margin: auto;
 }
 
