@@ -2154,12 +2154,32 @@ input, select, textarea {
     color: #6b7770;
 }
 
+/* Special für Detailansicht der Profilbilder der Werners*/
+.special-images-detail {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Zentriert die Bilderreihe */
+    align-items: center; /* Sorgt für vertikale Zentrierung */
+    gap: 20px;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto; /* Zentriert die gesamte Liste */
+    max-width: 100%;
+}
 
+.special-images-detail li {
+    flex: 1 1 auto; /* Flexible Größe abhängig von der Anzahl der Bilder */
+    max-width: 450px; /* Maximale Breite für Detailbilder (3x so groß wie 150px in .special-images) */
+    text-align: center;
+    position: relative;
+}
 
-
-
-
-
+.special-images-detail img {
+    width: 100%; /* Nutzt die gesamte Breite des Containers */
+    height: 100%; /* Höhe entspricht der Breite, um das Bild quadratisch zu machen */
+    border-radius: 10px; /* Abgerundete Ecken mit 10px Radius */
+    object-fit: cover; /* Bild bleibt im Container und füllt ihn gleichmäßig aus */
+}
 
 
 /* Overlay-Hintergrund für Werner Profilbilder*/
