@@ -2052,8 +2052,10 @@ input, select, textarea {
 /* Erweiterung für abstand wenn berg und sprinttrikot in einer zeile sind -> bei klicken auf werners*/
 .trikot-container {
     display: flex;
+    justify-content: center; /* Zentriert die Elemente horizontal */
     align-items: center;
     gap: 30px; /* Abstand zwischen den beiden Gruppen (Bild + Text) */
+    width: 100%; /* Stellt sicher, dass die Container die gesamte Breite einnimmt */
 }
 
 /* Neue Klasse zur Darstellung von Texten in Wernerstats mit weniger Zeilenabstand*/
