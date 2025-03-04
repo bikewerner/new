@@ -132,65 +132,21 @@
 									</section>
 
 							</div>
+							
+							<!-- Aufruf/Link Absolvierte Touren -->
 							<div class="col-12">
-
-								<!-- Features -->
-									<section class="box features">
-										<h2 class="major"><span>Absolvierte Touren</span></h2>
-										<div>
-											<div class="row">
-												<div class="col-3 col-6-medium col-12-small">
-
-													<!-- Feature -->
-														<section class="box feature">
-															<a href="ruhpolding.html" class="image featured"><img src="images/ruhpolding.jpg" alt="" /></a>
-															<h3><a href="ruhpolding.html">Ruhpolding</a></h3>
-															<p>
-																30.08. - 01.09.2024
-															</p>
-														</section>
-
-												</div>
-												<div class="col-3 col-6-medium col-12-small">
-
-													<!-- Feature -->
-														<section class="box feature">
-															<a href="ettal.html" class="image featured"><img src="images/ettal.jpg" alt="" /></a>
-															<h3><a href="ettal.html">Ettal</a></h3>
-															<p>
-																17. - 19.05.2024
-															</p>
-														</section>
-
-												</div>
-												<div class="col-3 col-6-medium col-12-small">
-
-													<!-- Feature -->
-														<section class="box feature">
-															<a href="badwiessee.html" class="image featured"><img src="images/badwiessee.jpg" alt="" /></a>
-															<h3><a href="badwiessee.html">Bad Wiessee</a></h3>
-															<p>
-																08. - 10.09.2023
-															</p>
-														</section>
-
-												</div>
-												<div class="col-3 col-6-medium col-12-small">
-
-													<!-- Feature -->
-														<section class="box feature">
-															<a href="bodenmais.html" class="image featured"><img src="images/bodenmais.jpg" alt="" /></a>
-															<h3><a href="bodenmais.html">Bodenmais</a></h3>
-															<p>
-																14. - 16.07.2023
-															</p>
-														</section>
-
-												</div>
-											</div>
-										</div>
-									</section>
-
+								<section class="box features">
+									<h2 class="major"><span>Absolvierte Touren</span></h2>
+									<div>
+								        	<div id="row" class="row"></div>
+								            		<script>
+									                fetch("pages/absolviertetourenfooter.html")
+									                    .then(response => response.text())
+									                    .then(data => document.getElementById("row").innerHTML = data)
+									                    .catch(error => console.error("Fehler beim Laden der Datei:", error));
+								            		</script>
+							        		</div>    
+								</section>
 							</div>
 							
 						</div>
