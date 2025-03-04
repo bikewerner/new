@@ -108,12 +108,13 @@
 						</li>
 						<li>
 							<a href="absolviertetouren.html">Absolvierte Touren</a>
-							<ul>
-								<li><a href="ruhpolding.html">Ruhpolding 2024</a></li>
-								<li><a href="ettal.html">Ettal 2024</a></li>
-								<li><a href="badwiessee.html">Bad Wiessee 2023</a></li>
-								<li><a href="bodenmais.html">Bodenmais 2023</a></li>
-							</ul>
+								<div id="nav-abs-touren"></div>
+								<script>
+								    fetch("pages/navabstouren.html")
+								        .then(response => response.text())
+								        .then(data => document.getElementById("nav-abs-touren").innerHTML = data)
+								        .catch(error => console.error("Fehler beim Laden der Navigation:", error));
+								</script>
 						</li>
 						<li>
 							<a href="#">Sonstiges</a>
