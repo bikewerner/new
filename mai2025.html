@@ -40,46 +40,47 @@
 				<div id="nav"></div>
 				<script>
 					document.addEventListener("DOMContentLoaded", function() {
-					    let navElement = document.getElementById("nav");
+					    let checkNavExistence = setInterval(function() {
+					        let navElement = document.getElementById("nav");
 					
-					    if (!navElement) {
-					        console.error("Element #nav nicht gefunden!");
-					        return;
-					    }
+					        if (navElement) {
+					            clearInterval(checkNavExistence); // Stoppt die Wiederholung
+					            
+					            fetch("nav.html")
+					                .then(response => response.text())
+					                .then(data => {
+					                    navElement.innerHTML = data;
 					
-					    fetch("nav.html")
-					        .then(response => response.text())
-					        .then(data => {
-					            navElement.innerHTML = data;
+					                    console.log("Navigation erfolgreich geladen.");
 					
-					            // Mobile Menü-Button aktivieren
-					            let menuToggle = document.getElementById("menu-toggle");
-					            let navList = navElement.querySelector("ul");
+					                    // Mobile Menü-Button aktivieren
+					                    let menuToggle = document.getElementById("menu-toggle");
+					                    let navList = navElement.querySelector("ul");
 					
-					            if (menuToggle && navList) {
-					                menuToggle.addEventListener("click", function() {
-					                    navList.classList.toggle("open");
-					                });
-					            }
+					                    if (menuToggle && navList) {
+					                        menuToggle.addEventListener("click", function() {
+					                            navList.classList.toggle("open");
+					                        });
+					                    }
 					
-					            // Dropdown-Menüs für Desktop aktivieren
-					            let dropdowns = navElement.querySelectorAll("li > ul");
-					            dropdowns.forEach(submenu => {
-					                let parent = submenu.parentElement;
-					                parent.classList.add("has-submenu");
+					                    // Dropdown-Menüs für Desktop aktivieren
+					                    let dropdowns = navElement.querySelectorAll("li > ul");
+					                    dropdowns.forEach(submenu => {
+					                        let parent = submenu.parentElement;
+					                        parent.classList.add("has-submenu");
 					
-					                parent.addEventListener("mouseenter", function() {
-					                    submenu.style.display = "block";
-					                });
+					                        parent.addEventListener("mouseenter", function() {
+					                            submenu.style.display = "block";
+					                        });
 					
-					                parent.addEventListener("mouseleave", function() {
-					                    submenu.style.display = "none";
-					                });
-					            });
-					
-					            console.log("Navigation erfolgreich geladen.");
-					        })
-					        .catch(error => console.error("Fehler beim Laden der Navigation:", error));
+					                        parent.addEventListener("mouseleave", function() {
+					                            submenu.style.display = "none";
+					                        });
+					                    });
+					                })
+					                .catch(error => console.error("Fehler beim Laden der Navigation:", error));
+					        }
+					    }, 100); // Überprüft alle 100ms, ob #nav existiert
 					});
 				</script>
 
