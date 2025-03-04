@@ -250,23 +250,27 @@
 			<script>
 			document.addEventListener("DOMContentLoaded", function () {
 			    fetch("pages/navabstouren.html")
-				.then(response => response.text())
-				.then(data => {
-				    let navAbsTouren = document.getElementById("nav-abs-touren");
-				    if (navAbsTouren) {
-					navAbsTouren.innerHTML = data;
-					console.log("Navigation erfolgreich geladen:", data);
+			        .then(response => response.text())
+			        .then(data => {
+			            let navAbsTouren = document.getElementById("nav-abs-touren");
+			            if (navAbsTouren) {
+			                navAbsTouren.innerHTML = ""; // Alte Einträge entfernen
+			                navAbsTouren.innerHTML = data;
+			                console.log("Navigation erfolgreich geladen:", data);
 			
-					// Dropotron nachträglich aktivieren, falls es nicht automatisch funktioniert
-					if (typeof jQuery !== "undefined" && jQuery.fn.dropotron) {
-					    $("#nav > ul").dropotron({
-						offsetY: -10,
-						hoverDelay: 50
-					    });
-					}
-				    }
-				})
-				.catch(error => console.error("Fehler beim Laden der Navigation:", error));
+			                // Dropotron erneut aktivieren, aber nur einmal
+			                if (typeof jQuery !== "undefined" && jQuery.fn.dropotron) {
+			                    $("#nav > ul").dropotron("destroy"); // Bestehendes Dropotron entfernen
+			                    $("#nav > ul").dropotron({
+			                        offsetY: -10,
+			                        hoverDelay: 50,
+			                        noOpenerFade: true,  // Für mobile Geräte verbessern
+			                        expandMode: "click"  // Auf Mobilgeräten per Klick öffnen
+			                    });
+			                }
+			            }
+			        })
+			        .catch(error => console.error("Fehler beim Laden der Navigation:", error));
 			});
 			</script>
 	</body>
