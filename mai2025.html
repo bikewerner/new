@@ -37,19 +37,20 @@
 						.then(data => document.getElementById("nav").innerHTML = data);
 				</script>
 				-->
+				<div id="nav"></div>
 				<script>
 				document.addEventListener("DOMContentLoaded", function() {
-				fetch("nav.html")
-				    .then(response => response.text())
-				    .then(data => {
-				        let navElement = document.getElementById("nav");
-				        if (navElement) {
-				            navElement.innerHTML = data;
-				        } else {
-				            console.error("Element #nav nicht gefunden!");
-				        }
-				    })
-				    .catch(error => console.error("Fehler beim Laden der Navigation:", error));
+				    fetch("nav.html")
+				        .then(response => response.text())
+				        .then(data => {
+				            let navElement = document.getElementById("nav");
+				            if (navElement) {
+				                navElement.innerHTML = data;
+				            } else {
+				                console.error("Element #nav nicht gefunden!");
+				            }
+				        })
+				        .catch(error => console.error("Fehler beim Laden der Navigation:", error));
 				});
 				</script>
 			
