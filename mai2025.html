@@ -107,17 +107,8 @@
 							</ul>
 						</li>
 						<li>
-							<a href="absolviertetouren.html">Absolvierte Touren</a>
-								<ul id="nav-abs-touren"></ul>
-								<script>
-									fetch("pages/navabstouren.html")
-									    .then(response => response.text())
-									    .then(data => {
-									        console.log("Geladene Navigation:", data); // Debugging
-									        document.getElementById("nav-abs-touren").innerHTML = data;
-									    })
-									    .catch(error => console.error("Fehler beim Laden der Navigation:", error));
-								</script>
+						    <a href="absolviertetouren.html">Absolvierte Touren</a>
+						    <ul id="nav-abs-touren"></ul>
 						</li>
 						<li>
 							<a href="#">Sonstiges</a>
@@ -256,5 +247,27 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script>
+			document.addEventListener("DOMContentLoaded", function () {
+			    fetch("pages/navabstouren.html")
+				.then(response => response.text())
+				.then(data => {
+				    let navAbsTouren = document.getElementById("nav-abs-touren");
+				    if (navAbsTouren) {
+					navAbsTouren.innerHTML = data;
+					console.log("Navigation erfolgreich geladen:", data);
+			
+					// Dropotron nachträglich aktivieren, falls es nicht automatisch funktioniert
+					if (typeof jQuery !== "undefined" && jQuery.fn.dropotron) {
+					    $("#nav > ul").dropotron({
+						offsetY: -10,
+						hoverDelay: 50
+					    });
+					}
+				    }
+				})
+				.catch(error => console.error("Fehler beim Laden der Navigation:", error));
+			});
+			</script>
 	</body>
 </html>
