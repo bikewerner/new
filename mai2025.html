@@ -204,6 +204,23 @@
 								<!-- Features -->
 									<section class="box features">
 										<h2 class="major"><span>Absolvierte Touren</span></h2>
+
+										<div>
+										<div class="row"></div>
+										<script>
+										    fetch("absolviertetourenfooter.html")
+										        .then(response => response.text())
+										        .then(data => document.getElementById("row").innerHTML = data);
+										</script>
+										</div>	
+
+
+
+
+
+										
+										
+										<!--
 										<div>
 											<div class="row">
 												<div class="col-3 col-6-medium col-12-small">
@@ -256,6 +273,7 @@
 												</div>
 											</div>
 										</div>
+										-->
 									</section>
 
 							</div>
