@@ -40,49 +40,53 @@
 				<div id="nav"></div>
 				<script>
 					document.addEventListener("DOMContentLoaded", function() {
-					    let navElement = document.getElementById("nav");
+					    function loadNav() {
+					        let navElement = document.getElementById("nav");
+					        if (!navElement) {
+					            console.error("Fehler: #nav nicht gefunden! Versuche es erneut...");
+					            setTimeout(loadNav, 100); // Wiederhole den Versuch nach 100ms
+					            return;
+					        }
 					
-					    if (!navElement) {
-					        console.error("Fehler: Element #nav nicht gefunden! Breche Fetch-Vorgang ab.");
-					        return;
+					        fetch("nav.html")
+					            .then(response => response.text())
+					            .then(data => {
+					                if (!navElement) {
+					                    console.error("Fehler: #nav existiert nach Fetch nicht!");
+					                    return;
+					                }
+					                navElement.innerHTML = data;
+					                console.log("Navigation erfolgreich geladen.");
+					
+					                // Mobile Menü-Button aktivieren
+					                let menuToggle = document.getElementById("menu-toggle");
+					                let navList = navElement.querySelector("ul");
+					
+					                if (menuToggle && navList) {
+					                    menuToggle.addEventListener("click", function() {
+					                        navList.classList.toggle("open");
+					                    });
+					                }
+					
+					                // Dropdown-Menüs für Desktop aktivieren
+					                let dropdowns = navElement.querySelectorAll("li > ul");
+					                dropdowns.forEach(submenu => {
+					                    let parent = submenu.parentElement;
+					                    parent.classList.add("has-submenu");
+					
+					                    parent.addEventListener("mouseenter", function() {
+					                        submenu.style.display = "block";
+					                    });
+					
+					                    parent.addEventListener("mouseleave", function() {
+					                        submenu.style.display = "none";
+					                    });
+					                });
+					            })
+					            .catch(error => console.error("Fehler beim Laden der Navigation:", error));
 					    }
 					
-					    fetch("nav.html")
-					        .then(response => response.text())
-					        .then(data => {
-					            if (!navElement) {
-					                console.error("Fehler: #nav existiert nicht, kann HTML nicht einfügen.");
-					                return;
-					            }
-					            navElement.innerHTML = data;
-					            console.log("Navigation erfolgreich geladen.");
-					
-					            // Mobile Menü-Button aktivieren
-					            let menuToggle = document.getElementById("menu-toggle");
-					            let navList = navElement.querySelector("ul");
-					
-					            if (menuToggle && navList) {
-					                menuToggle.addEventListener("click", function() {
-					                    navList.classList.toggle("open");
-					                });
-					            }
-					
-					            // Dropdown-Menüs für Desktop aktivieren
-					            let dropdowns = navElement.querySelectorAll("li > ul");
-					            dropdowns.forEach(submenu => {
-					                let parent = submenu.parentElement;
-					                parent.classList.add("has-submenu");
-					
-					                parent.addEventListener("mouseenter", function() {
-					                    submenu.style.display = "block";
-					                });
-					
-					                parent.addEventListener("mouseleave", function() {
-					                    submenu.style.display = "none";
-					                });
-					            });
-					        })
-					        .catch(error => console.error("Fehler beim Laden der Navigation:", error));
+					    loadNav(); // Starte die Funktion
 					});
 				</script>
 
