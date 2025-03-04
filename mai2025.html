@@ -40,42 +40,44 @@
 				<div id="nav"></div>
 				<script>
 					document.addEventListener("DOMContentLoaded", function() {
+					    let navElement = document.getElementById("nav");
+					
+					    if (!navElement) {
+					        console.error("Element #nav nicht gefunden!");
+					        return;
+					    }
+					
 					    fetch("nav.html")
 					        .then(response => response.text())
 					        .then(data => {
-					            let navElement = document.getElementById("nav");
-					            if (navElement) {
-					                navElement.innerHTML = data;
+					            navElement.innerHTML = data;
 					
-					                // Mobile Navigation - Toggle Funktion
-					                let menuToggle = document.getElementById("menu-toggle");
-					                let navList = navElement.querySelector("ul");
+					            // Mobile Menü-Button aktivieren
+					            let menuToggle = document.getElementById("menu-toggle");
+					            let navList = navElement.querySelector("ul");
 					
-					                if (menuToggle && navList) {
-					                    menuToggle.addEventListener("click", function() {
-					                        navList.classList.toggle("open");
-					                    });
-					                }
+					            if (menuToggle && navList) {
+					                menuToggle.addEventListener("click", function() {
+					                    navList.classList.toggle("open");
+					                });
+					            }
 					
-					                // NEU: Dropdown-Menüs für Desktop aktivieren
-					                let dropdowns = navElement.querySelectorAll("li > ul");
-					                dropdowns.forEach(submenu => {
-					                    let parent = submenu.parentElement;
-					                    parent.classList.add("has-submenu");
+					            // Dropdown-Menüs für Desktop aktivieren
+					            let dropdowns = navElement.querySelectorAll("li > ul");
+					            dropdowns.forEach(submenu => {
+					                let parent = submenu.parentElement;
+					                parent.classList.add("has-submenu");
 					
-					                    parent.addEventListener("mouseenter", function() {
-					                        submenu.style.display = "block";
-					                    });
-					
-					                    parent.addEventListener("mouseleave", function() {
-					                        submenu.style.display = "none";
-					                    });
+					                parent.addEventListener("mouseenter", function() {
+					                    submenu.style.display = "block";
 					                });
 					
-					                console.log("Navigation erfolgreich geladen.");
-					            } else {
-					                console.error("Element #nav nicht gefunden!");
-					            }
+					                parent.addEventListener("mouseleave", function() {
+					                    submenu.style.display = "none";
+					                });
+					            });
+					
+					            console.log("Navigation erfolgreich geladen.");
 					        })
 					        .catch(error => console.error("Fehler beim Laden der Navigation:", error));
 					});
