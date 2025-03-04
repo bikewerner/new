@@ -2190,9 +2190,10 @@ input, select, textarea {
     margin: auto;
 }
 
-/* Spezifischer Abstand für h3 im Overlay */
-.overlay-content h3 {
-    margin-top: 50px; /* Erhöht den Abstand nach oben, wenn h3 vorhanden ist */
+/* Spezifischer Abstand für die h3 Überschrift */
+.header-wrapper h3 {
+    padding-top: 50px; /* Erhöht den Abstand nach oben für h3 */
+}
 	
 /* Schließen-Button */
 .close-btn {
