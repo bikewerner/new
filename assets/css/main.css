@@ -2278,6 +2278,21 @@ tbody {
     width: 100%;
 }
 
+/* Linkbox, damit ganze graue Box bei den geplanten und absolvierten Touren als Link fungiert */
+/* Entfernt die Unterstreichung der Links */
+.link-box {
+    text-decoration: none;
+    display: block; /* Stellt sicher, dass der Link als Blockelement funktioniert */
+}
+
+/* Bildanpassungen für einheitliche Höhe */
+.box.feature {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Maximiert die Höhe der Box */
+    padding: 0;
+}
 
 /* ---------------------ENDE eigene CSS Klassen----------------------------*/
 
