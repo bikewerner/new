@@ -1,0 +1,59 @@
+<!-- menue.html -->
+<nav class="navbar">
+    <div class="menu-container">
+        <a href="index.html" class="menu-item">Home</a>
+        <div class="menu-item dropdown">
+            <span>Geplante Touren</span>
+            <div class="dropdown-content">
+                <a href="#">Mai 2025</a>
+                <a href="#">Juli 2025</a>
+                <a href="#">September 2025</a>
+            </div>
+        </div>
+        <div class="menu-item dropdown">
+            <a href="absolviertetouren.html">Absolvierte Touren</a>
+            <div class="dropdown-content">
+                <a href="ruhpolding.html">Ruhpolding 2024</a>
+                <a href="ettal.html">Ettal 2024</a>
+                <a href="badwiessee.html">Bad Wiessee 2023</a>
+                <a href="bodenmais.html">Bodenmais 2023</a>
+            </div>
+        </div>
+        <div class="menu-item dropdown">
+            <span>Sonstiges</span>
+            <div class="dropdown-content">
+                <a href="wernerstats.html">Wernerstats</a>
+            </div>
+        </div>
+    </div>
+    <div class="mobile-header">
+        <button class="menu-toggle">&#9776;</button>
+        <span class="current-page">Aktuelle Seite</span>
+    </div>
+    <div class="mobile-menu">
+        <a href="index.html">Home</a>
+        <a href="#">Geplante Touren</a>
+        <a href="#">- Mai 2025</a>
+        <a href="#">- Juli 2025</a>
+        <a href="#">- September 2025</a>
+        <a href="absolviertetouren.html">Absolvierte Touren</a>
+        <a href="ruhpolding.html">- Ruhpolding 2024</a>
+        <a href="ettal.html">- Ettal 2024</a>
+        <a href="badwiessee.html">- Bad Wiessee 2023</a>
+        <a href="bodenmais.html">- Bodenmais 2023</a>
+        <a href="wernerstats.html">Sonstiges</a>
+    </div>
+</nav>
+
+<!-- HTML-Code zum Einbinden -->
+<div id="menu-placeholder"></div>
+<script>
+    fetch('menue.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('menu-placeholder').innerHTML = data;
+        });
+</script>
+
+<!-- CSS Einbindung -->
+<link rel="stylesheet" href="menue.css">
