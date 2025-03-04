@@ -2470,14 +2470,14 @@ tbody {
 	
 	/* Titel der Box */
 	.box.feature h3 {
-	    font-size: 1.5em; /* Zurückgesetzt auf eine normalere Größe */
+	    font-size: 1.25em; /* Kleinere Schriftgröße */
 	    margin: 0 0 0.25em 0; /* Abstände oben und unten */
 	    font-weight: bold;
 	}
 	
 	/* Text in der Box */
 	.box.feature p {
-	    font-size: 1.2em; /* Zurückgesetzt auf eine normalere Größe */
+	    font-size: 1em; /* Kleinere Schriftgröße */
 	    margin: 0 0 0.5em 0; /* Abstände unten */
 	    color: #555; /* Ein dunklerer Grauton für den Text */
 	}
