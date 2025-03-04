@@ -65,16 +65,13 @@
 
 								<!-- Features -->
 								<section class="box features">
-									<h2 class="major"><span>Absolvierte Touren</span></h2>
-									<div>
-										<div id="row" class="row"></div>
-											<script>
-											fetch("pages/absolviertetourenfooter.html")
-											    .then(response => response.text())
-											    .then(data => document.getElementById("row").innerHTML = data)
-											    .catch(error => console.error("Fehler beim Laden der Datei:", error));
-											</script>
-										</div>    
+									<div id="row" class="row"></div>
+										<script>
+										fetch("pages/absolviertetourenfooter.html")
+										    .then(response => response.text())
+										    .then(data => document.getElementById("row").innerHTML = data)
+										    .catch(error => console.error("Fehler beim Laden der Datei:", error));
+										</script>
 								</section>
 
 							</div>
