@@ -2285,15 +2285,6 @@ tbody {
     display: block; /* Stellt sicher, dass der Link als Blockelement funktioniert */
 }
 
-/* Bildanpassungen für einheitliche Höhe */
-.box.feature {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%; /* Maximiert die Höhe der Box */
-    padding: 0;
-}
-
 /* ---------------------ENDE eigene CSS Klassen----------------------------*/
 
 /* Meta */
@@ -2479,15 +2470,15 @@ tbody {
 	
 	/* Titel der Box */
 	.box.feature h3 {
-	    font-size: 1.75em; /* Eine kleinere Schriftgröße */
-	    margin: 0 0 0.5em 0; /* Abstände oben und unten */
+	    font-size: 3em; /* Ursprüngliche Schriftgröße */
+	    margin: 0 0 0.25em 0; /* Abstände oben und unten */
 	    font-weight: bold;
 	}
 	
 	/* Text in der Box */
 	.box.feature p {
-	    font-size: 1.2em;
-	    margin: 0; /* Entfernt den unteren Abstand */
+	    font-size: 1.65em; /* Ursprüngliche Schriftgröße */
+	    margin: 0 0 0.5em 0; /* Abstände unten */
 	    color: #555; /* Ein dunklerer Grauton für den Text */
 	}
 	
