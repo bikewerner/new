@@ -57,3 +57,90 @@
 
 <!-- CSS Einbindung -->
 <link rel="stylesheet" href="menue.css">
+
+<!-- menue.css -->
+<style>
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.menu-container {
+    display: flex;
+    gap: 20px;
+}
+.menu-item {
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+}
+.menu-item:hover, .dropdown:hover .dropdown-content {
+    background-color: #555;
+}
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #444;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+.mobile-header {
+    display: none;
+}
+.mobile-menu {
+    display: none;
+}
+@media screen and (max-width: 768px) {
+    .menu-container {
+        display: none;
+    }
+    .mobile-header {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 10px;
+        background-color: #333;
+    }
+    .menu-toggle {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 24px;
+        cursor: pointer;
+    }
+    .mobile-menu {
+        display: none;
+        flex-direction: column;
+        background-color: #333;
+        position: absolute;
+        top: 50px;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+    }
+    .mobile-menu a {
+        color: white;
+        padding: 10px;
+        text-decoration: none;
+        display: block;
+    }
+    .mobile-menu.show {
+        display: flex;
+    }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelector(".menu-toggle").addEventListener("click", function() {
+        document.querySelector(".mobile-menu").classList.toggle("show");
+    });
+});
+</script>
