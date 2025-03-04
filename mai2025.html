@@ -27,7 +27,7 @@
 					</div>
 				</header>
 
-
+				<!--
 				<nav id="nav">
 					<ul>
 						<li class="current"><a href="index.html">Home</a></li>
@@ -56,6 +56,25 @@
 						</li>
 					</ul>
 				</nav>
+				-->
+
+
+
+				<div id="menu-placeholder"></div>
+				<script>
+				    fetch('menue.html')
+				        .then(response => response.text())
+				        .then(data => {
+				            document.getElementById('menu-placeholder').innerHTML = data;
+				        });
+				</script>
+				<!--
+				<link rel="stylesheet" href="menue.css">
+				-->	
+
+
+
+			
 			
 			<!-- Main -->
 				<section id="main">
