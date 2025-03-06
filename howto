@@ -1,0 +1,106 @@
+<!DOCTYPE HTML>
+<html lang="de">
+	<head>
+		<title>Bike Werners - How-To</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="icon" type="image/x-icon" href="images/BW.ico" />
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<!-- Bike Werner Logo -->
+				<br>
+				<br>
+				<div align="center">
+					<img src="images/BikeWernerLogo.png" alt="" width="33%" height="auto"><br>	
+				</div>
+			
+				<header id="header">
+					<div class="logo container">
+						<div>
+							<h1><a href="#" id="logo">How-To</a></h1>
+						</div>
+					</div>
+				</header>
+
+			<!-- Nav -->
+				<nav id="nav">
+					<ul>
+						<li class="current"><a href="index.html">Home</a></li>
+						<li>
+							<a href="#">Geplante Touren</a>
+							<ul>
+								<li><a href="2025-05-kempten.html">09. - 11.05.2025: Kempten</a></li>
+								<li><a href="#">18. - 20.07.2025: tbd</a></li>
+								<li><a href="#">05. - 07.09.2025: tbd</a></li>							
+							</ul>
+						</li>
+						<li>
+							<a href="absolviertetouren.html">Absolvierte Touren</a>
+							<ul>
+								<li><a href="2024-8-ruhpolding.html">Ruhpolding 2024</a></li>
+								<li><a href="2024-5-ettal.html">Ettal 2024</a></li>
+								<li><a href="2023-9-badwiessee.html">Bad Wiessee 2023</a></li>
+								<li><a href="2023-7-bodenmais.html">Bodenmais 2023</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">Sonstiges</a>
+							<ul>
+								<li><a href="wernerstats.html">Wernerstats</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>	
+				
+
+			<!-- Main -->
+				<section id="main">
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-12">
+
+							<!-- How-To Navigation -->
+								<section class="box features">
+									<h2 class="major"><span>Navigation mit .gpx/.fit</span></h2>
+									<div align=center>
+											<p>blabla</p>
+									</div>
+								</section>
+
+
+							</div>
+						</div>
+					</div>
+				</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="container">
+						<!-- Copyright -->
+							<div id="copyright">
+								<ul class="menu">
+									<li>&copy; Bike Werners. All rights reserved</li>
+								</ul>
+							</div>
+
+					</div>
+				</footer>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="assets/js/wernerstats.js"></script>
+
+	</body>
+</html>
