@@ -2084,6 +2084,7 @@ input, select, textarea {
     max-width: 150px;
     text-align: center;
     position: relative;
+    cursor: pointer; /* Ändert den Mauszeiger in eine Hand */
 }
 
 .special-images-hover img {
