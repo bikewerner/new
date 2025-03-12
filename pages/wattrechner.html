@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<html lang="de">
+	<head>
+		<title>Bike Werners - Wattrechner</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="icon" type="image/x-icon" href="images/BW.ico" />
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<!-- Bike Werner Logo -->
+				<br>
+				<br>
+				<div align="center">
+					<img src="images/BikeWernerLogo.png" alt="" width="33%" height="auto"><br>	
+				</div>
+			
+				<header id="header">
+					<div class="logo container">
+						<div>
+							<h1><a href="#" id="logo">Wattrechner</a></h1>
+						</div>
+					</div>
+				</header>
+
+			<!-- Nav -->
+				<nav id="nav">
+					<ul>
+						<li class="current"><a href="index.html">Home</a></li>
+						<li>
+							<a href="#">Geplante Touren</a>
+							<ul>
+								<li><a href="2025-05-kempten.html">09. - 11.05.2025: Kempten</a></li>
+								<li><a href="#">18. - 20.07.2025: tbd</a></li>
+								<li><a href="#">05. - 07.09.2025: tbd</a></li>							
+							</ul>
+						</li>
+						<li>
+							<a href="absolviertetouren.html">Absolvierte Touren</a>
+							<ul>
+								<li><a href="2024-8-ruhpolding.html">Ruhpolding 2024</a></li>
+								<li><a href="2024-5-ettal.html">Ettal 2024</a></li>
+								<li><a href="2023-9-badwiessee.html">Bad Wiessee 2023</a></li>
+								<li><a href="2023-7-bodenmais.html">Bodenmais 2023</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">Sonstiges</a>
+							<ul>
+								<li><a href="wernerstats.html">Wernerstats</a></li>
+								<li><a href="pages/howto.html">How-To</a></li>
+                <li><a href="pages/wattrechner.html">Wattrechner</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>	
+				
+
+			<!-- Main -->
+				<section id="main">
+					<div class="container">
+
+                <h2>Wattrechner für Bergtouren</h2>
+                <label>Gewicht (Fahrer + Rad in kg):</label><input type="number" id="gewicht" value="75"><br>
+                <label>Steigung (%):</label><input type="number" id="steigung" value="8"><br>
+                <label>Geschwindigkeit (km/h):</label><input type="number" id="geschwindigkeit" value="15"><br>
+                <button onclick="berechneWatt()">Berechnen</button>
+                <h3>Ergebnis: <span id="ergebnis">-</span> Watt</h3>
+                
+                <script>
+                    function berechneWatt() {
+                        const g = 9.81; // Erdbeschleunigung in m/s²
+                        let gewicht = parseFloat(document.getElementById('gewicht').value);
+                        let steigung = parseFloat(document.getElementById('steigung').value) / 100;
+                        let geschwindigkeit = parseFloat(document.getElementById('geschwindigkeit').value) / 3.6;
+                        
+                        // Leistung = Gewicht * g * Höhenmeter pro Sekunde
+                        let leistung = gewicht * g * steigung * geschwindigkeit;
+                        
+                        document.getElementById('ergebnis').innerText = leistung.toFixed(2);
+                    }
+                </script>
+
+					</div>
+				</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="container">
+						<!-- Copyright -->
+							<div id="copyright">
+								<ul class="menu">
+									<li>&copy; Bike Werners. All rights reserved</li>
+								</ul>
+							</div>
+
+					</div>
+				</footer>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="assets/js/wernerstats.js"></script>
+
+	</body>
+</html>
