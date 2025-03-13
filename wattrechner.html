@@ -89,9 +89,20 @@
 					            <label for="zeit">Zeit für den Anstieg in Minuten (oder leer lassen):</label>
 					            <input type="number" id="zeit" placeholder="Optional">
 					        </div>
+
+						<div class="input-group">
+					            <label for="kurbel">Anzahl der Zähne an der Kurbel:</label>
+					            <input type="number" id="kurbel" value="50">
+					        </div>
+					
+					        <div class="input-group">
+					            <label for="kassette">Anzahl der Zähne an der Kassette:</label>
+					            <input type="number" id="kassette" value="17">
+					        </div>
 					
 					        <button onclick="berechneWatt()">Berechnen</button>
 					        <h3>Benötigte Leistung: <span id="ergebnis">0</span> Watt</h3>
+						<h3>Ermittelte Kadenz: <span id="kadenz">0</span> U/min</h3>
 					</div>
 					
 					<script>
@@ -102,6 +113,8 @@
 					            let geschwindigkeit = parseFloat(document.getElementById("geschwindigkeit").value);
 					            const distanz = parseFloat(document.getElementById("distanz").value);
 					            const zeit = parseFloat(document.getElementById("zeit").value);
+						    const kurbel = parseFloat(document.getElementById("kurbel").value);
+            					    const kassette = parseFloat(document.getElementById("kassette").value);
 					
 					            // Berechnung der Geschwindigkeit falls nicht gegeben
 					            if (isNaN(geschwindigkeit)) {
@@ -117,6 +130,10 @@
 					            geschwindigkeit = geschwindigkeit / 3.6; // km/h -> m/s
 					            let watt = gewicht * g * steigung * geschwindigkeit;
 					            document.getElementById("ergebnis").innerText = watt.toFixed(2);
+
+						    // Berechnung der Kadenz
+					            let kadenz = (geschwindigkeit * 60 * kassette) / (kurbel * 2.1); // Faktor 2.1 für Rollumfang (geschätzt)
+					            document.getElementById("kadenz").innerText = kadenz.toFixed(2);
 					        }
 					</script>
 
