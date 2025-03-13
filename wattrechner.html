@@ -64,61 +64,54 @@
 					<div class="container">
 					
 					        <h2>Wattrechner für Bergtouren</h2>
-					        <label for="gewicht">Gesamtgewicht (Fahrer + Rad) in kg:</label>
-					        <input type="number" id="gewicht" value="75">
-					
-					        <label for="steigung">Steigung in %:</label>
-					        <input type="number" id="steigung" value="5">
-					
-					        <label for="geschwindigkeit">Geschwindigkeit in km/h:</label>
-					        <input type="number" id="geschwindigkeit" value="15">
 					        
-					        <label for="distanz">Distanz des Anstiegs in km:</label>
-					        <input type="number" id="distanz" placeholder="Optional">
+					        <div class="input-group">
+					            <label for="gewicht">Gesamtgewicht (Fahrer + Rad) in kg:</label>
+					            <input type="number" id="gewicht" value="75">
+					        </div>
 					
-					        <label for="zeit">Zeit für den Anstieg in Minuten:</label>
-					        <input type="number" id="zeit" placeholder="Optional">
+					        <div class="input-group">
+					            <label for="steigung">Steigung in %:</label>
+					            <input type="number" id="steigung" value="5">
+					        </div>
 					
-					        <label for="kadenz">Kadenz (Umdrehungen pro Minute):</label>
-					        <input type="number" id="kadenz" value="80">
+					        <div class="input-group">
+					            <label for="geschwindigkeit">Geschwindigkeit in km/h:</label>
+					            <input type="number" id="geschwindigkeit" value="15">
+					        </div>
+					        
+					        <div class="input-group">
+					            <label for="distanz">Distanz des Anstiegs in km:</label>
+					            <input type="number" id="distanz" placeholder="Optional">
+					        </div>
 					
-					        <label for="kettenblatt">Kettenblatt-Zähne (vorne):</label>
-					        <input type="number" id="kettenblatt" value="50">
-					
-					        <label for="ritzel">Ritzel-Zähne (hinten):</label>
-					        <input type="number" id="ritzel" value="25">
+					        <div class="input-group">
+					            <label for="zeit">Zeit für den Anstieg in Minuten:</label>
+					            <input type="number" id="zeit" placeholder="Optional">
+					        </div>
 					
 					        <button onclick="berechneWatt()">Berechnen</button>
 					        <h3>Benötigte Leistung: <span id="ergebnis">0</span> Watt</h3>
 					</div>
 					
 					<script>
-						function berechneWatt() {
-						    const g = 9.81; // Erdbeschleunigung in m/s²
-						    const gewicht = parseFloat(document.getElementById("gewicht").value);
-						    const steigung = parseFloat(document.getElementById("steigung").value) / 100;
-						    const geschwindigkeit = parseFloat(document.getElementById("geschwindigkeit").value) / 3.6; // km/h -> m/s
-						    const distanz = parseFloat(document.getElementById("distanz").value);
-						    const zeit = parseFloat(document.getElementById("zeit").value);
-						    const kadenz = parseFloat(document.getElementById("kadenz").value);
-						    const kettenblatt = parseFloat(document.getElementById("kettenblatt").value);
-						    const ritzel = parseFloat(document.getElementById("ritzel").value);
+					        function berechneWatt() {
+					            const g = 9.81; // Erdbeschleunigung in m/s²
+					            const gewicht = parseFloat(document.getElementById("gewicht").value);
+					            const steigung = parseFloat(document.getElementById("steigung").value) / 100;
+					            const geschwindigkeit = parseFloat(document.getElementById("geschwindigkeit").value) / 3.6; // km/h -> m/s
+					            const distanz = parseFloat(document.getElementById("distanz").value);
+					            const zeit = parseFloat(document.getElementById("zeit").value);
 					
-						    let watt = gewicht * g * steigung * geschwindigkeit;
-						    document.getElementById("ergebnis").innerText = watt.toFixed(2);
+					            let watt = gewicht * g * steigung * geschwindigkeit;
+					            document.getElementById("ergebnis").innerText = watt.toFixed(2);
 					
-						    if (!isNaN(distanz) && isNaN(zeit)) {
-							document.getElementById("zeit").value = ((distanz * 1000) / geschwindigkeit / 60).toFixed(2);
-						    } else if (isNaN(distanz) && !isNaN(zeit)) {
-							document.getElementById("distanz").value = (geschwindigkeit * (zeit * 60) / 1000).toFixed(2);
-						    }
-					
-						    // Berechnung der Trittfrequenz basierend auf Übersetzung
-						    const radumfang = 2.1; // ca. 700x25c Reifen in m
-						    const entwicklung = (kettenblatt / ritzel) * radumfang; // Meter pro Kurbelumdrehung
-						    const berechneteKadenz = (geschwindigkeit * 60) / entwicklung;
-						    document.getElementById("kadenz").value = berechneteKadenz.toFixed(0);
-						}
+					            if (!isNaN(distanz) && isNaN(zeit)) {
+					                document.getElementById("zeit").value = ((distanz * 1000) / geschwindigkeit / 60).toFixed(2);
+					            } else if (isNaN(distanz) && !isNaN(zeit)) {
+					                document.getElementById("distanz").value = (geschwindigkeit * (zeit * 60) / 1000).toFixed(2);
+					            }
+					        }
 					</script>
 
 				</section>
