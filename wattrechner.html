@@ -111,6 +111,9 @@
                 let prevLat = null, prevLon = null, prevEle = null, prevTime = null;
                 const R = 6371000; 
                 const g = 9.81;
+                const Crr = 0.005; // Rollwiderstandsbeiwert
+                const CdA = 0.3; // Luftwiderstandsfläche
+                const rho = 1.225; // Luftdichte kg/m³
                 const gewicht = parseFloat(document.getElementById("gewicht").value);
                 
                 for (let i = 1; i < trkpts.length; i++) {
@@ -131,7 +134,10 @@
                         if (segmentTime > 0 && distance > 1) { // Mindestdistanz beachten
                             const velocity = distance / segmentTime;
                             const grade = elevationGain / distance;
-                            const segmentPower = gewicht * g * grade * velocity;
+                            const powerGravity = gewicht * g * grade * velocity;
+                            const powerRoll = Crr * gewicht * g * velocity;
+                            const powerAero = 0.5 * CdA * rho * Math.pow(velocity, 3);
+                            const segmentPower = powerGravity + powerRoll + powerAero;
                             totalPower += segmentPower * segmentTime;
                             totalTime += segmentTime;
                         }
@@ -150,18 +156,17 @@
 
         function berechneWattUndKadenz() {
             const gewicht = parseFloat(document.getElementById("gewicht").value);
-            const zeit = parseFloat(document.getElementById("zeit").value) * 60;
             const kurbel = parseFloat(document.getElementById("kurbel").value);
             const kassette = parseFloat(document.getElementById("kassette").value);
             
-            if (isNaN(gewicht) || isNaN(zeit) || isNaN(kurbel) || isNaN(kassette)) {
+            if (isNaN(gewicht) || isNaN(kurbel) || isNaN(kassette)) {
                 alert("Bitte alle Felder ausfüllen oder GPX-Datei hochladen!");
                 return;
             }
             
             const avgPower = parseFloat(document.getElementById("ergebnis").innerText);
-            const radumfang = 2.1; // angenommener Reifenumfang in Metern
-            const geschwindigkeit = (avgPower / (gewicht * g)) * radumfang;
+            const radumfang = 2.1;
+            const geschwindigkeit = avgPower / (gewicht * 9.81 * 0.02);
             const kadenz = (geschwindigkeit * kassette) / (kurbel * radumfang) * 60;
             document.getElementById("kadenz").innerText = kadenz.toFixed(2);
         }
