@@ -61,117 +61,123 @@
 
 			<!-- Main -->
 				<section id="main">
-    <div class="container">
-        <h2>Wattrechner für Bergtouren</h2>
+					<div class="container">
+					        <h2>Wattrechner für Bergtouren</h2>
         
-        <div class="input-group">
-            <label for="gpxFile">GPX-Datei hochladen:</label>
-            <input type="file" id="gpxFile" accept=".gpx" onchange="parseGPX()">
-        </div>
+					        <div class="input-group">
+					            <label for="gewicht">Gesamtgewicht (Fahrer + Rad) in kg:</label>
+					            <input type="number" id="gewicht" value="75">
+					        </div>
 
-        <div class="input-group">
-            <label for="gewicht">Gesamtgewicht (Fahrer + Rad) in kg:</label>
-            <input type="number" id="gewicht" value="75">
-        </div>
+					        <div class="input-group">
+					            <label for="steigung">Steigung in % (oder leer lassen, wenn Höhenmeter eingegeben werden):</label>
+					            <input type="number" id="steigung" placeholder="Optional">
+					        </div>
 
-        <div class="input-group">
-            <label for="zeit">Dauer des Anstiegs in Minuten:</label>
-            <input type="number" id="zeit" value="20">
-        </div>
+					        <div class="input-group">
+					            <label for="hoehenmeter">Höhenmeter des Anstiegs in m (oder leer lassen):</label>
+					            <input type="number" id="hoehenmeter" placeholder="Optional">
+					        </div>
 
-        <div class="input-group">
-            <label for="kurbel">Anzahl der Zähne an der Kurbel:</label>
-            <input type="number" id="kurbel" value="50">
-        </div>
+					        <div class="input-group">
+					            <label for="distanz">Distanz des Anstiegs in km (oder leer lassen, wenn Steigung genutzt wird):</label>
+					            <input type="number" id="distanz" placeholder="Optional">
+					        </div>
 
-        <div class="input-group">
-            <label for="kassette">Anzahl der Zähne an der Kassette:</label>
-            <input type="number" id="kassette" value="17">
-        </div>
+					        <div class="input-group">
+					            <label for="geschwindigkeit">Geschwindigkeit in km/h (oder leer lassen):</label>
+					            <input type="number" id="geschwindigkeit" placeholder="Optional">
+					        </div>
+        
+					        <div class="input-group">
+					            <label for="zeit">Zeit für den Anstieg in Minuten (oder leer lassen):</label>
+					            <input type="number" id="zeit" placeholder="Optional">
+					        </div>
 
-        <button onclick="berechneWattUndKadenz()">Berechnen</button>
-        <h3>Benötigte Leistung: <span id="ergebnis">0</span> Watt</h3>
-        <h3>Kadenz: <span id="kadenz">0</span> U/min</h3>
-				    </div>
+					        <div class="input-group">
+					            <label for="kurbel">Anzahl der Zähne an der Kurbel:</label>
+					            <input type="number" id="kurbel" value="50">
+					        </div>
 
-    <script>
-        function parseGPX() {
-            const fileInput = document.getElementById("gpxFile");
-            const file = fileInput.files[0];
-            if (!file) return;
+					        <div class="input-group">
+					            <label for="kassette">Anzahl der Zähne an der Kassette:</label>
+					            <input type="number" id="kassette" value="15">
+					        </div>
 
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(event.target.result, "text/xml");
-                const trkpts = xmlDoc.getElementsByTagName("trkpt");
-                
-                let totalTime = 0;
-                let totalPower = 0;
-                let prevLat = null, prevLon = null, prevEle = null, prevTime = null;
-                const R = 6371000; 
-                const g = 9.81;
-                const Crr = 0.005; // Rollwiderstandsbeiwert
-                const CdA = 0.3; // Luftwiderstandsfläche
-                const rho = 1.225; // Luftdichte kg/m³
-                const gewicht = parseFloat(document.getElementById("gewicht").value);
-                
-                for (let i = 1; i < trkpts.length; i++) {
-                    const lat = parseFloat(trkpts[i].getAttribute("lat"));
-                    const lon = parseFloat(trkpts[i].getAttribute("lon"));
-                    const ele = parseFloat(trkpts[i].getElementsByTagName("ele")[0].textContent);
-                    const time = new Date(trkpts[i].getElementsByTagName("time")[0].textContent).getTime();
-                    
-                    if (prevLat !== null && prevLon !== null && prevEle !== null && prevTime !== null) {
-                        const dLat = (lat - prevLat) * Math.PI / 180;
-                        const dLon = (lon - prevLon) * Math.PI / 180;
-                        const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(prevLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-                        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-                        const distance = R * c;
-                        const elevationGain = ele - prevEle;
-                        const segmentTime = (time - prevTime) / 1000;
+					        <div class="input-group">
+					            <label for="cda">Luftwiderstandsbeiwert CdA:</label>
+					            <input type="number" id="cda" value="0.3" step="0.01">
+					        </div>
 
-                        if (segmentTime > 0 && distance > 1) { // Mindestdistanz beachten
-                            const velocity = distance / segmentTime;
-                            const grade = elevationGain / distance;
-                            const powerGravity = gewicht * g * grade * velocity;
-                            const powerRoll = Crr * gewicht * g * velocity;
-                            const powerAero = 0.5 * CdA * rho * Math.pow(velocity, 3);
-                            const segmentPower = powerGravity + powerRoll + powerAero;
-                            totalPower += segmentPower * segmentTime;
-                            totalTime += segmentTime;
-                        }
-                    }
-                    prevLat = lat;
-                    prevLon = lon;
-                    prevEle = ele;
-                    prevTime = time;
-                }
-                
-                const avgPower = totalPower / totalTime;
-                document.getElementById("ergebnis").innerText = avgPower.toFixed(2);
-            };
-            reader.readAsText(file);
-        }
+					        <div class="input-group">
+					            <label for="cr">Rollwiderstandskoeffizient:</label>
+					            <input type="number" id="cr" value="0.004" step="0.001">
+					        </div>
 
-        function berechneWattUndKadenz() {
-            const gewicht = parseFloat(document.getElementById("gewicht").value);
-            const kurbel = parseFloat(document.getElementById("kurbel").value);
-            const kassette = parseFloat(document.getElementById("kassette").value);
+					        <div class="input-group">
+					            <label for="mechVerlust">Mechanischer Wirkungsgrad (0-1, z.B. 0.97 für 3% Verlust):</label>
+					            <input type="number" id="mechVerlust" value="0.97" step="0.01">
+					        </div>
+
+					        <button onclick="berechneWattUndKadenz()">Berechnen</button>
+					        <h3>Benötigte Leistung: <span id="ergebnis">0</span> Watt</h3>
+					        <h3>Kadenz: <span id="kadenz">0</span> U/min</h3>
+					    </div>
+
+					    <script>
+					        function berechneWattUndKadenz() {
+					            const g = 9.81; // Erdbeschleunigung in m/s²
+					            const rho = 1.225; // Luftdichte kg/m³
             
-            if (isNaN(gewicht) || isNaN(kurbel) || isNaN(kassette)) {
-                alert("Bitte alle Felder ausfüllen oder GPX-Datei hochladen!");
-                return;
-            }
-            
-            const avgPower = parseFloat(document.getElementById("ergebnis").innerText);
-            const radumfang = 2.1;
-            const geschwindigkeit = avgPower / (gewicht * 9.81 * 0.02);
-            const kadenz = (geschwindigkeit * kassette) / (kurbel * radumfang) * 60;
-            document.getElementById("kadenz").innerText = kadenz.toFixed(2);
-        }
-    </script>
+					            const gewicht = parseFloat(document.getElementById("gewicht").value);
+					            let steigung = parseFloat(document.getElementById("steigung").value);
+					            const hoehenmeter = parseFloat(document.getElementById("hoehenmeter").value);
+					            let distanz = parseFloat(document.getElementById("distanz").value);
+					            let geschwindigkeit = parseFloat(document.getElementById("geschwindigkeit").value);
+					            const zeit = parseFloat(document.getElementById("zeit").value);
+					            const kurbel = parseFloat(document.getElementById("kurbel").value);
+					            const kassette = parseFloat(document.getElementById("kassette").value);
+					            const CdA = parseFloat(document.getElementById("cda").value);
+					            const c_r = parseFloat(document.getElementById("cr").value);
+					            const mechVerlust = parseFloat(document.getElementById("mechVerlust").value);
+	    					    
+						    // Falls Steigung nicht angegeben ist, berechne sie aus Höhenmeter und Distanz
+					            if (isNaN(steigung) && !isNaN(hoehenmeter) && !isNaN(distanz)) {
+					                steigung = (hoehenmeter / (distanz * 1000)) * 100;
+					                document.getElementById("steigung").value = steigung.toFixed(2);
+					            }
+					            if (isNaN(steigung)) {
+					                alert("Bitte entweder Steigung oder Höhenmeter und Distanz eingeben.");
+					                return;
+					            }
+					            steigung = steigung / 100;
 
+					            if (isNaN(geschwindigkeit)) {
+					                if (!isNaN(distanz) && !isNaN(zeit)) {
+					                    geschwindigkeit = (distanz / (zeit / 60)); 
+					                    document.getElementById("geschwindigkeit").value = geschwindigkeit.toFixed(2);
+					                } else {
+					                    alert("Bitte entweder Geschwindigkeit oder Distanz und Zeit eingeben.");
+					                    return;
+					                }
+					            }
+
+					            geschwindigkeit = geschwindigkeit / 3.6; // km/h -> m/s
+            
+					            // Berechnung der Leistung
+					            let P_steigung = gewicht * g * steigung * geschwindigkeit; // Hangabtriebskraft
+					            let P_roll = c_r * gewicht * g * geschwindigkeit; // Rollwiderstand
+					            let P_luft = 0.5 * rho * CdA * Math.pow(geschwindigkeit, 3); // Luftwiderstand
+					            let P_gesamt = (P_steigung + P_roll + P_luft) / mechVerlust; // Gesamtleistung mit mechanischem Verlust
+            
+					            document.getElementById("ergebnis").innerText = P_gesamt.toFixed(2);
+
+					            if (!isNaN(kurbel) && !isNaN(kassette) && !isNaN(geschwindigkeit)) {
+					                let kadenz = (geschwindigkeit * 60 * kassette) / (kurbel * Math.PI * 0.7);
+					                document.getElementById("kadenz").innerText = kadenz.toFixed(2);
+					            }
+					        }
+					    </script>
 
 				</section>
 
