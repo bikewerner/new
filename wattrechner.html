@@ -62,7 +62,6 @@
 			<!-- Main -->
 				<section id="main">
 					<div class="container">
-					
 					        <h2>Wattrechner für Bergtouren</h2>
 					        
 					        <div class="input-group">
@@ -71,8 +70,18 @@
 					        </div>
 					
 					        <div class="input-group">
-					            <label for="steigung">Steigung in %:</label>
-					            <input type="number" id="steigung" value="5">
+					            <label for="steigung">Steigung in % (oder leer lassen, wenn Höhenmeter eingegeben werden):</label>
+					            <input type="number" id="steigung" placeholder="Optional">
+					        </div>
+					
+					        <div class="input-group">
+					            <label for="hoehenmeter">Höhenmeter des Anstiegs in m (oder leer lassen):</label>
+					            <input type="number" id="hoehenmeter" placeholder="Optional">
+					        </div>
+					
+					        <div class="input-group">
+					            <label for="distanz">Distanz des Anstiegs in km (oder leer lassen, wenn Steigung genutzt wird):</label>
+					            <input type="number" id="distanz" placeholder="Optional">
 					        </div>
 					
 					        <div class="input-group">
@@ -81,40 +90,47 @@
 					        </div>
 					        
 					        <div class="input-group">
-					            <label for="distanz">Distanz des Anstiegs in km (oder leer lassen):</label>
-					            <input type="number" id="distanz" placeholder="Optional">
-					        </div>
-					
-					        <div class="input-group">
 					            <label for="zeit">Zeit für den Anstieg in Minuten (oder leer lassen):</label>
 					            <input type="number" id="zeit" placeholder="Optional">
 					        </div>
-
-						<div class="input-group">
+					
+					        <div class="input-group">
 					            <label for="kurbel">Anzahl der Zähne an der Kurbel:</label>
 					            <input type="number" id="kurbel" value="50">
 					        </div>
 					
 					        <div class="input-group">
 					            <label for="kassette">Anzahl der Zähne an der Kassette:</label>
-					            <input type="number" id="kassette" value="17">
+					            <input type="number" id="kassette" value="15">
 					        </div>
 					
-					        <button onclick="berechneWatt()">Berechnen</button>
+					        <button onclick="berechneWattUndKadenz()">Berechnen</button>
 					        <h3>Benötigte Leistung: <span id="ergebnis">0</span> Watt</h3>
-						<h3>Ermittelte Kadenz: <span id="kadenz">0</span> U/min</h3>
+					        <h3>Ermittelte Kadenz: <span id="kadenz">0</span> U/min</h3>
 					</div>
 					
 					<script>
-					        function berechneWatt() {
+					        function berechneWattUndKadenz() {
 					            const g = 9.81; // Erdbeschleunigung in m/s²
 					            const gewicht = parseFloat(document.getElementById("gewicht").value);
-					            const steigung = parseFloat(document.getElementById("steigung").value) / 100;
+					            let steigung = parseFloat(document.getElementById("steigung").value);
+					            const hoehenmeter = parseFloat(document.getElementById("hoehenmeter").value);
+					            let distanz = parseFloat(document.getElementById("distanz").value);
 					            let geschwindigkeit = parseFloat(document.getElementById("geschwindigkeit").value);
-					            const distanz = parseFloat(document.getElementById("distanz").value);
 					            const zeit = parseFloat(document.getElementById("zeit").value);
-						    const kurbel = parseFloat(document.getElementById("kurbel").value);
-            					    const kassette = parseFloat(document.getElementById("kassette").value);
+					            const kurbel = parseFloat(document.getElementById("kurbel").value);
+					            const kassette = parseFloat(document.getElementById("kassette").value);
+					
+					            // Falls Steigung nicht angegeben ist, berechne sie aus Höhenmeter und Distanz
+					            if (isNaN(steigung) && !isNaN(hoehenmeter) && !isNaN(distanz)) {
+					                steigung = (hoehenmeter / (distanz * 1000)) * 100;
+					                document.getElementById("steigung").value = steigung.toFixed(2);
+					            }
+					            if (isNaN(steigung)) {
+					                alert("Bitte entweder Steigung oder Höhenmeter und Distanz eingeben.");
+					                return;
+					            }
+					            steigung = steigung / 100;
 					
 					            // Berechnung der Geschwindigkeit falls nicht gegeben
 					            if (isNaN(geschwindigkeit)) {
@@ -130,10 +146,12 @@
 					            geschwindigkeit = geschwindigkeit / 3.6; // km/h -> m/s
 					            let watt = gewicht * g * steigung * geschwindigkeit;
 					            document.getElementById("ergebnis").innerText = watt.toFixed(2);
-
-						    // Berechnung der Kadenz
-					            let kadenz = (geschwindigkeit * 60 * kassette) / (kurbel * 2.1); // Faktor 2.1 für Rollumfang (geschätzt)
-					            document.getElementById("kadenz").innerText = kadenz.toFixed(2);
+					
+					            // Berechnung der Kadenz
+					            if (!isNaN(kurbel) && !isNaN(kassette) && !isNaN(geschwindigkeit)) {
+					                let kadenz = (geschwindigkeit * 60 * kassette) / (kurbel * Math.PI * 0.7); // Faktor 0.7 für Rollumfang
+					                document.getElementById("kadenz").innerText = kadenz.toFixed(2);
+					            }
 					        }
 					</script>
 
