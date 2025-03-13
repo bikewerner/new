@@ -90,6 +90,11 @@
         </div>
 
         <div class="input-group">
+            <label for="zeit">Dauer des Anstiegs in Minuten:</label>
+            <input type="number" id="zeit" value="20">
+        </div>
+
+        <div class="input-group">
             <label for="kurbel">Anzahl der Zähne an der Kurbel:</label>
             <input type="number" id="kurbel" value="50">
         </div>
@@ -105,81 +110,28 @@
 				    </div>
 
     <script>
-        function parseGPX(file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const parser = new DOMParser();
-                const xmlDoc = parser.parseFromString(event.target.result, "application/xml");
-                const trkpts = xmlDoc.getElementsByTagName("trkpt");
-                
-                let totalDist = 0;
-                let totalElevGain = 0;
-                let weightedSteigungSum = 0;
-                let prevLat = null, prevLon = null, prevElev = null;
-
-                for (let i = 1; i < trkpts.length; i++) {
-                    const lat = parseFloat(trkpts[i].getAttribute("lat"));
-                    const lon = parseFloat(trkpts[i].getAttribute("lon"));
-                    const elev = parseFloat(trkpts[i].getElementsByTagName("ele")[0].textContent);
-                    
-                    if (prevLat !== null && prevLon !== null) {
-                        const dist = haversineDistance(prevLat, prevLon, lat, lon);
-                        totalDist += dist;
-                        let elevationGain = Math.max(0, elev - prevElev);
-                        totalElevGain += elevationGain;
-                        
-                        let segmentSteigung = (elevationGain / dist) * 100;
-                        weightedSteigungSum += segmentSteigung * dist;
-                    }
-                    prevLat = lat;
-                    prevLon = lon;
-                    prevElev = elev;
-                }
-                
-                let avgSteigung = weightedSteigungSum / totalDist;
-                document.getElementById("distanz").value = (totalDist / 1000).toFixed(2);
-                document.getElementById("hoehenmeter").value = totalElevGain.toFixed(2);
-                document.getElementById("steigung").value = avgSteigung.toFixed(2);
-            };
-            reader.readAsText(file);
-        }
-
-        function haversineDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371000;
-            const dLat = (lat2 - lat1) * Math.PI / 180;
-            const dLon = (lon2 - lon1) * Math.PI / 180;
-            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-            return R * c;
-        }
-
         function berechneWattUndKadenz() {
             const gewicht = parseFloat(document.getElementById("gewicht").value);
-            const steigung = parseFloat(document.getElementById("steigung").value) / 100;
-            const distanz = parseFloat(document.getElementById("distanz").value) * 1000;
             const hoehenmeter = parseFloat(document.getElementById("hoehenmeter").value);
+            const distanz = parseFloat(document.getElementById("distanz").value) * 1000;
+            const zeit = parseFloat(document.getElementById("zeit").value) * 60;
             const kurbel = parseFloat(document.getElementById("kurbel").value);
             const kassette = parseFloat(document.getElementById("kassette").value);
             
-            if (isNaN(gewicht) || isNaN(steigung) || isNaN(distanz) || isNaN(hoehenmeter) || isNaN(kurbel) || isNaN(kassette)) {
+            if (isNaN(gewicht) || isNaN(hoehenmeter) || isNaN(distanz) || isNaN(zeit) || isNaN(kurbel) || isNaN(kassette)) {
                 alert("Bitte alle Felder ausfüllen oder GPX-Datei hochladen!");
                 return;
             }
             
             const g = 9.81;
-            const geschwindigkeit = Math.sqrt(2 * g * hoehenmeter / steigung);
-            const watt = gewicht * g * steigung * geschwindigkeit;
+            const v = distanz / zeit; 
+            const steigung = hoehenmeter / distanz;
+            const watt = gewicht * g * steigung * v;
             document.getElementById("ergebnis").innerText = watt.toFixed(2);
             
-            const kadenz = (geschwindigkeit * (kassette / kurbel) * 60).toFixed(2);
+            const kadenz = (v * (kassette / kurbel) * 60).toFixed(2);
             document.getElementById("kadenz").innerText = kadenz;
         }
-
-        document.getElementById("gpxFile").addEventListener("change", function(event) {
-            parseGPX(event.target.files[0]);
-        });
     </script>
 
 
