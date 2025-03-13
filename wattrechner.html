@@ -61,37 +61,47 @@
 
 			<!-- Main -->
 				<section id="main">
-				    <div class="container">
-				        <h2>Wattrechner für Bergtouren</h2>
-				        
-				        <div class="input-group">
-				            <label for="gpxFile">GPX-Datei hochladen:</label>
-				            <input type="file" id="gpxFile" accept=".gpx">
-				        </div>
-				
-				        <div class="input-group">
-				            <label for="gewicht">Gesamtgewicht (Fahrer + Rad) in kg:</label>
-				            <input type="number" id="gewicht" value="75">
-				        </div>
-				
-				        <div class="input-group">
-				            <label for="steigung">Steigung in %:</label>
-				            <input type="number" id="steigung" placeholder="Automatisch aus GPX">
-				        </div>
-				
-				        <div class="input-group">
-				            <label for="hoehenmeter">Höhenmeter des Anstiegs in m:</label>
-				            <input type="number" id="hoehenmeter" placeholder="Automatisch aus GPX">
-				        </div>
-				
-				        <div class="input-group">
-				            <label for="distanz">Distanz des Anstiegs in km:</label>
-				            <input type="number" id="distanz" placeholder="Automatisch aus GPX">
-				        </div>
-				
-				        <button onclick="berechneWattUndKadenz()">Berechnen</button>
-				        <h3>Benötigte Leistung: <span id="ergebnis">0</span> Watt</h3>
-				        <h3>Kadenz: <span id="kadenz">0</span> U/min</h3>
+    <div class="container">
+        <h2>Wattrechner für Bergtouren</h2>
+        
+        <div class="input-group">
+            <label for="gpxFile">GPX-Datei hochladen:</label>
+            <input type="file" id="gpxFile" accept=".gpx">
+        </div>
+
+        <div class="input-group">
+            <label for="gewicht">Gesamtgewicht (Fahrer + Rad) in kg:</label>
+            <input type="number" id="gewicht" value="75">
+        </div>
+
+        <div class="input-group">
+            <label for="steigung">Steigung in %:</label>
+            <input type="number" id="steigung" placeholder="Automatisch aus GPX">
+        </div>
+
+        <div class="input-group">
+            <label for="hoehenmeter">Höhenmeter des Anstiegs in m:</label>
+            <input type="number" id="hoehenmeter" placeholder="Automatisch aus GPX">
+        </div>
+
+        <div class="input-group">
+            <label for="distanz">Distanz des Anstiegs in km:</label>
+            <input type="number" id="distanz" placeholder="Automatisch aus GPX">
+        </div>
+
+        <div class="input-group">
+            <label for="kurbel">Anzahl der Zähne an der Kurbel:</label>
+            <input type="number" id="kurbel" value="50">
+        </div>
+
+        <div class="input-group">
+            <label for="kassette">Anzahl der Zähne an der Kassette:</label>
+            <input type="number" id="kassette" value="17">
+        </div>
+
+        <button onclick="berechneWattUndKadenz()">Berechnen</button>
+        <h3>Benötigte Leistung: <span id="ergebnis">0</span> Watt</h3>
+        <h3>Kadenz: <span id="kadenz">0</span> U/min</h3>
 				    </div>
 
     <script>
@@ -135,7 +145,7 @@
         }
 
         function haversineDistance(lat1, lon1, lat2, lon2) {
-            const R = 6371000; // Erdradius in m
+            const R = 6371000;
             const dLat = (lat2 - lat1) * Math.PI / 180;
             const dLon = (lon2 - lon1) * Math.PI / 180;
             const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -143,6 +153,28 @@
                       Math.sin(dLon / 2) * Math.sin(dLon / 2);
             const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
             return R * c;
+        }
+
+        function berechneWattUndKadenz() {
+            const gewicht = parseFloat(document.getElementById("gewicht").value);
+            const steigung = parseFloat(document.getElementById("steigung").value) / 100;
+            const distanz = parseFloat(document.getElementById("distanz").value) * 1000;
+            const hoehenmeter = parseFloat(document.getElementById("hoehenmeter").value);
+            const kurbel = parseFloat(document.getElementById("kurbel").value);
+            const kassette = parseFloat(document.getElementById("kassette").value);
+            
+            if (isNaN(gewicht) || isNaN(steigung) || isNaN(distanz) || isNaN(hoehenmeter) || isNaN(kurbel) || isNaN(kassette)) {
+                alert("Bitte alle Felder ausfüllen oder GPX-Datei hochladen!");
+                return;
+            }
+            
+            const g = 9.81;
+            const geschwindigkeit = Math.sqrt(2 * g * hoehenmeter / steigung);
+            const watt = gewicht * g * steigung * geschwindigkeit;
+            document.getElementById("ergebnis").innerText = watt.toFixed(2);
+            
+            const kadenz = (geschwindigkeit * (kassette / kurbel) * 60).toFixed(2);
+            document.getElementById("kadenz").innerText = kadenz;
         }
 
         document.getElementById("gpxFile").addEventListener("change", function(event) {
