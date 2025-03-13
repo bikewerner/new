@@ -63,47 +63,47 @@
 				<section id="main">
 					<div class="container">
 					        <h2>Wattrechner für Bergtouren</h2>
-					        
+        
 					        <div class="input-group">
 					            <label for="gewicht">Gesamtgewicht (Fahrer + Rad) in kg:</label>
 					            <input type="number" id="gewicht" value="75">
 					        </div>
-					
+
 					        <div class="input-group">
 					            <label for="steigung">Steigung in % (oder leer lassen, wenn Höhenmeter eingegeben werden):</label>
 					            <input type="number" id="steigung" placeholder="Optional">
 					        </div>
-					
+
 					        <div class="input-group">
 					            <label for="hoehenmeter">Höhenmeter des Anstiegs in m (oder leer lassen):</label>
 					            <input type="number" id="hoehenmeter" placeholder="Optional">
 					        </div>
-					
+
 					        <div class="input-group">
 					            <label for="distanz">Distanz des Anstiegs in km (oder leer lassen, wenn Steigung genutzt wird):</label>
 					            <input type="number" id="distanz" placeholder="Optional">
 					        </div>
-					
+
 					        <div class="input-group">
 					            <label for="geschwindigkeit">Geschwindigkeit in km/h (oder leer lassen):</label>
 					            <input type="number" id="geschwindigkeit" placeholder="Optional">
 					        </div>
-					        
+        
 					        <div class="input-group">
 					            <label for="zeit">Zeit für den Anstieg in Minuten (oder leer lassen):</label>
 					            <input type="number" id="zeit" placeholder="Optional">
 					        </div>
-					
+
 					        <div class="input-group">
 					            <label for="kurbel">Anzahl der Zähne an der Kurbel:</label>
 					            <input type="number" id="kurbel" value="50">
 					        </div>
-					
+
 					        <div class="input-group">
 					            <label for="kassette">Anzahl der Zähne an der Kassette:</label>
 					            <input type="number" id="kassette" value="15">
 					        </div>
-					
+
 					        <button onclick="berechneWattUndKadenz()">Berechnen</button>
 					        <h3>Benötigte Leistung: <span id="ergebnis">0</span> Watt</h3>
 					        <h3>Ermittelte Kadenz: <span id="kadenz">0</span> U/min</h3>
@@ -112,6 +112,10 @@
 					<script>
 					        function berechneWattUndKadenz() {
 					            const g = 9.81; // Erdbeschleunigung in m/s²
+					            const rho = 1.225; // Luftdichte kg/m³
+					            const CdA = 0.3; // Luftwiderstandsfläche m²
+					            const c_r = 0.004; // Rollwiderstandskoeffizient
+					            const mechVerlust = 0.97; // 3% mechanischer Verlust
 					            const gewicht = parseFloat(document.getElementById("gewicht").value);
 					            let steigung = parseFloat(document.getElementById("steigung").value);
 					            const hoehenmeter = parseFloat(document.getElementById("hoehenmeter").value);
@@ -120,7 +124,7 @@
 					            const zeit = parseFloat(document.getElementById("zeit").value);
 					            const kurbel = parseFloat(document.getElementById("kurbel").value);
 					            const kassette = parseFloat(document.getElementById("kassette").value);
-					
+
 					            // Falls Steigung nicht angegeben ist, berechne sie aus Höhenmeter und Distanz
 					            if (isNaN(steigung) && !isNaN(hoehenmeter) && !isNaN(distanz)) {
 					                steigung = (hoehenmeter / (distanz * 1000)) * 100;
@@ -131,7 +135,7 @@
 					                return;
 					            }
 					            steigung = steigung / 100;
-					
+
 					            // Berechnung der Geschwindigkeit falls nicht gegeben
 					            if (isNaN(geschwindigkeit)) {
 					                if (!isNaN(distanz) && !isNaN(zeit)) {
@@ -142,19 +146,24 @@
 					                    return;
 					                }
 					            }
-					
+
 					            geschwindigkeit = geschwindigkeit / 3.6; // km/h -> m/s
-					            let watt = gewicht * g * steigung * geschwindigkeit;
-					            document.getElementById("ergebnis").innerText = watt.toFixed(2);
-					
+            
+					            // Berechnung der Leistung
+					            let P_steigung = gewicht * g * steigung * geschwindigkeit; // Hangabtriebskraft
+					            let P_roll = c_r * gewicht * g * geschwindigkeit; // Rollwiderstand
+					            let P_luft = 0.5 * rho * CdA * Math.pow(geschwindigkeit, 3); // Luftwiderstand
+					            let P_gesamt = (P_steigung + P_roll + P_luft) / mechVerlust; // Gesamtleistung mit mechanischem Verlust
+            
+					            document.getElementById("ergebnis").innerText = P_gesamt.toFixed(2);
+
 					            // Berechnung der Kadenz
 					            if (!isNaN(kurbel) && !isNaN(kassette) && !isNaN(geschwindigkeit)) {
 					                let kadenz = (geschwindigkeit * 60 * kassette) / (kurbel * Math.PI * 0.7); // Faktor 0.7 für Rollumfang
 					                document.getElementById("kadenz").innerText = kadenz.toFixed(2);
 					            }
 					        }
-					</script>
-
+    					</script>
 				</section>
 
 			<!-- Footer -->
