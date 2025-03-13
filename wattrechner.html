@@ -75,21 +75,6 @@
         </div>
 
         <div class="input-group">
-            <label for="steigung">Steigung in %:</label>
-            <input type="number" id="steigung" placeholder="Automatisch aus GPX">
-        </div>
-
-        <div class="input-group">
-            <label for="hoehenmeter">Höhenmeter des Anstiegs in m:</label>
-            <input type="number" id="hoehenmeter" placeholder="Automatisch aus GPX">
-        </div>
-
-        <div class="input-group">
-            <label for="distanz">Distanz des Anstiegs in km:</label>
-            <input type="number" id="distanz" placeholder="Automatisch aus GPX">
-        </div>
-
-        <div class="input-group">
             <label for="zeit">Dauer des Anstiegs in Minuten:</label>
             <input type="number" id="zeit" value="20">
         </div>
@@ -121,60 +106,61 @@
                 const xmlDoc = parser.parseFromString(event.target.result, "text/xml");
                 const trkpts = xmlDoc.getElementsByTagName("trkpt");
                 
-                let totalDistance = 0;
-                let totalElevationGain = 0;
-                let prevLat = null, prevLon = null, prevEle = null;
+                let totalTime = 0;
+                let totalWork = 0;
+                let prevLat = null, prevLon = null, prevEle = null, prevTime = null;
                 const R = 6371000; 
-
-                for (let i = 0; i < trkpts.length; i++) {
+                const g = 9.81;
+                const gewicht = parseFloat(document.getElementById("gewicht").value);
+                
+                for (let i = 1; i < trkpts.length; i++) {
                     const lat = parseFloat(trkpts[i].getAttribute("lat"));
                     const lon = parseFloat(trkpts[i].getAttribute("lon"));
                     const ele = parseFloat(trkpts[i].getElementsByTagName("ele")[0].textContent);
+                    const time = new Date(trkpts[i].getElementsByTagName("time")[0].textContent).getTime();
                     
-                    if (prevLat !== null && prevLon !== null && prevEle !== null) {
+                    if (prevLat !== null && prevLon !== null && prevEle !== null && prevTime !== null) {
                         const dLat = (lat - prevLat) * Math.PI / 180;
                         const dLon = (lon - prevLon) * Math.PI / 180;
                         const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(prevLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
                         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
                         const distance = R * c;
-                        totalDistance += distance;
-                        
-                        if (ele > prevEle) {
-                            totalElevationGain += (ele - prevEle);
+                        const elevationGain = Math.max(0, ele - prevEle);
+                        const segmentTime = (time - prevTime) / 1000;
+
+                        if (segmentTime > 0) {
+                            const velocity = distance / segmentTime;
+                            const power = gewicht * g * (elevationGain / distance) * velocity;
+                            totalWork += power * segmentTime;
+                            totalTime += segmentTime;
                         }
                     }
                     prevLat = lat;
                     prevLon = lon;
                     prevEle = ele;
+                    prevTime = time;
                 }
-                document.getElementById("distanz").value = (totalDistance / 1000).toFixed(2);
-                document.getElementById("hoehenmeter").value = totalElevationGain.toFixed(2);
-                document.getElementById("steigung").value = ((totalElevationGain / totalDistance) * 100).toFixed(2);
+                
+                const avgPower = totalWork / totalTime;
+                document.getElementById("ergebnis").innerText = avgPower.toFixed(2);
             };
             reader.readAsText(file);
         }
 
         function berechneWattUndKadenz() {
             const gewicht = parseFloat(document.getElementById("gewicht").value);
-            const hoehenmeter = parseFloat(document.getElementById("hoehenmeter").value);
-            const distanz = parseFloat(document.getElementById("distanz").value) * 1000;
             const zeit = parseFloat(document.getElementById("zeit").value) * 60;
             const kurbel = parseFloat(document.getElementById("kurbel").value);
             const kassette = parseFloat(document.getElementById("kassette").value);
             
-            if (isNaN(gewicht) || isNaN(hoehenmeter) || isNaN(distanz) || isNaN(zeit) || isNaN(kurbel) || isNaN(kassette)) {
+            if (isNaN(gewicht) || isNaN(zeit) || isNaN(kurbel) || isNaN(kassette)) {
                 alert("Bitte alle Felder ausfüllen oder GPX-Datei hochladen!");
                 return;
             }
             
-            const g = 9.81;
-            const v = distanz / zeit; 
-            const steigung = hoehenmeter / distanz;
-            const watt = gewicht * g * steigung * v;
-            document.getElementById("ergebnis").innerText = watt.toFixed(2);
-            
-            const kadenz = (v * (kassette / kurbel) * 60).toFixed(2);
-            document.getElementById("kadenz").innerText = kadenz;
+            const avgPower = parseFloat(document.getElementById("ergebnis").innerText);
+            const kadenz = (avgPower / (gewicht * 9.81)) * (kassette / kurbel) * 60;
+            document.getElementById("kadenz").innerText = kadenz.toFixed(2);
         }
     </script>
 
