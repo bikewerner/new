@@ -66,7 +66,7 @@
         
         <div class="input-group">
             <label for="gpxFile">GPX-Datei hochladen:</label>
-            <input type="file" id="gpxFile" accept=".gpx">
+            <input type="file" id="gpxFile" accept=".gpx" onchange="parseGPX()">
         </div>
 
         <div class="input-group">
@@ -110,6 +110,50 @@
 				    </div>
 
     <script>
+        function parseGPX() {
+            const fileInput = document.getElementById("gpxFile");
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(event.target.result, "text/xml");
+                const trkpts = xmlDoc.getElementsByTagName("trkpt");
+                
+                let totalDistance = 0;
+                let totalElevationGain = 0;
+                let prevLat = null, prevLon = null, prevEle = null;
+                const R = 6371000; 
+
+                for (let i = 0; i < trkpts.length; i++) {
+                    const lat = parseFloat(trkpts[i].getAttribute("lat"));
+                    const lon = parseFloat(trkpts[i].getAttribute("lon"));
+                    const ele = parseFloat(trkpts[i].getElementsByTagName("ele")[0].textContent);
+                    
+                    if (prevLat !== null && prevLon !== null && prevEle !== null) {
+                        const dLat = (lat - prevLat) * Math.PI / 180;
+                        const dLon = (lon - prevLon) * Math.PI / 180;
+                        const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(prevLat * Math.PI / 180) * Math.cos(lat * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+                        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        const distance = R * c;
+                        totalDistance += distance;
+                        
+                        if (ele > prevEle) {
+                            totalElevationGain += (ele - prevEle);
+                        }
+                    }
+                    prevLat = lat;
+                    prevLon = lon;
+                    prevEle = ele;
+                }
+                document.getElementById("distanz").value = (totalDistance / 1000).toFixed(2);
+                document.getElementById("hoehenmeter").value = totalElevationGain.toFixed(2);
+                document.getElementById("steigung").value = ((totalElevationGain / totalDistance) * 100).toFixed(2);
+            };
+            reader.readAsText(file);
+        }
+
         function berechneWattUndKadenz() {
             const gewicht = parseFloat(document.getElementById("gewicht").value);
             const hoehenmeter = parseFloat(document.getElementById("hoehenmeter").value);
