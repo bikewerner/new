@@ -61,38 +61,38 @@
 
 			<!-- Main -->
 				<section id="main">
-    <div class="container">
-        <h2>Wattrechner für Bergtouren</h2>
-        
-        <div class="input-group">
-            <label for="gpxFile">GPX-Datei hochladen:</label>
-            <input type="file" id="gpxFile" accept=".gpx">
-        </div>
-
-        <div class="input-group">
-            <label for="gewicht">Gesamtgewicht (Fahrer + Rad) in kg:</label>
-            <input type="number" id="gewicht" value="75">
-        </div>
-
-        <div class="input-group">
-            <label for="steigung">Steigung in %:</label>
-            <input type="number" id="steigung" placeholder="Automatisch aus GPX">
-        </div>
-
-        <div class="input-group">
-            <label for="hoehenmeter">Höhenmeter des Anstiegs in m:</label>
-            <input type="number" id="hoehenmeter" placeholder="Automatisch aus GPX">
-        </div>
-
-        <div class="input-group">
-            <label for="distanz">Distanz des Anstiegs in km:</label>
-            <input type="number" id="distanz" placeholder="Automatisch aus GPX">
-        </div>
-
-        <button onclick="berechneWattUndKadenz()">Berechnen</button>
-        <h3>Benötigte Leistung: <span id="ergebnis">0</span> Watt</h3>
-        <h3>Kadenz: <span id="kadenz">0</span> U/min</h3>
-    </div>
+				    <div class="container">
+				        <h2>Wattrechner für Bergtouren</h2>
+				        
+				        <div class="input-group">
+				            <label for="gpxFile">GPX-Datei hochladen:</label>
+				            <input type="file" id="gpxFile" accept=".gpx">
+				        </div>
+				
+				        <div class="input-group">
+				            <label for="gewicht">Gesamtgewicht (Fahrer + Rad) in kg:</label>
+				            <input type="number" id="gewicht" value="75">
+				        </div>
+				
+				        <div class="input-group">
+				            <label for="steigung">Steigung in %:</label>
+				            <input type="number" id="steigung" placeholder="Automatisch aus GPX">
+				        </div>
+				
+				        <div class="input-group">
+				            <label for="hoehenmeter">Höhenmeter des Anstiegs in m:</label>
+				            <input type="number" id="hoehenmeter" placeholder="Automatisch aus GPX">
+				        </div>
+				
+				        <div class="input-group">
+				            <label for="distanz">Distanz des Anstiegs in km:</label>
+				            <input type="number" id="distanz" placeholder="Automatisch aus GPX">
+				        </div>
+				
+				        <button onclick="berechneWattUndKadenz()">Berechnen</button>
+				        <h3>Benötigte Leistung: <span id="ergebnis">0</span> Watt</h3>
+				        <h3>Kadenz: <span id="kadenz">0</span> U/min</h3>
+				    </div>
 
     <script>
         function parseGPX(file) {
@@ -104,9 +104,10 @@
                 
                 let totalDist = 0;
                 let totalElevGain = 0;
+                let weightedSteigungSum = 0;
                 let prevLat = null, prevLon = null, prevElev = null;
 
-                for (let i = 0; i < trkpts.length; i++) {
+                for (let i = 1; i < trkpts.length; i++) {
                     const lat = parseFloat(trkpts[i].getAttribute("lat"));
                     const lon = parseFloat(trkpts[i].getAttribute("lon"));
                     const elev = parseFloat(trkpts[i].getElementsByTagName("ele")[0].textContent);
@@ -114,18 +115,21 @@
                     if (prevLat !== null && prevLon !== null) {
                         const dist = haversineDistance(prevLat, prevLon, lat, lon);
                         totalDist += dist;
-                        if (elev > prevElev) {
-                            totalElevGain += (elev - prevElev);
-                        }
+                        let elevationGain = Math.max(0, elev - prevElev);
+                        totalElevGain += elevationGain;
+                        
+                        let segmentSteigung = (elevationGain / dist) * 100;
+                        weightedSteigungSum += segmentSteigung * dist;
                     }
                     prevLat = lat;
                     prevLon = lon;
                     prevElev = elev;
                 }
                 
+                let avgSteigung = weightedSteigungSum / totalDist;
                 document.getElementById("distanz").value = (totalDist / 1000).toFixed(2);
                 document.getElementById("hoehenmeter").value = totalElevGain.toFixed(2);
-                document.getElementById("steigung").value = ((totalElevGain / totalDist) * 100).toFixed(2);
+                document.getElementById("steigung").value = avgSteigung.toFixed(2);
             };
             reader.readAsText(file);
         }
