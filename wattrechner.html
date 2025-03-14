@@ -175,7 +175,7 @@
 					            document.getElementById("ergebnis").innerText = P_gesamt.toFixed(2);
 
 					            if (!isNaN(kurbel) && !isNaN(kassette) && !isNaN(geschwindigkeit)) {
-					                let kadenz = (geschwindigkeit * 60 * kassette) / (kurbel * 2096); // 2096 ist der Radumfang in mm für ein 700x25c Reifen
+					                let kadenz = (geschwindigkeit * 60 * kassette) / (kurbel * 2.096); // 2.096 ist der Radumfang in m für ein 700x25c Reifen
 					                document.getElementById("kadenz").innerText = kadenz.toFixed(2);
 					            }
 					        }
