@@ -4,10 +4,11 @@ Folgende Seite ist die Home-Seite:
 Folgende Seite füllen die Homepage mit Leben:
 
 - absolviertetouren.html
-- badwiessee.html
-- bodenmais.html
-- ettal.html
-- ruhpolding.html
+- 2023-9-badwiessee.html
+- 2023-7-bodenmais.html
+- 2024-5-ettal.html
+- 2024-8-ruhpolding.html
+- 2025-05-kemoten.html
 - wernerstats.html
 
 
