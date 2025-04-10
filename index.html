@@ -384,6 +384,14 @@
 			<script src="assets/js/main.js"></script>
 			<script src="assets/js/overlay.js"></script>
 			<script src="assets/js/wernerstats.js"></script>
+			<!-- Script für Einbindung Pushnachrchten -->
+			<script type="module">
+			  if ('serviceWorker' in navigator) {
+			    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+			      .then(reg => console.log('✅ FCM Service Worker registriert:', reg))
+			      .catch(err => console.error('❌ Fehler beim Registrieren des FCM SW:', err));
+			  }
+			</script>
 
 	</body>
 </html>
