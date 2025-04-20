@@ -18,11 +18,6 @@ Folgende Seiten sind für die PWA Anwendung:
 - service-worker.js
 - offline.html (ist eingebaut, aber wird irgendwie nie aufgerufen)
 
-Folgende Seiten sind für die Pushnachrichten:
-- firebase-init.js
-- firebase-messaging-sw.js
-- main.js
-
 
 Folgende Seite ist Die Navigationsleiste und wird zentral verwaltet (aktuell nicht in Verwendung):
 - nav.html
