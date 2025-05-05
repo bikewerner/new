@@ -156,6 +156,175 @@
 											<iframe src="https://www.komoot.com/de-de/tour/2083088614/embed?share_token=aUjiVsL6iBNyFZdwLAl02d6NmKPUJvuWwBwU7NBUsTvxsMiXy6&profile=1" width="100%" height="650" frameborder="0" scrolling="no"></iframe>
 
 
+<!-- Wetter entlang der Route mit Startzeit -->
+<div style="padding: 1em; font-family: sans-serif;">
+  <label for="starttime">🚴 Tourstart (Datum & Uhrzeit):</label>
+  <input type="datetime-local" id="starttime" value="2025-05-05T08:00">
+  <button onclick="loadWeather()">Wetter abrufen</button>
+</div>
+<div id="weather-status" style="padding: 1em; font-family: sans-serif;"></div>
+
+<script>
+let weatherLayer = L.layerGroup().addTo(map);
+
+async function loadWeather() {
+  const status = document.getElementById("weather-status");
+  status.innerHTML = "⏳ Lade Wetterdaten...";
+  weatherLayer.clearLayers();
+
+  const startTimeStr = document.getElementById("starttime").value;
+  const startTime = new Date(startTimeStr);
+  if (isNaN(startTime)) {
+    status.innerHTML = "❌ Ungültiges Datum.";
+    return;
+  }
+
+  const response = await fetch('gpx/WernersKemptenTannheimerTal.gpx');
+  const gpxText = await response.text();
+  const parser = new DOMParser();
+  const gpx = parser.parseFromString(gpxText, "application/xml");
+  const trkpts = gpx.getElementsByTagName("trkpt");
+
+  if (trkpts.length === 0) {
+    status.innerHTML = "❌ Keine Route gefunden.";
+    return;
+  }
+
+  let points = [];
+  for (let i = 0; i < trkpts.length; i++) {
+    const lat = parseFloat(trkpts[i].getAttribute("lat"));
+    const lon = parseFloat(trkpts[i].getAttribute("lon"));
+    points.push([lat, lon]);
+  }
+
+  const totalPoints = 8; // alle 30 Minuten bei ca. 4h Tourdauer
+  const step = Math.floor(points.length / totalPoints);
+  const selectedPoints = [];
+  for (let i = 0; i < totalPoints; i++) {
+    selectedPoints.push({
+      lat: points[i * step][0],
+      lon: points[i * step][1],
+      time: new Date(startTime.getTime() + i * 30 * 60 * 1000)
+    });
+  }
+
+  const results = [];
+  for (let pt of selectedPoints) {
+    const isoDate = pt.time.toISOString().split("T")[0];
+    const hour = pt.time.getHours();
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${pt.lat}&longitude=${pt.lon}&hourly=temperature_2m,precipitation,wind_speed_10m&timezone=auto&start_date=${isoDate}&end_date=${isoDate}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const idx = data.hourly.time.findIndex(t => new Date(t).getHours() === hour);
+    if (idx !== -1) {
+      const result = {
+        time: pt.time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+        lat: pt.lat.toFixed(3),
+        lon: pt.lon.toFixed(3),
+        temp: data.hourly.temperature_2m[idx],
+        rain: data.hourly.precipitation[idx],
+        wind: data.hourly.wind_speed_10m[idx]
+      };
+      results.push(result);
+
+      // Füge Marker auf der Karte hinzu
+      const marker = L.marker([pt.lat, pt.lon]).addTo(weatherLayer);
+      marker.bindPopup(`<b>${result.time}</b><br>🌡️ ${result.temp}°C<br>🌧️ ${result.rain} mm<br>💨 ${result.wind} km/h`);
+    }
+  }
+
+  status.innerHTML = "<b>🌦️ Wetter entlang der Route:</b><ul>" + results.map(r =>
+    `<li><b>${r.time}</b> @ [${r.lat}, ${r.lon}]: 🌡️ ${r.temp}°C, 🌧️ ${r.rain} mm, 💨 ${r.wind} km/h</li>`
+  ).join("") + "</ul>";
+}
+</script>
+
+<!-- Wetter entlang der Route mit Startzeit -->
+<div style="padding: 1em; font-family: sans-serif;">
+  <label for="starttime">🚴 Tourstart (Datum & Uhrzeit):</label>
+  <input type="datetime-local" id="starttime" value="2025-05-05T08:00">
+  <button onclick="loadWeather()">Wetter abrufen</button>
+</div>
+<div id="weather-status" style="padding: 1em; font-family: sans-serif;"></div>
+
+<script>
+async function loadWeather() {
+  const status = document.getElementById("weather-status");
+  status.innerHTML = "⏳ Lade Wetterdaten...";
+
+  const startTimeStr = document.getElementById("starttime").value;
+  const startTime = new Date(startTimeStr);
+  if (isNaN(startTime)) {
+    status.innerHTML = "❌ Ungültiges Datum.";
+    return;
+  }
+
+  const response = await fetch('gpx/WernersKemptenTannheimerTal.gpx');
+  const gpxText = await response.text();
+  const parser = new DOMParser();
+  const gpx = parser.parseFromString(gpxText, "application/xml");
+  const trkpts = gpx.getElementsByTagName("trkpt");
+
+  if (trkpts.length === 0) {
+    status.innerHTML = "❌ Keine Route gefunden.";
+    return;
+  }
+
+  let points = [];
+  for (let i = 0; i < trkpts.length; i++) {
+    const lat = parseFloat(trkpts[i].getAttribute("lat"));
+    const lon = parseFloat(trkpts[i].getAttribute("lon"));
+    points.push([lat, lon]);
+  }
+
+  const totalPoints = 8; // alle 30 Minuten bei ca. 4h Tourdauer
+  const step = Math.floor(points.length / totalPoints);
+  const selectedPoints = [];
+  for (let i = 0; i < totalPoints; i++) {
+    selectedPoints.push({
+      lat: points[i * step][0],
+      lon: points[i * step][1],
+      time: new Date(startTime.getTime() + i * 30 * 60 * 1000) // +30min je Punkt
+    });
+  }
+
+  // Wetter abrufen für alle Punkte
+  const results = [];
+  for (let pt of selectedPoints) {
+    const isoDate = pt.time.toISOString().split("T")[0];
+    const hour = pt.time.getHours();
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${pt.lat}&longitude=${pt.lon}&hourly=temperature_2m,precipitation,wind_speed_10m&timezone=auto&start_date=${isoDate}&end_date=${isoDate}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    const idx = data.hourly.time.findIndex(t => new Date(t).getHours() === hour);
+    if (idx !== -1) {
+      results.push({
+        time: pt.time.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+        lat: pt.lat.toFixed(3),
+        lon: pt.lon.toFixed(3),
+        temp: data.hourly.temperature_2m[idx],
+        rain: data.hourly.precipitation[idx],
+        wind: data.hourly.wind_speed_10m[idx]
+      });
+    }
+  }
+
+  // Ergebnisse anzeigen
+  status.innerHTML = "<b>🌦️ Wetter entlang der Route:</b><ul>" + results.map(r =>
+    `<li><b>${r.time}</b> @ [${r.lat}, ${r.lon}]: 🌡️ ${r.temp}°C, 🌧️ ${r.rain} mm, 💨 ${r.wind} km/h</li>`
+  ).join("") + "</ul>";
+}
+</script>
+
+<div id="weather-status" style="padding: 1em; font-family: sans-serif;"></div>
+<script>
+// Wettercode kommt hier rein
+</script>
+
+
+
 											
 											<!-- Wetter entlang der Route -->
 											<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
