@@ -220,8 +220,8 @@
           lon: +pt.getAttribute('lon')
         }));
       
-      // jeden 30‑Minuten‑Punkt berechnen (8 Punkte)
-      const totalPoints =  Math.min(8, trkpts.length);
+      // jeden 30‑Minuten‑Punkt berechnen (10 Punkte)
+      const totalPoints =  Math.min(10, trkpts.length);
       const step = Math.floor(trkpts.length / totalPoints);
       const selected = [];
       for (let i = 0; i < totalPoints; i++) {
