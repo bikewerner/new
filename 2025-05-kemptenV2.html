@@ -161,137 +161,149 @@
 
   <!-- Eingabefelder -->
   <div style="margin-bottom:1em; font-family:sans-serif;">
-    <label for="starttime">🚴 Tourstart (Datum & Uhrzeit):</label>
+    <label for="starttime">🚴 Tourstart:</label>
     <input type="datetime-local" id="starttime" value="2025-05-10T10:00">
+
     <label for="avgSpeed" style="margin-left:1em;">Ø-Geschwindigkeit (km/h):</label>
     <input type="number" id="avgSpeed" value="20" min="5" max="50" step="1" style="width:60px;">
-    <button id="loadWeatherBtn">Wetter abrufen</button>
+
+    <label for="pauseDist" style="margin-left:1em;">Pause bei km:</label>
+    <input type="number" id="pauseDist" value="42.1" step="0.1" style="width:60px;">
+
+    <label for="pauseTime" style="margin-left:1em;">Pausendauer (hh:mm):</label>
+    <input type="time" id="pauseTime" value="01:15" step="60">
+
+    <button id="loadWeatherBtn" style="margin-left:1em;">Wetter abrufen</button>
   </div>
 
-  <!-- Info-Anzeige -->
-  <div id="infoBox" style="margin-top:1em; font-family:sans-serif;"></div>
+  <!-- Routing-Info -->
+  <div id="infoBox" style="font-family:sans-serif; margin-bottom:1em;"></div>
 
   <!-- Karte -->
-  <div id="map" style="width:100%; height:500px;"></div>
+  <div id="map" style="width:100%; height:400px;"></div>
 
-  <!-- Leaflet + GPX -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <!-- Höhenprofil -->
+  <div id="elevation" style="width:100%; height:200px; margin-top:1em;"></div>
+
+  <!-- Styles & Scripts -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://rawcdn.githack.com/MrMufflon/Leaflet.Elevation/gh-pages/leaflet-elevation.min.css"/>
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/gpx.min.js"></script>
+  <script src="https://rawcdn.githack.com/MrMufflon/Leaflet.Elevation/gh-pages/leaflet-elevation.min.js"></script>
 
   <script>
-    const apiKey = '6051678f687734a26fbc6c962e0b4820';
     const gpxPath = 'gpx/WernersKemptenTannheimerTal.gpx';
 
-    const map = L.map('map').setView([47.7, 10.3], 10);
+    // Karte und Elevation-Control
+    const map = L.map('map').setView([47.7,10.3],10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution:'© OpenStreetMap'
     }).addTo(map);
-
-    const gpxLayer = new L.GPX(gpxPath, {
-      async: true,
-      marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
-    }).on('loaded', e => map.fitBounds(e.target.getBounds()))
-      .addTo(map);
-
+    const elevCtrl = L.control.elevation({detached:false,elevationDiv:'#elevation'}).addTo(map);
     const weatherLayer = L.layerGroup().addTo(map);
+    const windLayer = L.layerGroup().addTo(map);
 
-    // Funktion zur Distanzberechnung (Haversine)
-    function distance(lat1, lon1, lat2, lon2) {
-      const R = 6371;
-      const toRad = deg => deg * Math.PI / 180;
-      const dLat = toRad(lat2 - lat1);
-      const dLon = toRad(lon2 - lon1);
-      const a = Math.sin(dLat/2)**2 +
-                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
-      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    // Haversine
+    function distance(a,b,c,d){const R=6371,toRad=x=>x*Math.PI/180,
+      dLat=toRad(c-a),dLon=toRad(d-b),A=Math.sin(dLat/2)**2+Math.cos(toRad(a))*Math.cos(toRad(c))*Math.sin(dLon/2)**2;
+      return R*2*Math.atan2(Math.sqrt(A),Math.sqrt(1-A));
+    }
+    function fmtDur(h){const m=Math.round(h*60),hh=Math.floor(m/60),mm=m%60;
+      return hh.toString().padStart(2,'0')+':'+mm.toString().padStart(2,'0');
     }
 
-    async function loadWeather() {
-      weatherLayer.clearLayers();
-      const btn = document.getElementById('loadWeatherBtn');
-      btn.textContent = 'Lade…';
-      btn.disabled = true;
+    // Hauptfunktion
+    async function loadWeather(){
+      weatherLayer.clearLayers(); windLayer.clearLayers();
+      document.getElementById('infoBox').innerHTML='Lade…';
+      const start=new Date(document.getElementById('starttime').value);
+      const v=parseFloat(document.getElementById('avgSpeed').value),
+            pd=parseFloat(document.getElementById('pauseDist').value),
+            pt=document.getElementById('pauseTime').value.split(':'),
+            pauseH=+pt[0]+(+pt[1]/60);
+      if(isNaN(start)||isNaN(v)||isNaN(pd)){ alert('Eingaben prüfen'); return; }
 
-      const startTime = new Date(document.getElementById('starttime').value);
-      const avgSpeed = parseFloat(document.getElementById('avgSpeed').value || '20');
+      // GPX laden
+      const xmlTxt=await fetch(gpxPath).then(r=>r.text());
+      const xml=new DOMParser().parseFromString(xmlTxt,'application/xml');
+      const trk=Array.from(xml.getElementsByTagName('trkpt'))
+        .map(n=>({lat:+n.getAttribute('lat'),lon:+n.getAttribute('lon'),
+                  ele:+n.getElementsByTagName('ele')[0]?.textContent||0}));
 
-      if (isNaN(startTime) || isNaN(avgSpeed) || avgSpeed <= 0) {
-        alert('Bitte gültige Startzeit und Geschwindigkeit eingeben.');
-        btn.textContent = 'Wetter abrufen';
-        btn.disabled = false;
-        return;
-      }
+      // Track anzeigen & Elevation
+      elevCtrl.clear(); 
+      new L.GPX(gpxPath,{async:true,
+        customLayer:L.geoJson(null,{onEachFeature:elevCtrl.addData.bind(elevCtrl)})
+      }).on('loaded',e=>map.fitBounds(e.target.getBounds())).addTo(map);
 
-      // GPX laden & Trackpunkte extrahieren
-      const resp = await fetch(gpxPath);
-      const gpxText = await resp.text();
-      const xml = new DOMParser().parseFromString(gpxText,'application/xml');
-      const trkpts = Array.from(xml.getElementsByTagName('trkpt'))
-        .map(pt => ({
-          lat: +pt.getAttribute('lat'),
-          lon: +pt.getAttribute('lon')
-        }));
-
-      // Gesamtdistanz berechnen
-      let totalDist = 0;
-      for (let i = 1; i < trkpts.length; i++) {
-        totalDist += distance(trkpts[i-1].lat, trkpts[i-1].lon, trkpts[i].lat, trkpts[i].lon);
-      }
-
-      const totalDurationH = totalDist / avgSpeed;
-      const arrivalTime = new Date(startTime.getTime() + totalDurationH * 3600000);
-
-      // Info anzeigen
-      const infoBox = document.getElementById('infoBox');
-      infoBox.innerHTML = `
-        <p><strong>Distanz:</strong> ${totalDist.toFixed(1)} km</p>
-        <p><strong>Fahrtdauer:</strong> ${totalDurationH.toFixed(1)} h</p>
-        <p><strong>Ankunft:</strong> ${arrivalTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</p>
+      // Distanz & Zeit berechnen
+      let dist=0; for(let i=1;i<trk.length;i++) dist+=distance(
+        trk[i-1].lat,trk[i-1].lon,trk[i].lat,trk[i].lon);
+      const dur=dist/v, arr=new Date(start.getTime()+(dur+pauseH)*3600000);
+      document.getElementById('infoBox').innerHTML=`
+        <p><strong>Distanz:</strong> ${dist.toFixed(1)} km</p>
+        <p><strong>Dauer:</strong> ${fmtDur(dur)}</p>
+        <p><strong>Pause @${pd} km:</strong> ${fmtDur(pauseH)}</p>
+        <p><strong>Ankunft:</strong> ${arr.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</p>
       `;
 
-      // Wetterpunkte entlang der Strecke
-      const totalPoints = Math.min(10, trkpts.length);
-      const selected = [];
+      // Wetterpunkte & Statistiken
+      const pts=10,sel=[],stats={t:[],r:[]};
+      for(let i=0;i<pts;i++){
+        const f=i/(pts-1), idx=Math.floor(f*(trk.length-1)),
+          segTime=(dur+pauseH)*60*f - (f*dist>=pd?pauseH*60:0),
+          t=new Date(start.getTime()+segTime*60000);
+        sel.push({...trk[idx],time:t});
+      }
+      let tempSum=0, rainSum=0;
+      for(const ptData of sel){
+        const date=ptData.time.toISOString().slice(0,10),h=ptData.time.getHours(),
+          url=`https://api.open-meteo.com/v1/forecast?latitude=${ptData.lat}&longitude=${ptData.lon}
+            &hourly=temperature_2m,precipitation,winddirection_10m,wind_speed_10m&start_date=${date}&end_date=${date}&timezone=auto`
+            .replace(/\s+/g,'');
+        const w=await fetch(url).then(r=>r.json());
+        const idx=w.hourly.time.findIndex(t=>new Date(t).getHours()===h);
+        if(idx<0) continue;
+        const T=w.hourly.temperature_2m[idx],R=w.hourly.precipitation[idx],
+              Wd=w.hourly.winddirection_10m[idx],Ws=w.hourly.wind_speed_10m[idx];
+        stats.t.push(T); stats.r.push(R);
 
-      for (let i = 0; i < totalPoints; i++) {
-        const fraction = i / (totalPoints - 1);
-        const idx = Math.floor(fraction * (trkpts.length - 1));
-        const travelTimeMin = fraction * totalDurationH * 60;
-        selected.push({
-          ...trkpts[idx],
-          time: new Date(startTime.getTime() + travelTimeMin * 60000)
-        });
+        // Marker mit Windpfeil
+        const arrow=L.divIcon({className:'wind-arrow',html:`<div style="transform:rotate(${Wd}deg)">➤</div>`});
+        L.marker([ptData.lat,ptData.lon],{icon:arrow}).addTo(windLayer)
+          .bindPopup(`🌡 ${T}°C<br>🌧 ${R} mm<br>🌀 ${Wd}°<br>💨 ${Ws} km/h`);
+
+        // Wetter im Profil
+        elevCtrl.addData({type:'Feature',geometry:{type:'Point',coordinates:[ptData.lon,ptData.lat]},
+          properties:{ele:ptData.ele,time:ptData.time.toISOString()}});
+
+        // Karte-Popup
+        L.marker([ptData.lat,ptData.lon]).addTo(weatherLayer)
+          .bindPopup(`🌡 ${T}°C, 🌧 ${R} mm, 🕒 ${ptData.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}`);
       }
 
-      // Wetter abrufen & Marker setzen
-      for (let pt of selected) {
-        const date = pt.time.toISOString().slice(0,10);
-        const hour = pt.time.getHours();
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${pt.lat}&longitude=${pt.lon}
-          &hourly=temperature_2m,precipitation,wind_speed_10m
-          &start_date=${date}&end_date=${date}&timezone=auto`.replace(/\s+/g,'');
+      // Statistik
+      const Tmin=Math.min(...stats.t), Tmax=Math.max(...stats.t),
+            Tav=(stats.t.reduce((a,b)=>a+b,0)/stats.t.length).toFixed(1),
+            Rsum=stats.r.reduce((a,b)=>a+b,0).toFixed(1),
+            Rprob=((stats.r.filter(x=>x>0).length/stats.r.length)*100).toFixed(0);
+      document.getElementById('infoBox').innerHTML+=`
+        <p><strong>T° min/max/avg:</strong> ${Tmin}/${Tmax}/${Tav} °C</p>
+        <p><strong>Regen:</strong> ${Rprob}% (${Rsum} mm gesamt)</p>
+      `;
 
-        const w = await fetch(url).then(r=>r.json());
-        const idx = w.hourly.time.findIndex(t => new Date(t).getHours() === hour);
-        if (idx < 0) continue;
-
-        const temp = w.hourly.temperature_2m[idx],
-              rain = w.hourly.precipitation[idx],
-              wind = w.hourly.wind_speed_10m[idx],
-              label = `<b>${pt.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</b><br>
-                       🌡️ ${temp}°C<br>🌧️ ${rain} mm<br>💨 ${wind} km/h`;
-
-        L.marker([pt.lat, pt.lon]).bindPopup(label).addTo(weatherLayer);
-      }
-
-      btn.textContent = 'Wetter abrufen';
-      btn.disabled = false;
+      document.getElementById('loadWeatherBtn').disabled=false;
+      document.getElementById('loadWeatherBtn').textContent='Wetter abrufen';
     }
 
-    document.getElementById('loadWeatherBtn')
-      .addEventListener('click', loadWeather);
+    document.getElementById('loadWeatherBtn').addEventListener('click',loadWeather);
   </script>
+
+  <style>
+    /* Windpfeil-Icon */
+    .wind-arrow div { font-size: 1.2em; color: teal; }
+  </style>
 </section>
 
 
