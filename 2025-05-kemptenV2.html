@@ -162,13 +162,13 @@
   <!-- Eingabefelder -->
   <div style="margin-bottom:1em; font-family:sans-serif;">
     <label for="starttime">🚴 Tourstart:</label>
-    <input type="datetime-local" id="starttime" value="2025-05-10T09:00">
+    <input type="datetime-local" id="starttime" value="2025-05-10T10:00">
 
     <label for="avgSpeed" style="margin-left:1em;">Ø-Geschwindigkeit (km/h):</label>
     <input type="number" id="avgSpeed" value="20" min="5" max="50" step="1" style="width:60px;">
 
     <label for="pauseDist" style="margin-left:1em;">Pause bei km:</label>
-    <input type="number" id="pauseDist" value="42.1" step="0.1" style="width:60px;">
+    <input type="number" id="pauseDist" value="53" step="0.1" style="width:60px;">
 
     <label for="pauseTime" style="margin-left:1em;">Pausendauer (hh:mm):</label>
     <input type="time" id="pauseTime" value="01:15" step="60">
@@ -193,7 +193,7 @@
   <script src="https://cdn.jsdelivr.net/npm/leaflet-elevation@0.0.4/leaflet-elevation.min.js"></script>
 
   <script>
-    const gpxPath = 'gpx/WernersKemptenTannheimerTal.gpx';
+    const gpxPath = 'https://raw.githubusercontent.com/bikewerner/new/main/gpx/WernersKemptenTannheimerTal.gpx';
     const map = L.map('map').setView([47.7,10.3],10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{ attribution:'© OpenStreetMap' }).addTo(map);
     const elevCtrl = L.control.elevation({detached:false,elevationDiv:'#elevation'}).addTo(map);
