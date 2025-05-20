@@ -199,205 +199,210 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/gpx.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <script>
-    const apiKey = '6051678f687734a26fbc6c962e0b4820';
-    const gpxPath = 'gpx/WernersKemptenTannheimerTal.gpx';
+<script>
+const apiKey = '6051678f687734a26fbc6c962e0b4820';
+const gpxPath = 'gpx/WernersKemptenTannheimerTal.gpx';
 
-    const map = L.map('map').setView([47.7, 10.3], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+const map = L.map('map').setView([47.7, 10.3], 10);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
 
-    const gpxLayer = new L.GPX(gpxPath, {
-      async: true,
-      marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
-    }).on('loaded', e => map.fitBounds(e.target.getBounds()))
-      .addTo(map);
+// GPX laden und Karte zentrieren
+const gpxLayer = new L.GPX(gpxPath, {
+  async: true,
+  marker_options: {
+    startIconUrl: null,
+    endIconUrl: null,
+    shadowUrl: null
+  }
+}).on('loaded', function(e) {
+  map.fitBounds(e.target.getBounds());
+}).addTo(map);
 
-    const weatherLayer = L.layerGroup().addTo(map);
+// Wetterdaten abrufen bei Button-Klick
+document.getElementById('loadWeatherBtn').addEventListener('click', async () => {
+  const startTimeInput = document.getElementById('starttime').value;
+  const avgSpeed = parseFloat(document.getElementById('avgSpeed').value);
+  const pauseKm = parseFloat(document.getElementById('pauseAtKm').value);
+  const pauseDurationStr = document.getElementById('pauseDuration').value;
 
-    function distance(lat1, lon1, lat2, lon2) {
-      const R = 6371;
-      const toRad = deg => deg * Math.PI / 180;
-      const dLat = toRad(lat2 - lat1);
-      const dLon = toRad(lon2 - lon1);
-      const a = Math.sin(dLat/2)**2 +
-                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
-      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  if (!startTimeInput || isNaN(avgSpeed) || isNaN(pauseKm)) {
+    alert("Bitte alle Felder korrekt ausfüllen.");
+    return;
+  }
+
+  const pauseParts = pauseDurationStr.split(':');
+  const pauseMinutes = parseInt(pauseParts[0]) * 60 + parseInt(pauseParts[1]);
+
+  const response = await fetch(gpxPath);
+  const gpxText = await response.text();
+  const parser = new DOMParser();
+  const gpx = parser.parseFromString(gpxText, "application/xml");
+  const trackPoints = Array.from(gpx.getElementsByTagName("trkpt"));
+
+  const coords = trackPoints.map(pt => ({
+    lat: parseFloat(pt.getAttribute("lat")),
+    lon: parseFloat(pt.getAttribute("lon")),
+    ele: parseFloat(pt.getElementsByTagName("ele")[0]?.textContent || 0)
+  }));
+
+  // Zeitberechnung mit Pause
+  let startTime = new Date(startTimeInput);
+  let totalDist = 0;
+  const route = [];
+  const R = 6371e3;
+
+  for (let i = 1; i < coords.length; i++) {
+    const dx = (coords[i].lon - coords[i-1].lon) * Math.PI / 180;
+    const dy = (coords[i].lat - coords[i-1].lat) * Math.PI / 180;
+    const a = Math.sin(dy/2)**2 + Math.cos(coords[i-1].lat * Math.PI / 180) * Math.cos(coords[i].lat * Math.PI / 180) * Math.sin(dx/2)**2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const d = R * c / 1000;
+
+    totalDist += d;
+    const travelTimeHr = totalDist / avgSpeed;
+    let time = new Date(startTime.getTime() + travelTimeHr * 3600 * 1000);
+
+    if (totalDist >= pauseKm && !route.some(p => p.pauseInserted)) {
+      time = new Date(time.getTime() + pauseMinutes * 60000);
+      route.push({ ...coords[i], dist: totalDist.toFixed(1), time, pauseInserted: true });
+    } else {
+      route.push({ ...coords[i], dist: totalDist.toFixed(1), time });
     }
+  }
 
-    async function loadWeather() {
-      weatherLayer.clearLayers();
-      const btn = document.getElementById('loadWeatherBtn');
-      btn.textContent = 'Lade…';
-      btn.disabled = true;
+  // Wetterdaten von OpenWeather holen
+  const weatherData = [];
+  for (const pt of route) {
+    const ts = Math.floor(pt.time.getTime() / 1000);
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${pt.lat}&lon=${pt.lon}&appid=${apiKey}&units=metric&lang=de`;
 
-      const startTime = new Date(document.getElementById('starttime').value);
-      const avgSpeed = parseFloat(document.getElementById('avgSpeed').value || '20');
-      const pauseAtKm = parseFloat(document.getElementById('pauseAtKm').value || '0');
-      const pauseDurationStr = document.getElementById('pauseDuration').value || '00:00';
-      const [pauseH, pauseM] = pauseDurationStr.split(':').map(Number);
-      const pauseDurationMin = pauseH * 60 + pauseM;
+    try {
+      const res = await fetch(url);
+      const json = await res.json();
 
-      if (isNaN(startTime) || isNaN(avgSpeed) || avgSpeed <= 0) {
-        alert('Bitte gültige Startzeit und Geschwindigkeit eingeben.');
-        btn.textContent = 'Wetter abrufen';
-        btn.disabled = false;
-        return;
-      }
-
-      const resp = await fetch(gpxPath);
-      const gpxText = await resp.text();
-      const xml = new DOMParser().parseFromString(gpxText,'application/xml');
-      const trkpts = Array.from(xml.getElementsByTagName('trkpt'))
-        .map(pt => ({
-          lat: +pt.getAttribute('lat'),
-          lon: +pt.getAttribute('lon')
-        }));
-
-      let totalDist = 0;
-      for (let i = 1; i < trkpts.length; i++) {
-        totalDist += distance(trkpts[i-1].lat, trkpts[i-1].lon, trkpts[i].lat, trkpts[i].lon);
-      }
-
-      const totalDurationMin = (totalDist / avgSpeed) * 60 + (totalDist >= pauseAtKm ? pauseDurationMin : 0);
-      const arrivalTime = new Date(startTime.getTime() + totalDurationMin * 60000);
-
-      const totalPoints = Math.min(10, trkpts.length);
-      const selected = [];
-
-      for (let i = 0; i < totalPoints; i++) {
-        const fraction = i / (totalPoints - 1);
-        const idx = Math.floor(fraction * (trkpts.length - 1));
-
-        let distUntilPoint = 0;
-        for (let j = 1; j <= idx; j++) {
-          distUntilPoint += distance(trkpts[j - 1].lat, trkpts[j - 1].lon, trkpts[j].lat, trkpts[j].lon);
-        }
-
-        let timeMin = (distUntilPoint / avgSpeed) * 60;
-        if (distUntilPoint >= pauseAtKm) timeMin += pauseDurationMin;
-
-        selected.push({
-          ...trkpts[idx],
-          time: new Date(startTime.getTime() + timeMin * 60000)
-        });
-      }
-
-      let temps = [], rains = [], rainProbs = [], times = [];
-
-      for (let pt of selected) {
-        const date = pt.time.toISOString().slice(0,10);
-        const hour = pt.time.getHours();
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${pt.lat}&longitude=${pt.lon}&hourly=temperature_2m,precipitation_probability,precipitation,wind_speed_10m&start_date=${date}&end_date=${date}&timezone=auto`;
-
-        const w = await fetch(url).then(r=>r.json());
-        const idx = w.hourly.time.findIndex(t => new Date(t).getHours() === hour);
-        if (idx < 0) continue;
-
-        const temp = w.hourly.temperature_2m[idx];
-        const rain = w.hourly.precipitation[idx];
-        const rainProb = w.hourly.precipitation_probability?.[idx] ?? 0;
-        const wind = w.hourly.wind_speed_10m[idx];
-
-        temps.push(temp);
-        rains.push(rain);
-        rainProbs.push(rainProb);
-        times.push(pt.time.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}));
-
-        const label = `
-          <b>${pt.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</b><br>
-          🌡️ ${temp}°C<br>
-          🌧️ ${rain} mm (${rainProb}%)<br>
-          💨 ${wind} km/h`;
-
-        L.marker([pt.lat, pt.lon]).bindPopup(label).addTo(weatherLayer);
-      }
-
-      const minTemp = Math.min(...temps);
-      const maxTemp = Math.max(...temps);
-      const avgTemp = temps.reduce((a,b)=>a+b,0) / temps.length;
-      const totalRain = rains.reduce((a,b)=>a+b,0);
-
-      const infoBox = document.getElementById('infoBox');
-      infoBox.innerHTML = `
-        <p><strong>Distanz:</strong> ${totalDist.toFixed(1)} km</p>
-        <p><strong>Fahrtdauer:</strong> ${Math.floor(totalDurationMin/60)}:${String(Math.round(totalDurationMin%60)).padStart(2,'0')} h</p>
-        <p><strong>Ankunft:</strong> ${arrivalTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</p>
-        <p><strong>Temperatur:</strong> Min ${minTemp.toFixed(1)}°C, Max ${maxTemp.toFixed(1)}°C, Ø ${avgTemp.toFixed(1)}°C</p>
-        <p><strong>Niederschlag:</strong> ${totalRain.toFixed(1)} mm (gesamt)</p>
-      `;
-
-      // Chart erstellen
-      const ctx = document.getElementById('weatherChart').getContext('2d');
-      if (window.weatherChart) window.weatherChart.destroy();
-
-      window.weatherChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: times,
-          datasets: [
-            {
-              label: 'Niederschlag (mm)',
-              data: rains,
-              backgroundColor: 'rgba(54, 162, 235, 0.5)',
-              yAxisID: 'y',
-            },
-            {
-              label: 'Temperatur (°C)',
-              data: temps,
-              type: 'line',
-              borderColor: 'red',
-              backgroundColor: 'rgba(255, 99, 132, 0.2)',
-              yAxisID: 'y1',
-            },
-            {
-              label: 'Regenwahrscheinlichkeit (%)',
-              data: rainProbs,
-              type: 'line',
-              borderColor: 'blue',
-              backgroundColor: 'rgba(0,0,255,0.1)',
-              yAxisID: 'y2',
-              borderDash: [5, 5],
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          interaction: { mode: 'index', intersect: false },
-          stacked: false,
-          scales: {
-            y: {
-              type: 'linear',
-              position: 'left',
-              title: { display: true, text: 'Niederschlag (mm)' },
-            },
-            y1: {
-              type: 'linear',
-              position: 'right',
-              title: { display: true, text: 'Temperatur (°C)' },
-              grid: { drawOnChartArea: false },
-            },
-            y2: {
-              type: 'linear',
-              position: 'right',
-              offset: true,
-              title: { display: true, text: 'Regenwahrscheinlichkeit (%)' },
-              grid: { drawOnChartArea: false },
-              min: 0,
-              max: 100
-            }
-          }
-        }
+      const closest = json.list.reduce((prev, curr) => {
+        return Math.abs(new Date(curr.dt * 1000) - pt.time) < Math.abs(new Date(prev.dt * 1000) - pt.time) ? curr : prev;
       });
 
-      btn.textContent = 'Wetter abrufen';
-      btn.disabled = false;
-    }
+      weatherData.push({
+        time: pt.time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }),
+        temp: closest.main.temp,
+        rainProb: (closest.pop * 100).toFixed(0),
+        rain: closest.rain?.['3h'] || 0,
+        dist: pt.dist
+      });
 
-    document.getElementById('loadWeatherBtn')
-      .addEventListener('click', loadWeather);
-  </script>
+    } catch (e) {
+      console.error("Wetterdatenfehler:", e);
+    }
+  }
+
+  // Info anzeigen
+  const temps = weatherData.map(w => w.temp);
+  const rains = weatherData.map(w => w.rain);
+  const probs = weatherData.map(w => w.rainProb);
+
+  const infoBox = document.getElementById("infoBox");
+  infoBox.innerHTML = `
+    <p><b>Start:</b> ${startTime.toLocaleString('de-DE')}</p>
+    <p><b>Ankunft:</b> ${route[route.length - 1].time.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}</p>
+    <p><b>Min/Max/Ø Temperatur:</b> ${Math.min(...temps).toFixed(1)} / ${Math.max(...temps).toFixed(1)} / ${(temps.reduce((a, b) => a + b, 0) / temps.length).toFixed(1)} °C</p>
+    <p><b>Max Regenwahrscheinlichkeit:</b> ${Math.max(...probs)}%</p>
+    <p><b>Gesamtniederschlag:</b> ${rains.reduce((a, b) => a + b, 0).toFixed(1)} mm</p>
+  `;
+
+  // Diagramm erstellen
+  const ctx = document.getElementById('weatherChart').getContext('2d');
+  if (window.weatherChartInstance) {
+    window.weatherChartInstance.destroy();
+  }
+
+  window.weatherChartInstance = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: weatherData.map(w => `${w.time} (${w.dist} km)`),
+      datasets: [
+        {
+          label: 'Temperatur (°C)',
+          data: weatherData.map(w => w.temp),
+          borderColor: 'red',
+          yAxisID: 'y',
+          tension: 0.2
+        },
+        {
+          label: 'Regenwahrscheinlichkeit (%)',
+          data: weatherData.map(w => w.rainProb),
+          borderColor: 'blue',
+          yAxisID: 'y1',
+          borderDash: [4, 4],
+          tension: 0.2
+        },
+        {
+          label: 'Niederschlag (mm)',
+          data: weatherData.map(w => w.rain),
+          borderColor: 'gray',
+          yAxisID: 'y2',
+          borderDash: [2, 2],
+          tension: 0.2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      stacked: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Wetterverlauf entlang der Route'
+        }
+      },
+      scales: {
+        y: {
+          type: 'linear',
+          display: true,
+          position: 'left',
+          title: {
+            display: true,
+            text: 'Temperatur (°C)'
+          }
+        },
+        y1: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          title: {
+            display: true,
+            text: 'Regenwahrscheinlichkeit (%)'
+          },
+          grid: {
+            drawOnChartArea: false
+          }
+        },
+        y2: {
+          type: 'linear',
+          display: true,
+          position: 'right',
+          title: {
+            display: true,
+            text: 'Niederschlag (mm)'
+          },
+          grid: {
+            drawOnChartArea: false
+          },
+          offset: true
+        }
+      }
+    }
+  });
+});
+</script>
+
 </section>
 
 
