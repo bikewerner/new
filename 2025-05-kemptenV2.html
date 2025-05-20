@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang="de">
 	<head>
-		<title>Bike Werners - Kempten</title>
+		<title>Bike Werners - KemptenV2</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
@@ -187,18 +187,20 @@
   <!-- Info-Anzeige -->
   <div id="infoBox" style="margin-top:1em; font-family:sans-serif;"></div>
 
+  <!-- Wetter-Zeitleiste -->
+  <canvas id="weatherChart" style="max-width: 100%; margin-top: 2em;"></canvas>
+
   <!-- Karte -->
-  <div id="map" style="width:100%; height:500px;"></div>
+  <div id="map" style="width:100%; height:500px; margin-top:2em;"></div>
 
   <!-- Leaflet + GPX -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/gpx.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <script>
-    const apiKey = '6051678f687734a26fbc6c962e0b4820';
     const gpxPath = 'gpx/WernersKemptenTannheimerTal.gpx';
-
     const map = L.map('map').setView([47.7, 10.3], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
       attribution: '&copy; OpenStreetMap contributors'
@@ -225,71 +227,67 @@
 
     async function loadWeather() {
       weatherLayer.clearLayers();
-      const btn = document.getElementById('loadWeatherBtn');
-      btn.textContent = 'Lade…';
-      btn.disabled = true;
+      document.getElementById('loadWeatherBtn').disabled = true;
+      document.getElementById('loadWeatherBtn').textContent = 'Lade…';
 
       const startTime = new Date(document.getElementById('starttime').value);
       const avgSpeed = parseFloat(document.getElementById('avgSpeed').value || '20');
-      const pauseAtKm = parseFloat(document.getElementById('pauseAtKm').value || '0');
-      const pauseDurationStr = document.getElementById('pauseDuration').value || '00:00';
-      const [pauseH, pauseM] = pauseDurationStr.split(':').map(Number);
+      const pauseAt = parseFloat(document.getElementById('pauseAt').value || '0');
+      const [pauseH, pauseM] = document.getElementById('pauseDuration').value.split(':').map(Number);
       const pauseDurationMin = pauseH * 60 + pauseM;
 
-      if (isNaN(startTime) || isNaN(avgSpeed) || avgSpeed <= 0) {
-        alert('Bitte gültige Startzeit und Geschwindigkeit eingeben.');
-        btn.textContent = 'Wetter abrufen';
-        btn.disabled = false;
-        return;
-      }
-
-      // GPX laden & Trackpunkte extrahieren
       const resp = await fetch(gpxPath);
       const gpxText = await resp.text();
       const xml = new DOMParser().parseFromString(gpxText,'application/xml');
-      const trkpts = Array.from(xml.getElementsByTagName('trkpt'))
-        .map(pt => ({
-          lat: +pt.getAttribute('lat'),
-          lon: +pt.getAttribute('lon')
-        }));
+      const trkpts = Array.from(xml.getElementsByTagName('trkpt')).map(pt => ({
+        lat: +pt.getAttribute('lat'),
+        lon: +pt.getAttribute('lon')
+      }));
 
-      // Gesamtdistanz berechnen
       let totalDist = 0;
+      let distUntilPause = 0;
+      let pauseIndex = -1;
+
       for (let i = 1; i < trkpts.length; i++) {
-        totalDist += distance(trkpts[i-1].lat, trkpts[i-1].lon, trkpts[i].lat, trkpts[i].lon);
+        const segDist = distance(trkpts[i-1].lat, trkpts[i-1].lon, trkpts[i].lat, trkpts[i].lon);
+        totalDist += segDist;
+        if (pauseIndex === -1) {
+          distUntilPause += segDist;
+          if (distUntilPause >= pauseAt) pauseIndex = i;
+        }
       }
 
-      const totalDurationMin = (totalDist / avgSpeed) * 60 + (totalDist >= pauseAtKm ? pauseDurationMin : 0);
-      const arrivalTime = new Date(startTime.getTime() + totalDurationMin * 60000);
+      const durationMin = totalDist / avgSpeed * 60 + (pauseIndex >= 0 ? pauseDurationMin : 0);
+      const arrivalTime = new Date(startTime.getTime() + durationMin * 60000);
 
-      // Wetterpunkte entlang der Strecke
+      const infoBox = document.getElementById('infoBox');
+      infoBox.innerHTML = `
+        <p><strong>Distanz:</strong> ${totalDist.toFixed(1)} km</p>
+        <p><strong>Fahrtdauer:</strong> ${(durationMin / 60).toFixed(2)} h</p>
+        <p><strong>Ankunft:</strong> ${arrivalTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</p>
+      `;
+
       const totalPoints = Math.min(10, trkpts.length);
       const selected = [];
+      let tempSum = 0, tempMin = Infinity, tempMax = -Infinity;
+      const chartLabels = [], tempData = [], rainProbData = [], rainAmountData = [];
 
       for (let i = 0; i < totalPoints; i++) {
         const fraction = i / (totalPoints - 1);
         const idx = Math.floor(fraction * (trkpts.length - 1));
+        let travelMin = fraction * (totalDist / avgSpeed) * 60;
+        if (pauseIndex >= 0 && idx >= pauseIndex) travelMin += pauseDurationMin;
 
-        let distUntilPoint = 0;
-        for (let j = 1; j <= idx; j++) {
-          distUntilPoint += distance(trkpts[j - 1].lat, trkpts[j - 1].lon, trkpts[j].lat, trkpts[j].lon);
-        }
-
-        let timeMin = (distUntilPoint / avgSpeed) * 60;
-        if (distUntilPoint >= pauseAtKm) timeMin += pauseDurationMin;
-
-        selected.push({
-          ...trkpts[idx],
-          time: new Date(startTime.getTime() + timeMin * 60000)
-        });
+        const pointTime = new Date(startTime.getTime() + travelMin * 60000);
+        selected.push({ ...trkpts[idx], time: pointTime });
       }
-
-      let temps = [], rains = [];
 
       for (let pt of selected) {
         const date = pt.time.toISOString().slice(0,10);
         const hour = pt.time.getHours();
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${pt.lat}&longitude=${pt.lon}&hourly=temperature_2m,precipitation_probability,precipitation,wind_speed_10m&start_date=${date}&end_date=${date}&timezone=auto`.replace(/\s+/g,'');
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${pt.lat}&longitude=${pt.lon}
+          &hourly=temperature_2m,precipitation,precipitation_probability,wind_speed_10m
+          &start_date=${date}&end_date=${date}&timezone=auto`.replace(/\s+/g,'');
 
         const w = await fetch(url).then(r=>r.json());
         const idx = w.hourly.time.findIndex(t => new Date(t).getHours() === hour);
@@ -297,43 +295,83 @@
 
         const temp = w.hourly.temperature_2m[idx];
         const rain = w.hourly.precipitation[idx];
-        const rainProb = w.hourly.precipitation_probability?.[idx] ?? "–";
+        const rainProb = w.hourly.precipitation_probability[idx];
         const wind = w.hourly.wind_speed_10m[idx];
 
-        temps.push(temp);
-        rains.push(rain);
+        tempSum += temp;
+        tempMin = Math.min(tempMin, temp);
+        tempMax = Math.max(tempMax, temp);
+
+        chartLabels.push(pt.time.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}));
+        tempData.push(temp);
+        rainProbData.push(rainProb);
+        rainAmountData.push(rain);
 
         const label = `
           <b>${pt.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</b><br>
           🌡️ ${temp}°C<br>
-          🌧️ ${rain} mm (${rainProb}%)<br>
-          💨 ${wind} km/h`;
-
+          🌧️ ${rain} mm (${rainProb}%)<br>
+          💨 ${wind} km/h`;
         L.marker([pt.lat, pt.lon]).bindPopup(label).addTo(weatherLayer);
       }
 
-      const minTemp = Math.min(...temps);
-      const maxTemp = Math.max(...temps);
-      const avgTemp = temps.reduce((a,b)=>a+b,0) / temps.length;
-      const totalRain = rains.reduce((a,b)=>a+b,0);
-
-      const infoBox = document.getElementById('infoBox');
-      infoBox.innerHTML = `
-        <p><strong>Distanz:</strong> ${totalDist.toFixed(1)} km</p>
-        <p><strong>Fahrtdauer:</strong> ${Math.floor(totalDurationMin/60)}:${String(Math.round(totalDurationMin%60)).padStart(2,'0')} h</p>
-        <p><strong>Ankunft:</strong> ${arrivalTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</p>
-        <p><strong>Temperatur:</strong> Min ${minTemp.toFixed(1)}°C, Max ${maxTemp.toFixed(1)}°C, Ø ${avgTemp.toFixed(1)}°C</p>
-        <p><strong>Niederschlag:</strong> ${totalRain.toFixed(1)} mm (gesamt)</p>
+      infoBox.innerHTML += `
+        <p><strong>🌡️ Temperatur:</strong> min ${tempMin} °C / max ${tempMax} °C / Ø ${(tempSum / selected.length).toFixed(1)} °C</p>
+        <p><strong>🌧️ Regenwahrscheinlichkeit:</strong> Ø ${(rainProbData.reduce((a,b)=>a+b,0)/rainProbData.length).toFixed(1)}%<br>
+        <strong>🌧️ Niederschlagsmenge:</strong> Ø ${(rainAmountData.reduce((a,b)=>a+b,0)/rainAmountData.length).toFixed(2)} mm</p>
       `;
 
-      btn.textContent = 'Wetter abrufen';
-      btn.disabled = false;
+      new Chart(document.getElementById('weatherChart'), {
+        type: 'line',
+        data: {
+          labels: chartLabels,
+          datasets: [
+            {
+              label: '🌡️ Temperatur (°C)',
+              data: tempData,
+              borderColor: 'red',
+              yAxisID: 'y',
+              tension: 0.3
+            },
+            {
+              label: '🌧️ Regenwahrsch. (%)',
+              data: rainProbData,
+              borderColor: 'blue',
+              yAxisID: 'y1',
+              tension: 0.3
+            },
+            {
+              label: '🌧️ Niederschlag (mm)',
+              data: rainAmountData,
+              borderColor: 'gray',
+              yAxisID: 'y2',
+              tension: 0.3
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          stacked: false,
+          scales: {
+            y: { type: 'linear', position: 'left', title: { text: 'Temperatur (°C)', display: true } },
+            y1: { type: 'linear', position: 'right', title: { text: 'Regenwahrsch. (%)', display: true }, grid: { drawOnChartArea: false } },
+            y2: { type: 'linear', position: 'right', offset: true, title: { text: 'Niederschlag (mm)', display: true }, grid: { drawOnChartArea: false } }
+          }
+        }
+      });
+
+      document.getElementById('loadWeatherBtn').textContent = 'Wetter abrufen';
+      document.getElementById('loadWeatherBtn').disabled = false;
     }
 
-    document.getElementById('loadWeatherBtn')
-      .addEventListener('click', loadWeather);
+    document.getElementById('loadWeatherBtn').addEventListener('click', loadWeather);
   </script>
 </section>
+
 
 
 								
