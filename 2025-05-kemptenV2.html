@@ -167,8 +167,20 @@
   <div style="margin-bottom:1em; font-family:sans-serif;">
     <label for="starttime">🚴 Tourstart (Datum & Uhrzeit):</label>
     <input type="datetime-local" id="starttime" value="2025-05-05T08:00">
+
     <label for="avgSpeed" style="margin-left:1em;">Ø-Geschwindigkeit (km/h):</label>
     <input type="number" id="avgSpeed" value="20" min="5" max="50" step="1" style="width:60px;">
+
+    <br><br>
+
+    <label for="pauseAtKm">🛑 Pause bei (km):</label>
+    <input type="number" id="pauseAtKm" value="42.1" min="1" step="0.1" style="width:60px;">
+
+    <label for="pauseDuration" style="margin-left:1em;">⏱️ Pausendauer (hh:mm):</label>
+    <input type="time" id="pauseDuration" value="01:15">
+
+    <br><br>
+
     <button id="loadWeatherBtn">Wetter abrufen</button>
   </div>
 
@@ -219,6 +231,10 @@
 
       const startTime = new Date(document.getElementById('starttime').value);
       const avgSpeed = parseFloat(document.getElementById('avgSpeed').value || '20');
+      const pauseAtKm = parseFloat(document.getElementById('pauseAtKm').value || '0');
+      const pauseDurationStr = document.getElementById('pauseDuration').value || '00:00';
+      const [pauseH, pauseM] = pauseDurationStr.split(':').map(Number);
+      const pauseDurationMin = pauseH * 60 + pauseM;
 
       if (isNaN(startTime) || isNaN(avgSpeed) || avgSpeed <= 0) {
         alert('Bitte gültige Startzeit und Geschwindigkeit eingeben.');
@@ -243,16 +259,8 @@
         totalDist += distance(trkpts[i-1].lat, trkpts[i-1].lon, trkpts[i].lat, trkpts[i].lon);
       }
 
-      const totalDurationH = totalDist / avgSpeed;
-      const arrivalTime = new Date(startTime.getTime() + totalDurationH * 3600000);
-
-      // Info anzeigen
-      const infoBox = document.getElementById('infoBox');
-      infoBox.innerHTML = `
-        <p><strong>Distanz:</strong> ${totalDist.toFixed(1)} km</p>
-        <p><strong>Fahrtdauer:</strong> ${totalDurationH.toFixed(1)} h</p>
-        <p><strong>Ankunft:</strong> ${arrivalTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</p>
-      `;
+      const totalDurationMin = (totalDist / avgSpeed) * 60 + (totalDist >= pauseAtKm ? pauseDurationMin : 0);
+      const arrivalTime = new Date(startTime.getTime() + totalDurationMin * 60000);
 
       // Wetterpunkte entlang der Strecke
       const totalPoints = Math.min(10, trkpts.length);
@@ -261,33 +269,62 @@
       for (let i = 0; i < totalPoints; i++) {
         const fraction = i / (totalPoints - 1);
         const idx = Math.floor(fraction * (trkpts.length - 1));
-        const travelTimeMin = fraction * totalDurationH * 60;
+
+        let distUntilPoint = 0;
+        for (let j = 1; j <= idx; j++) {
+          distUntilPoint += distance(trkpts[j - 1].lat, trkpts[j - 1].lon, trkpts[j].lat, trkpts[j].lon);
+        }
+
+        let timeMin = (distUntilPoint / avgSpeed) * 60;
+        if (distUntilPoint >= pauseAtKm) timeMin += pauseDurationMin;
+
         selected.push({
           ...trkpts[idx],
-          time: new Date(startTime.getTime() + travelTimeMin * 60000)
+          time: new Date(startTime.getTime() + timeMin * 60000)
         });
       }
 
-      // Wetter abrufen & Marker setzen
+      let temps = [], rains = [];
+
       for (let pt of selected) {
         const date = pt.time.toISOString().slice(0,10);
         const hour = pt.time.getHours();
-        const url = `https://api.open-meteo.com/v1/forecast?latitude=${pt.lat}&longitude=${pt.lon}
-          &hourly=temperature_2m,precipitation,wind_speed_10m
-          &start_date=${date}&end_date=${date}&timezone=auto`.replace(/\s+/g,'');
+        const url = `https://api.open-meteo.com/v1/forecast?latitude=${pt.lat}&longitude=${pt.lon}&hourly=temperature_2m,precipitation_probability,precipitation,wind_speed_10m&start_date=${date}&end_date=${date}&timezone=auto`.replace(/\s+/g,'');
 
         const w = await fetch(url).then(r=>r.json());
         const idx = w.hourly.time.findIndex(t => new Date(t).getHours() === hour);
         if (idx < 0) continue;
 
-        const temp = w.hourly.temperature_2m[idx],
-              rain = w.hourly.precipitation[idx],
-              wind = w.hourly.wind_speed_10m[idx],
-              label = `<b>${pt.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</b><br>
-                       🌡️ ${temp}°C<br>🌧️ ${rain} mm<br>💨 ${wind} km/h`;
+        const temp = w.hourly.temperature_2m[idx];
+        const rain = w.hourly.precipitation[idx];
+        const rainProb = w.hourly.precipitation_probability?.[idx] ?? "–";
+        const wind = w.hourly.wind_speed_10m[idx];
+
+        temps.push(temp);
+        rains.push(rain);
+
+        const label = `
+          <b>${pt.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</b><br>
+          🌡️ ${temp}°C<br>
+          🌧️ ${rain} mm (${rainProb}%)<br>
+          💨 ${wind} km/h`;
 
         L.marker([pt.lat, pt.lon]).bindPopup(label).addTo(weatherLayer);
       }
+
+      const minTemp = Math.min(...temps);
+      const maxTemp = Math.max(...temps);
+      const avgTemp = temps.reduce((a,b)=>a+b,0) / temps.length;
+      const totalRain = rains.reduce((a,b)=>a+b,0);
+
+      const infoBox = document.getElementById('infoBox');
+      infoBox.innerHTML = `
+        <p><strong>Distanz:</strong> ${totalDist.toFixed(1)} km</p>
+        <p><strong>Fahrtdauer:</strong> ${Math.floor(totalDurationMin/60)}:${String(Math.round(totalDurationMin%60)).padStart(2,'0')} h</p>
+        <p><strong>Ankunft:</strong> ${arrivalTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</p>
+        <p><strong>Temperatur:</strong> Min ${minTemp.toFixed(1)}°C, Max ${maxTemp.toFixed(1)}°C, Ø ${avgTemp.toFixed(1)}°C</p>
+        <p><strong>Niederschlag:</strong> ${totalRain.toFixed(1)} mm (gesamt)</p>
+      `;
 
       btn.textContent = 'Wetter abrufen';
       btn.disabled = false;
@@ -297,6 +334,7 @@
       .addEventListener('click', loadWeather);
   </script>
 </section>
+
 
 								
 
