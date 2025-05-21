@@ -6,6 +6,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<link rel="icon" type="image/x-icon" href="images/BW.ico" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.css" />
 		<!-- <link rel="stylesheet" href="https://unpkg.com/leaflet-elevation/dist/leaflet-elevation.min.css" /> -->
 	</head>
 	<body class="homepage is-preload">
@@ -196,6 +197,8 @@
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/gpx.min.js"></script>
   <script src="https://unpkg.com/leaflet-elevation/dist/leaflet-elevation.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.js"></script>
+
 
   <script>
     const apiKey = '6051678f687734a26fbc6c962e0b4820';
@@ -327,7 +330,7 @@
       const maxTemp = Math.max(...temps);
       const avgTemp = temps.reduce((a,b)=>a+b,0) / temps.length;
       const totalRain = rains.reduce((a,b)=>a+b,0);
-	  const avgRainProb = Math.round(rainProbs.reduce((a,b)=>a + (+b || 0), 0) / rainProbs.length);
+      const avgRainProb = Math.round(rainProbs.reduce((a,b)=>a + (+b || 0), 0) / rainProbs.length);
 
       const infoBox = document.getElementById('infoBox');
       infoBox.innerHTML = `
