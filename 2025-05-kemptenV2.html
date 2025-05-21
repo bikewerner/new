@@ -8,6 +8,15 @@
 		<link rel="icon" type="image/x-icon" href="images/BW.ico" />
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.css" />
 		<!-- <link rel="stylesheet" href="https://unpkg.com/leaflet-elevation/dist/leaflet-elevation.min.css" /> -->
+		<style>
+		  #elevation-div {
+		    z-index: 999;
+		    position: relative;
+		    background: white;
+		    margin-bottom: 2em; /* mehr Abstand nach unten */
+		  }
+		</style>
+
 	</head>
 	<body class="homepage is-preload">
 		<div id="page-wrapper">
@@ -240,6 +249,27 @@
     async function loadWeather() {
       weatherLayer.clearLayers();
       const btn = document.getElementById('loadWeatherBtn');
+	  // Synchronisierung der Mausbewegung über Höhenprofil mit Marker auf Karte
+		elevationControl.on("mousemove", function(evt) {
+		  if (!evt.latlng) return;
+		  if (!window.elevationHoverMarker) {
+		    window.elevationHoverMarker = L.circleMarker(evt.latlng, {
+		      radius: 6,
+		      color: "#f00",
+		      weight: 2,
+		      fillOpacity: 0.6
+		    }).addTo(map);
+		  } else {
+		    window.elevationHoverMarker.setLatLng(evt.latlng);
+		  }
+		});
+
+		elevationControl.on("mouseout", function(evt) {
+		  if (window.elevationHoverMarker) {
+		    map.removeLayer(window.elevationHoverMarker);
+		    window.elevationHoverMarker = null;
+		  }
+		});
       btn.textContent = 'Lade…';
       btn.disabled = true;
 
