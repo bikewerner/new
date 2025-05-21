@@ -13,7 +13,7 @@
 		    z-index: 999;
 		    position: relative;
 		    background: white;
-		    margin-bottom: 2em; /* mehr Abstand nach unten */
+		    margin-bottom: 2em; /* sorgt für Abstand zur nächsten Box */
 		  }
 		</style>
 
@@ -249,27 +249,6 @@
     async function loadWeather() {
       weatherLayer.clearLayers();
       const btn = document.getElementById('loadWeatherBtn');
-	  // Synchronisierung der Mausbewegung über Höhenprofil mit Marker auf Karte
-		elevationControl.on("mousemove", function(evt) {
-		  if (!evt.latlng) return;
-		  if (!window.elevationHoverMarker) {
-		    window.elevationHoverMarker = L.circleMarker(evt.latlng, {
-		      radius: 6,
-		      color: "#f00",
-		      weight: 2,
-		      fillOpacity: 0.6
-		    }).addTo(map);
-		  } else {
-		    window.elevationHoverMarker.setLatLng(evt.latlng);
-		  }
-		});
-
-		elevationControl.on("mouseout", function(evt) {
-		  if (window.elevationHoverMarker) {
-		    map.removeLayer(window.elevationHoverMarker);
-		    window.elevationHoverMarker = null;
-		  }
-		});
       btn.textContent = 'Lade…';
       btn.disabled = true;
 
@@ -377,6 +356,27 @@
 
     document.getElementById('loadWeatherBtn')
       .addEventListener('click', loadWeather);
+	  // Synchronisierung der Mausbewegung über das Höhenprofil mit einem Marker auf der Karte
+		elevationControl.on("mousemove", function(evt) {
+		  if (!evt.latlng) return;
+		  if (!window.elevationHoverMarker) {
+		    window.elevationHoverMarker = L.circleMarker(evt.latlng, {
+		      radius: 6,
+		      color: "#f00",
+		      weight: 2,
+		      fillOpacity: 0.6
+		    }).addTo(map);
+		  } else {
+		    window.elevationHoverMarker.setLatLng(evt.latlng);
+		  }
+		});
+
+		elevationControl.on("mouseout", function(evt) {
+		  if (window.elevationHoverMarker) {
+		    map.removeLayer(window.elevationHoverMarker);
+		    window.elevationHoverMarker = null;
+		  }
+		});
   </script>
 </section>
 
