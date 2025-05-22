@@ -12,7 +12,7 @@
 		    z-index: 999;
 		    position: relative;
 		    background: white;
-		    margin-bottom: 4em; /* mehr Abstand nach unten */
+		    margin-bottom: 8em; /* mehr Abstand nach unten */
 		    padding-bottom: 2em;
 		  }
 		</style>
@@ -357,26 +357,35 @@
     document.getElementById('loadWeatherBtn')
       .addEventListener('click', loadWeather);
 	  // Synchronisierung der Mausbewegung über die Karte, wenn man im  Höhenprofil ist      
-      elevationControl.on("mousemove", function(evt) {
-	  if (!evt.latlng) return;
-	  if (!window.elevationHoverMarker) {
-	    window.elevationHoverMarker = L.circleMarker(evt.latlng, {
-	      radius: 6,
-	      color: "#f00",
-	      weight: 2,
-	      fillOpacity: 0.6
-	    }).addTo(map);
-	  } else {
-	    window.elevationHoverMarker.setLatLng(evt.latlng);
-	  }
-	});
+// Synchronisierung der Mausbewegung über das Höhenprofil mit einem Marker auf der Karte
+function updateHoverMarker(latlng) {
+  if (!window.elevationHoverMarker) {
+    window.elevationHoverMarker = L.circleMarker(latlng, {
+      radius: 6,
+      color: "#f00",
+      weight: 2,
+      fillOpacity: 0.6
+    }).addTo(map);
+  } else {
+    window.elevationHoverMarker.setLatLng(latlng);
+  }
+}
 
-	elevationControl.on("mouseout", function(evt) {
-	  if (window.elevationHoverMarker) {
-	    map.removeLayer(window.elevationHoverMarker);
-	    window.elevationHoverMarker = null;
-	  }
-	});     
+elevationControl.on("mousemove", function(evt) {
+  if (evt.latlng) updateHoverMarker(evt.latlng);
+});
+
+elevationControl.on("mouseover", function(evt) {
+  if (evt.latlng) updateHoverMarker(evt.latlng);
+});
+
+elevationControl.on("mouseout", function(evt) {
+  if (window.elevationHoverMarker) {
+    map.removeLayer(window.elevationHoverMarker);
+    window.elevationHoverMarker = null;
+  }
+});
+    
       
 	  // Synchronisierung der Mausbewegung über das Höhenprofil mit einem Marker auf der Karte
 		elevationControl.on("mousemove", function(evt) {
