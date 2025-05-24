@@ -51,27 +51,28 @@
       map.fitBounds(e.target.getBounds());
     })
     .on("addline", function(e) {
-      // Route anzeigen + Höhenprofil einfügen
       elevationControl.addData(e.line);
-
-      // ❗ Warte auf Marker-Erstellung (Timeout = dirty but effective)
+    
       setTimeout(() => {
-        if (elevationControl._marker && elevationControl._chart) {
-          elevationControl._marker.on('mouseover', function () {
-            this.bindPopup('').openPopup();
-          });
-
-          elevationControl._chart.on('mousemove', function () {
+        const marker = elevationControl._marker;
+        const chart = elevationControl._chart;
+    
+        if (marker && chart) {
+          // Verhindere auto-generiertes Popup
+          marker.unbindPopup();
+          marker.bindPopup('', { autoClose: false });
+    
+          chart.on('mousemove', function () {
             const hoverData = elevationControl._lastHover;
             if (hoverData && hoverData.distance) {
-              const distKm = (hoverData.distance).toFixed(1);
-              elevationControl._marker.setPopupContent(`${distKm} km`);
+              const distKm = hoverData.distance.toFixed(1);
+              marker.setPopupContent(`${distKm} km`);
+              marker.openPopup();
             }
           });
         }
-      }, 300); // Warte 300 ms auf Marker
-    })
-    .addTo(map);
+      }, 300);
+    });
   </script>
 </body>
 </html>
