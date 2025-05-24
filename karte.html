@@ -31,27 +31,15 @@
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap-Mitwirkende'
     }).addTo(map);
-    
+
     const elevationControl = L.control.elevation({
       position: "topright",
       theme: "lightblue-theme",
       detached: true,
       elevationDiv: "#elevation"
     }).addTo(map);
-    
-    // Manuelles Popup-Override
-    elevationControl._marker.on('mouseover', function (e) {
-      this.bindPopup('').openPopup();
-    });
-    elevationControl._chart.on('mousemove', function (e) {
-      const hoverData = elevationControl._lastHover;
-      if (hoverData && hoverData.distance) {
-        const distKm = (hoverData.distance).toFixed(1);
-        elevationControl._marker.setPopupContent(`${distKm} km`);
-      }
-    });
-    
-    new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
+
+    const gpx = new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
       async: true,
       marker_options: {
         startIconUrl: null,
@@ -64,6 +52,19 @@
     })
     .on("addline", function(e) {
       elevationControl.addData(e.line);
+
+      // ❗ Jetzt existieren _marker und _chart
+      elevationControl._marker.on('mouseover', function (e) {
+        this.bindPopup('').openPopup();
+      });
+
+      elevationControl._chart.on('mousemove', function (e) {
+        const hoverData = elevationControl._lastHover;
+        if (hoverData && hoverData.distance) {
+          const distKm = (hoverData.distance).toFixed(1);
+          elevationControl._marker.setPopupContent(`${distKm} km`);
+        }
+      });
     })
     .addTo(map);
   </script>
