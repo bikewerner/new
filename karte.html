@@ -17,9 +17,16 @@
   <script src="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.js"></script>
 
   <style>
-    html, body { margin: 0; height: 100%; }
-    #map { height: 70%; }
-    #elevation { height: 30%; }
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
+    #map {
+      height: 70%;
+    }
+    #elevation {
+      height: 30%;
+    }
   </style>
 </head>
 <body>
@@ -27,19 +34,25 @@
   <div id="elevation"></div>
 
   <script>
+    // Karte initialisieren
     const map = L.map('map').setView([47.5, 10.3], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap-Mitwirkende'
     }).addTo(map);
 
+    // Höhenprofil mit Kilometeranzeige im Popup
     const elevationControl = L.control.elevation({
       position: "topright",
       theme: "lightblue-theme",
       detached: true,
-      elevationDiv: "#elevation"
+      elevationDiv: "#elevation",
+      followMarkerPopupTemplate: function(elevation, distance, latlng) {
+        return distance ? `${distance.toFixed(1)} km` : '';
+      }
     }).addTo(map);
 
-    const gpx = new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
+    // GPX-Datei laden
+    new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
       async: true,
       marker_options: {
         startIconUrl: null,
@@ -52,27 +65,8 @@
     })
     .on("addline", function(e) {
       elevationControl.addData(e.line);
-    
-      setTimeout(() => {
-        const marker = elevationControl._marker;
-        const chart = elevationControl._chart;
-    
-        if (marker && chart) {
-          // Verhindere auto-generiertes Popup
-          marker.unbindPopup();
-          marker.bindPopup('', { autoClose: false });
-    
-          chart.on('mousemove', function () {
-            const hoverData = elevationControl._lastHover;
-            if (hoverData && hoverData.distance) {
-              const distKm = hoverData.distance.toFixed(1);
-              marker.setPopupContent(`${distKm} km`);
-              marker.openPopup();
-            }
-          });
-        }
-      }, 300);
-    });
+    })
+    .addTo(map);
   </script>
 </body>
 </html>
