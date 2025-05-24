@@ -34,24 +34,21 @@
   <div id="elevation"></div>
 
   <script>
-    // Karte initialisieren
     const map = L.map('map').setView([47.5, 10.3], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap-Mitwirkende'
     }).addTo(map);
 
-    // Höhenprofil mit Kilometeranzeige im Popup
     const elevationControl = L.control.elevation({
       position: "topright",
       theme: "lightblue-theme",
       detached: true,
       elevationDiv: "#elevation",
-      followMarkerPopupTemplate: function(elevation, distance, latlng) {
-        return distance ? `${distance.toFixed(1)} km` : '';
-      }
+
+      // ❗ Keine Popup-Beschriftung auf der Karte
+      followMarkerPopupTemplate: () => null
     }).addTo(map);
 
-    // GPX-Datei laden
     new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
       async: true,
       marker_options: {
