@@ -2,78 +2,59 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <title>Werners Kempten-Tannheimer Tal Route</title>
+  <title>Werners Route mit Höhenprofil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Leaflet -->
   <link
     rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css"
   />
+  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Leaflet.Elevation -->
   <link
     rel="stylesheet"
-    href="https://unpkg.com/leaflet-elevation@0.0.4/leaflet-elevation.min.css"
+    href="https://cdn.jsdelivr.net/gh/MrMufflon/Leaflet.Elevation/dist/leaflet-elevation.min.css"
   />
+  <script src="https://cdn.jsdelivr.net/gh/MrMufflon/Leaflet.Elevation/dist/leaflet-elevation.min.js"></script>
+
+  <!-- Leaflet.GPX -->
+  <script src="https://cdn.jsdelivr.net/gh/mpetazzoni/leaflet-gpx/gpx.js"></script>
+
   <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-    #map {
-      width: 100%;
-      height: 70%;
-    }
-    #elevation-div {
-      width: 100%;
-      height: 30%;
-    }
+    html, body { margin: 0; padding: 0; height: 100%; }
+    #map { height: 70%; }
+    #elevation-div { height: 30%; }
   </style>
 </head>
 <body>
   <div id="map"></div>
   <div id="elevation-div"></div>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://unpkg.com/leaflet-gpx@1.7.0/leaflet-gpx.min.js"></script>
-  <script src="https://unpkg.com/leaflet-elevation@0.0.4/leaflet-elevation.min.js"></script>
-
   <script>
-    const map = L.map('map').setView([47.7, 10.3], 10);
+    const map = L.map('map').setView([47.5, 10.3], 10);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap-Mitwirkende'
     }).addTo(map);
 
-    const elevationControl = L.control.elevation({
+    const el = L.control.elevation({
       position: "bottomright",
       theme: "steelblue-theme",
       width: window.innerWidth,
       height: 150,
       useHeightIndicator: true,
-      interpolation: "linear",
-      hoverNumber: {
-        decimalsX: 2,
-        decimalsY: 0,
-        formatter: undefined
-      },
       collapsed: false
-    });
-    elevationControl.addTo(map);
+    }).addTo(map);
 
     const gpx = new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
-      async: true,
-      marker_options: {
-        startIconUrl: "https://www.flaticon.com/svg/static/icons/svg/252/252025.svg",
-        endIconUrl: "https://www.flaticon.com/svg/static/icons/svg/252/252005.svg",
-        shadowUrl: ""
-      }
-    })
-    .on('loaded', function(e) {
+      async: true
+    }).on('loaded', function(e) {
       map.fitBounds(e.target.getBounds());
-    })
-    .on("addline", function(e) {
-      elevationControl.addData(e.line);
-    })
-    .addTo(map);
+    }).on('addline', function(e) {
+      el.addData(e.line);
+    }).addTo(map);
   </script>
 </body>
 </html>
