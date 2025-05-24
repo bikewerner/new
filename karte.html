@@ -24,19 +24,17 @@
 </head>
 <body>
   <div id="map"></div>
-  <div id="elevation"></div>
 
   <script>
     const map = L.map('map').setView([47.5, 10.3], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap-Mitwirkende'
     }).addTo(map);
-
+    
     const elevationControl = L.control.elevation({
-      position: "topright",
+      position: "bottomright",
       theme: "lightblue-theme",
-      detached: true,
-      elevationDiv: "#elevation",
+      detached: false, // eingebettet, funktioniert!
       followMarkerPopupTemplate: (elevation, distance, latlng) => {
         return `${distance.toFixed(1)} km`;
       }
