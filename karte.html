@@ -2,53 +2,58 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <title>Werners Route mit Höhenprofil</title>
+  <title>Route mit Höhenprofil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+  
   <!-- Leaflet -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
-  <!-- Leaflet.Elevation (funktionierendes Mirror-Hosting) -->
-  <link rel="stylesheet" href="https://marcelwinn.github.io/leaflet-elevation/leaflet-elevation.min.css" />
-  <script src="https://marcelwinn.github.io/leaflet-elevation/leaflet-elevation.min.js"></script>
+  <!-- GPX Parser -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/gpx.min.js"></script>
 
-  <!-- Leaflet.GPX -->
-  <script src="https://cdn.jsdelivr.net/gh/mpetazzoni/leaflet-gpx/gpx.js"></script>
+  <!-- Leaflet Elevation (raruto) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.js"></script>
 
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; }
+    html, body { margin: 0; height: 100%; }
     #map { height: 70%; }
-    #elevation-div { height: 30%; }
+    #elevation { height: 30%; }
   </style>
 </head>
 <body>
   <div id="map"></div>
-  <div id="elevation-div"></div>
+  <div id="elevation"></div>
 
   <script>
     const map = L.map('map').setView([47.5, 10.3], 10);
-
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap-Mitwirkende'
+      attribution: '© OpenStreetMap-Mitwirkende'
     }).addTo(map);
 
-    const el = L.control.elevation({
-      position: "bottomright",
-      theme: "steelblue-theme",
-      width: window.innerWidth,
-      height: 150,
-      useHeightIndicator: true,
-      collapsed: false
+    const elevationControl = L.control.elevation({
+      position: "topright",
+      theme: "lightblue-theme",
+      detached: true,
+      elevationDiv: "#elevation",
     }).addTo(map);
 
-    const gpx = new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
-      async: true
-    }).on('loaded', function(e) {
+    new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
+      async: true,
+      marker_options: {
+        startIconUrl: null,
+        endIconUrl: null,
+        shadowUrl: null
+      }
+    })
+    .on("loaded", function(e) {
       map.fitBounds(e.target.getBounds());
-    }).on('addline', function(e) {
-      el.addData(e.line);
-    }).addTo(map);
+    })
+    .on("addline", function(e) {
+      elevationControl.addData(e.line);
+    })
+    .addTo(map);
   </script>
 </body>
 </html>
