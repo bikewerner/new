@@ -44,9 +44,7 @@
       theme: "lightblue-theme",
       detached: true,
       elevationDiv: "#elevation",
-
-      // ❗ Keine Popup-Beschriftung auf der Karte
-      followMarkerPopupTemplate: () => null
+      followMarkerPopupTemplate: () => '' // wird überschrieben, aber notwendig
     }).addTo(map);
 
     new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
@@ -62,6 +60,13 @@
     })
     .on("addline", function(e) {
       elevationControl.addData(e.line);
+
+      // ❗ Popup deaktivieren
+      setTimeout(() => {
+        if (elevationControl._marker) {
+          elevationControl._marker.unbindPopup(); // vollständig entfernen
+        }
+      }, 200);
     })
     .addTo(map);
   </script>
