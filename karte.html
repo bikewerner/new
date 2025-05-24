@@ -4,44 +4,71 @@
   <meta charset="utf-8" />
   <title>Route mit Höhenprofil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="lib/leaflet.css" />
-  <link rel="stylesheet" href="lib/leaflet.elevation.css" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+  <!-- GPX Parser -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/gpx.min.js"></script>
+
+  <!-- Leaflet Elevation (raruto) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.js"></script>
+
   <style>
-    html, body { margin: 0; height: 100%; }
-    #map { height: 70%; }
-    #elevation-div { height: 30%; }
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
+    #map {
+      height: 70%;
+    }
+    #elevation {
+      height: 30%;
+    }
   </style>
 </head>
 <body>
   <div id="map"></div>
-  <div id="elevation-div"></div>
-  <script src="lib/leaflet.js"></script>
-  <script src="lib/d3.v3.min.js"></script>
-  <script src="lib/leaflet.elevation.js"></script>
-  <script src="lib/leaflet-gpx.js"></script>
+  <div id="elevation"></div>
+
   <script>
     const map = L.map('map').setView([47.5, 10.3], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
+      attribution: '© OpenStreetMap-Mitwirkende'
     }).addTo(map);
 
-    const controlElevation = L.control.elevation({
+    const elevationControl = L.control.elevation({
       position: "topright",
-      theme: "steelblue-theme",
+      theme: "lightblue-theme",
       detached: true,
-      elevationDiv: "#elevation-div",
-      useHeightIndicator: true,
-      followMarker: true,
-      followMarkerPopup: false
+      elevationDiv: "#elevation",
+      followMarkerPopupTemplate: () => '' // wird überschrieben, aber notwendig
     }).addTo(map);
 
     new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
-      async: true
-    }).on("loaded", function(e) {
+      async: true,
+      marker_options: {
+        startIconUrl: null,
+        endIconUrl: null,
+        shadowUrl: null
+      }
+    })
+    .on("loaded", function(e) {
       map.fitBounds(e.target.getBounds());
-    }).on("addline", function(e) {
-      controlElevation.addData(e.line);
-    }).addTo(map);
+    })
+    .on("addline", function(e) {
+      elevationControl.addData(e.line);
+
+      // ❗ Popup deaktivieren
+      setTimeout(() => {
+        if (elevationControl._marker) {
+          elevationControl._marker.unbindPopup(); // vollständig entfernen
+        }
+      }, 200);
+    })
+    .addTo(map);
   </script>
 </body>
 </html>
