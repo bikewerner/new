@@ -1,4 +1,4 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="de">
 	<head>
 		<title>Bike Werners - KemptenV2</title>
@@ -204,17 +204,15 @@
   <div id="map" style="width:100%; height:500px;"></div>
   <div id="elevation-div" style="width:100%; height:250px; margin-top:1em;"></div>
 
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/gpx.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.js"></script>	
+  <script src="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.js"></script>
 
   <script>
     const apiKey = '6051678f687734a26fbc6c962e0b4820';
     const gpxPath = 'gpx/WernersKemptenTannheimerTal.gpx';
 
     const map = L.map('map').setView([47.7, 10.3], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
@@ -371,43 +369,16 @@ function updateHoverMarker(latlng) {
   }
 }
 
-elevationControl.on("mousemove", function(evt) {
-  if (evt.latlng) updateHoverMarker(evt.latlng);
-});
+    elevationControl.on("mousemove", function(evt) {
+      if (evt.latlng) updateHoverMarker(evt.latlng);
+    });
 
-elevationControl.on("mouseover", function(evt) {
-  if (evt.latlng) updateHoverMarker(evt.latlng);
-});
-
-elevationControl.on("mouseout", function(evt) {
-  if (window.elevationHoverMarker) {
-    map.removeLayer(window.elevationHoverMarker);
-    window.elevationHoverMarker = null;
-  }
-});
-    
-      
-	  // Synchronisierung der Mausbewegung über das Höhenprofil mit einem Marker auf der Karte
-		elevationControl.on("mousemove", function(evt) {
-		  if (!evt.latlng) return;
-		  if (!window.elevationHoverMarker) {
-		    window.elevationHoverMarker = L.circleMarker(evt.latlng, {
-		      radius: 6,
-		      color: "#f00",
-		      weight: 2,
-		      fillOpacity: 0.6
-		    }).addTo(map);
-		  } else {
-		    window.elevationHoverMarker.setLatLng(evt.latlng);
-		  }
-		});
-
-		elevationControl.on("mouseout", function(evt) {
-		  if (window.elevationHoverMarker) {
-		    map.removeLayer(window.elevationHoverMarker);
-		    window.elevationHoverMarker = null;
-		  }
-		});
+    elevationControl.on("mouseout", function() {
+      if (window.elevationHoverMarker) {
+        map.removeLayer(window.elevationHoverMarker);
+        window.elevationHoverMarker = null;
+      }
+    });
   </script>
 </section>
 
