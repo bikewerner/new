@@ -37,6 +37,9 @@
       theme: "lightblue-theme",
       detached: true,
       elevationDiv: "#elevation",
+      followMarkerPopupTemplate: (elevation, distance, latlng) => {
+        return `${distance.toFixed(1)} km`;
+      }
     }).addTo(map);
 
     new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
