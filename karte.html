@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -21,27 +20,22 @@
   <script src="lib/leaflet.elevation.js"></script>
   <script src="lib/leaflet-gpx.js"></script>
   <script>
-    var map = L.map('map').setView([47.5, 10.3], 10);
+    const map = L.map('map').setView([47.5, 10.3], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    var controlElevation = L.control.elevation({
+    const controlElevation = L.control.elevation({
       position: "topright",
       theme: "steelblue-theme",
-      width: window.innerWidth,
-      height: 150,
-      useHeightIndicator: true,
-      interpolation: "linear",
-      hoverNumber: {decimalsX: 2, decimalsY: 0},
-      xTicks: 6,
-      yTicks: 5,
       detached: true,
-      elevationDiv: "#elevation-div"
-    });
-    controlElevation.addTo(map);
+      elevationDiv: "#elevation-div",
+      useHeightIndicator: true,
+      followMarker: true,
+      followMarkerPopup: false
+    }).addTo(map);
 
-    var gpx = new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
+    new L.GPX("gpx/WernersKemptenTannheimerTal.gpx", {
       async: true
     }).on("loaded", function(e) {
       map.fitBounds(e.target.getBounds());
