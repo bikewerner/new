@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>Route mit Höhenprofil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+
   <!-- Leaflet -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
@@ -51,20 +51,25 @@
       map.fitBounds(e.target.getBounds());
     })
     .on("addline", function(e) {
+      // Route anzeigen + Höhenprofil einfügen
       elevationControl.addData(e.line);
 
-      // ❗ Jetzt existieren _marker und _chart
-      elevationControl._marker.on('mouseover', function (e) {
-        this.bindPopup('').openPopup();
-      });
+      // ❗ Warte auf Marker-Erstellung (Timeout = dirty but effective)
+      setTimeout(() => {
+        if (elevationControl._marker && elevationControl._chart) {
+          elevationControl._marker.on('mouseover', function () {
+            this.bindPopup('').openPopup();
+          });
 
-      elevationControl._chart.on('mousemove', function (e) {
-        const hoverData = elevationControl._lastHover;
-        if (hoverData && hoverData.distance) {
-          const distKm = (hoverData.distance).toFixed(1);
-          elevationControl._marker.setPopupContent(`${distKm} km`);
+          elevationControl._chart.on('mousemove', function () {
+            const hoverData = elevationControl._lastHover;
+            if (hoverData && hoverData.distance) {
+              const distKm = (hoverData.distance).toFixed(1);
+              elevationControl._marker.setPopupContent(`${distKm} km`);
+            }
+          });
         }
-      });
+      }, 300); // Warte 300 ms auf Marker
     })
     .addTo(map);
   </script>
