@@ -9,6 +9,7 @@ Folgende Seite füllen die Homepage mit Leben:
 - 2024-5-ettal.html
 - 2024-8-ruhpolding.html
 - 2025-5-kempten.html
+- 2025-9-badreichenhall.html
 - wernerstats.html
 
 
