@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html lang="de">
+	<head>
+		<title>Bike Werners - Kempten</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="icon" type="image/x-icon" href="images/BW.ico" />
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<!-- Bike Werner Logo -->
+				<br>
+				<br>
+				<div align="center">
+					<img src="images/BikeWernerLogo.png" alt="" width="33%" height="auto"><br>	
+				</div>
+			
+				<header id="header">
+					<div class="logo container">
+						<div>
+							<h1><a href="#" id="logo">Kempten: 09.05. - 11.05.2025</a></h1>
+						</div>
+					</div>
+				</header>
+
+			<!-- Nav -->			
+				<nav id="nav">
+					<ul>
+						<li class="current"><a href="index.html">Home</a></li>
+						<li>
+							<a href="#">Geplante Touren</a>
+							<ul>
+								<li><a href="#">05. - 07.09.2025: tbd</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="absolviertetouren.html">Absolvierte Touren</a>
+							<ul>
+								<li><a href="2025-5-kempten.html">Kempten 2025</a></li>
+								<li><a href="2024-8-ruhpolding.html">Ruhpolding 2024</a></li>
+								<li><a href="2024-5-ettal.html">Ettal 2024</a></li>
+								<li><a href="2023-9-badwiessee.html">Bad Wiessee 2023</a></li>
+								<li><a href="2023-7-bodenmais.html">Bodenmais 2023</a></li>
+                						<li><a href="WernersKompakt.html">Werners Kompakt-Touren</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">Sonstiges</a>
+							<ul>
+								<li><a href="wernerstats.html">Wernerstats</a></li>
+							</ul>
+						</li>
+					</ul>
+				</nav>
+
+			
+			
+			<!-- Main -->
+				<section id="main">
+					<div class="container">
+						<div class="row gtr-200">
+							<div class="col-12">
+
+								<!-- Features ✔✔️❓❌ -->
+									<section class="box features">
+										<h2 class="major"><span>Teilnehmer</span></h2>
+										<ul class="special-images">
+										    <li>
+										        <img src="images/walzer.jpg" alt="Walzer Werner">
+										        <span>Walzer ✔️</span>
+										    </li>
+										    <li>
+										        <img src="images/wc.jpg" alt="WC Werner">
+										        <span>WC  ✔️</span>
+										    </li>
+										    <li>
+										        <img src="images/windel.jpg" alt="Windel Werner">
+										        <span>Windel ✔️</span>
+										    </li>
+										    <li>
+										        <img src="images/wu.jpg" alt="Wu Werner">
+										        <span>Wu ✔️</span>
+										    </li>
+										    <li>
+										        <img src="images/wurst.jpg" alt="Wurst Werner">
+										        <span>Wurst ✔️</span>
+										    </li>
+										</ul>
+									</section>
+
+							</div>
+							
+							<div class="col-12">
+
+								<!-- Features -->
+									<section class="box features">
+										<h2 class="major"><span>Unterkunft</span></h2>
+										<div align=center>
+											<div class="wernerstats">
+												<!-- Button für Kalendereintrag deaktiviert
+												<button onclick="openICS()">Kalendereintrag</button>
+													<script>
+													function openICS() {
+													    window.location.href = "https://bikewerner.github.io/new/iCal/Kempten.ics";
+													}
+													</script>
+												-->
+												<p>booking.com: <a href="https://www.booking.com/Share-YWSdi7" target="_blank">Der Fürstenhof</a></p>
+												<!-- 
+												<p>-reserviert-</p>
+												<p>5 Personen: 576€ (115,20€ p.P.)</p>
+												-->
+												<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2683.8404292492924!2d10.315980477447711!3d47.72634607969943!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x479c790e36665ef9%3A0xde25f1af34b37093!2sF%C3%BCrstenhof!5e0!3m2!1sde!2sde!4v1741175625570!5m2!1sde!2sde" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+												<!-- <p>Option 2 506€: <a href="https://www.booking.com/Share-AWH40ky" target="_blank">Landhotel Hirsch</a></p> -->
+											</div>
+										</div>
+									</section>
+
+							</div>
+							<div class="col-12">
+
+								<!-- Features -->
+									<section class="box features">
+										<h2 class="major"><span>Verpflegung</span></h2>
+										<div align=center>
+											<!-- <p>Freitag Abendessen: folgt...</p> -->
+											<p>Freitag Abendessen: <a href="https://maps.app.goo.gl/JrVon8MpPmvSPqak7" target="_blank">Pizzeria Amore Mio</a> - reserviert für 20:00 Uhr - <a href="https://www.amoremio.pizza/AmoreMioMenue25.pdf?_gl=1*qscqsw*_ga*MTg1NjQ2NzE3OS4xNzI4NDc5MDAy*_ga_ZSD2SFDWLL*MTczODk0OTgzOS4yOC4wLjE3Mzg5NDk4MzkuMC4wLjA." target="_blank">Speisekarte</a></p>
+											<p>Samstag Mittagessen: <a href="https://maps.app.goo.gl/y4rYcb9uCRMubtvHA" target="_blank">Wirtshaus am Neunerköpfler</a> nach 53/100 km</p>
+										  	<!-- <p>Samstag Abendessen: folgt...</p> -->
+										  	<p>Samstag Abendessen: <a href="https://maps.app.goo.gl/G5SL31enmhtEynGc6" target="_blank">Alpensteig</a></p>
+										</div>
+									</section>
+
+							</div>
+							<div class="col-12">
+
+								<!-- Features -->
+									<section class="box features">
+										<h2 class="major"><span>Touren</span></h2>
+										<div align=center>
+									        	<h3>Freitag: Aufwärmrunde</h3>
+											<iframe src="https://www.komoot.com/de-de/tour/2086223501/embed?share_token=aGlXqHpeEcNqo4d4Q2geGH16PEthT98453UdETGjFwN8WxX5UH&profile=1" width="100%" height="650" frameborder="0" scrolling="no"></iframe>
+											<br>
+											<br>
+											<br>
+									        	<h3>Samstag: Haupttour</h3>
+											<p><a href="https://connect.garmin.com/modern/course/354496568" target="_blank">Garmin Connect Import & Download .gpx/.fit</a> (inkl. Berg- & Sprintwertung, Mittagessen)</p>
+											<div class="wernerstats">
+												<p><img src="images/trikotberg.png" alt="Icon" class="title-icon"> Bergwertung Alte Jochstraße <b>bei 41,1 km</b> (Start Anstieg bei 39,1 km: 2,05 km; 260 Hm, Ø Steigung: 12,7 %)</p>
+												<p>🍽️ Mittagessen <b>bei 53 km</b></p>
+												<p><img src="images/trikotsprint.png" alt="Icon" class="title-icon"> Sprintwertung <b>bei 75,3 km</b></p>
+											</div>
+											<iframe src="https://www.komoot.com/de-de/tour/2225477545/embed?share_token=aEH8xlpkndtjcRDc2fXG6X3Y92t0hsYkZq0uLHQ8FUwJgfDzSU&profile=1" width="100%" height="650" frameborder="0" scrolling="no"></iframe>
+										</div>
+									</section>
+
+							</div>
+							
+							<div class="col-12">
+								<section class="box features">
+									<h2 class="major"><span>Absolvierte Touren</span></h2>
+									<div>
+								        	<div id="row" class="row"></div>
+								            		<script>
+									                fetch("pages/absolviertetourenfooter.html")
+									                    .then(response => response.text())
+									                    .then(data => document.getElementById("row").innerHTML = data)
+									                    .catch(error => console.error("Fehler beim Laden der Datei:", error));
+								            		</script>
+							        		</div>    
+								</section>
+							</div>
+
+						</div>
+					</div>
+				</section>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<div class="container">
+						<!-- Copyright -->
+							<div id="copyright">
+								<ul class="menu">
+									<li>&copy; Bike Werners. All rights reserved</li>
+								</ul>
+							</div>
+
+					</div>
+				</footer>
+
+		</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+	</body>
+</html>
