@@ -8,7 +8,7 @@ Folgende Seite füllen die Homepage mit Leben:
 - 2023-7-bodenmais.html
 - 2024-5-ettal.html
 - 2024-8-ruhpolding.html
-- 2025-05-kemoten.html
+- 2025-5-kempten.html
 - wernerstats.html
 
 
