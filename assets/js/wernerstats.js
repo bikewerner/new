@@ -1,17 +1,17 @@
 window.onload = () => {
-    const mainUrl = "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AF2:AJ7";
+    const mainUrl = "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AF2:AK7";
 
     fetch(mainUrl)
         .then(res => res.text())
         .then(text => {
             const rows = text.trim().split("\n").map(row => row.split(","));
             const ids = [
-                "WalzerBerg", "WCBerg", "WindelBerg", "WuBerg", "WurstBerg",
-                "WalzerSprint", "WCSprint", "WindelSprint", "WuSprint", "WurstSprint",
-                "WalzerTeilnahmen", "WCTeilnahmen", "WindelTeilnahmen", "WuTeilnahmen", "WurstTeilnahmen",
-                "WalzerKilometer", "WCKilometer", "WindelKilometer", "WuKilometer", "WurstKilometer",
-                "WalzerHoehenmeter", "WCHoehenmeter", "WindelHoehenmeter", "WuHoehenmeter", "WurstHoehenmeter",
-                "WalzerPlatten", "WCPlatten", "WindelPlatten", "WuPlatten", "WurstPlatten"
+                "WalzerBerg", "WCBerg", "WindelBerg", "WuBerg", "WurstBerg", "WeggieBerg",
+                "WalzerSprint", "WCSprint", "WindelSprint", "WuSprint", "WurstSprint", "WeggieSprint",
+                "WalzerTeilnahmen", "WCTeilnahmen", "WindelTeilnahmen", "WuTeilnahmen", "WurstTeilnahmen", "WeggieTeilnahmen",
+                "WalzerKilometer", "WCKilometer", "WindelKilometer", "WuKilometer", "WurstKilometer", "WeggieKilometer",
+                "WalzerHoehenmeter", "WCHoehenmeter", "WindelHoehenmeter", "WuHoehenmeter", "WurstHoehenmeter", "WeggieHoehenmeter",
+                "WalzerPlatten", "WCPlatten", "WindelPlatten", "WuPlatten", "WurstPlatten", "WeggiePlatten"
             ];
 
             rows.forEach((row, rowIndex) => {
