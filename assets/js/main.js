@@ -27,13 +27,14 @@
 		});
 
 	// Dropdowns.
+		<!--
 		$('#nav > ul').dropotron({
 			mode: 'fade',
 			noOpenerFade: true,
 			speed: 300,
 			alignment: 'center'
 		});
-
+		-->
 	// Scrolly
 		$('.scrolly').scrolly({
 			speed: 1000,
@@ -70,5 +71,6 @@
 					target: $body,
 					visibleClass: 'navPanel-visible'
 				});
+
 
 })(jQuery);
