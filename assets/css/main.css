@@ -3350,32 +3350,33 @@ tbody {
 
 	}
 
-/* --- MOBILE FIX: ALLES ANZEIGEN --- */
+/* --- MOBILE NAVIGATION: ALLES ANZEIGEN --- */
 
-/* Erzwingt, dass alle Listen (auch Untermenüs) sichtbar sind */
-#navPanel nav ul, 
-#navPanel nav ul li, 
+/* Verhindert, dass das Template die Untermenüs ausblendet */
 #navPanel nav ul ul {
     display: block !important;
-    height: auto !important;
     visibility: visible !important;
+    height: auto !important;
     opacity: 1 !important;
 }
 
-/* Einrückung für die Unterpunkte */
-#navPanel .link.depth-1 {
-    padding-left: 2.5rem !important; /* Deutlich eingerückt */
-    color: rgba(255, 255, 255, 0.5) !important; /* Grau */
-    font-size: 0.9em !important;
-}
-
-/* Hauptpunkte weiß */
+/* Hauptlinks: Weiß und kräftig */
 #navPanel .link.depth-0 {
     color: #ffffff !important;
     font-weight: bold !important;
+    display: block;
+    padding: 0.75em 1.5em !important;
 }
 
-/* Verstecke die "Opener" (Pfeile), da wir nichts mehr zum Aufklappen klicken müssen */
+/* Unterpunkte: Grau und eingerückt (wie in fuessen.html) */
+#navPanel .link.depth-1 {
+    color: rgba(255, 255, 255, 0.5) !important;
+    padding-left: 3em !important; /* Starke Einrückung */
+    font-size: 0.9em !important;
+    display: block;
+}
+
+/* Die Pfeile (Opener) löschen, da wir keine Klapp-Funktion brauchen */
 #navPanel .opener {
     display: none !important;
 }
