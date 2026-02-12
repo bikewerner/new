@@ -1,9 +1,8 @@
 $(document).ready(function() {
-    // 1. Wir laden den Inhalt in das existierende <nav id="nav">
-    // WICHTIG: nav.html darf nur noch das <ul> enthalten!
+    // 1. Navigation laden
     $("#nav").load("nav.html", function() {
         
-        // --- A. Aktive Seite markieren ---
+        // --- A. Aktive Seite markieren (Desktop & Mobile) ---
         var path = window.location.pathname.split("/").pop();
         if (path == '' || path == 'new/') { path = 'index.html'; }
         
@@ -11,7 +10,7 @@ $(document).ready(function() {
         targetLink.closest('li').addClass('current');
         targetLink.closest('ul').parent('li').addClass('current');
 
-        // --- B. Dropotron für Desktop aktivieren ---
+        // --- B. Desktop: Dropdowns aktivieren ---
         $('#nav > ul').dropotron({
             mode: 'fade',
             noOpenerFade: true,
@@ -19,22 +18,42 @@ $(document).ready(function() {
             alignment: 'center'
         });
 
-        // --- C. Mobile Ansicht reparieren ---
-        // Das Template hat das mobile Menü (#navPanel) schon leer erstellt.
-        // Wir müssen unseren geladenen Inhalt dort hineinkopieren.
-        
+        // --- C. Mobile: Komplett-Neuaufbau ---
         var $navPanel = $('#navPanel');
         
-        // Wenn das Panel existiert (wurde von main.js erstellt)
+        // Sicherheitscheck: Existiert das Panel schon?
         if ($navPanel.length > 0) {
-            // Wir suchen das <nav> innerhalb des Panels und füllen es mit unserer Liste
             var $mobileNav = $navPanel.find('nav');
-            if ($mobileNav.length > 0) {
-                $mobileNav.html( $('#nav').html() );
-            }
             
-            // Damit die Links im mobilen Menü klickbar sind (Original-Logik des Templates):
+            // 1. Inhalt von Desktop kopieren
+            $mobileNav.html( $('#nav').html() );
+
+            // 2. CSS-Klassen für das Styling hinzufügen (wie im Original-Template)
             $mobileNav.find('a').addClass('link depth-0');
+            $mobileNav.find('li li a').removeClass('depth-0').addClass('depth-1');
+            $mobileNav.find('li li li a').removeClass('depth-1').addClass('depth-2');
+
+            // 3. Aufklapp-Funktion (Opener) einbauen
+            // Wir suchen alle Listenpunkte, die eine Unterliste (ul) haben
+            $mobileNav.find('li').has('ul').each(function() {
+                var $li = $(this);
+                
+                // Wir fügen den "Opener" (das Pfeil-Icon) hinzu
+                $('<span class="opener"></span>')
+                    .appendTo($li) // Wird rechts neben den Link gesetzt
+                    .on('click', function(event) {
+                        // Verhindern, dass der Klick woanders hingeht
+                        event.preventDefault();
+                        event.stopPropagation();
+                        
+                        // Das Menü auf/zuklappen
+                        var $ul = $li.find('> ul');
+                        $ul.slideToggle(200);
+                        
+                        // Klasse 'active' toggeln (für Pfeil-Rotation etc.)
+                        $li.toggleClass('active');
+                    });
+            });
         }
     });
 });
