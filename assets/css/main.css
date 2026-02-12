@@ -3350,35 +3350,32 @@ tbody {
 
 	}
 
+/* --- FINALE KORREKTUR FÜR DAS MOBILE MENÜ --- */
 
-/* --- FIX FÜR IMMER SICHTBARE UNTERMENÜS (ALLE MOBILGERÄTE) --- */
-
-/* 1. Erzwinge die Sichtbarkeit der Listen */
+/* Untermenüs immer ausgeklappt anzeigen */
 #navPanel nav ul ul {
-    display: block !important; 
-    visibility: visible !important;
+    display: block !important;
     height: auto !important;
+    visibility: visible !important;
     opacity: 1 !important;
-    margin-left: 20px !important; /* Die Einrückung */
-    border-top: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* 2. Styling der Unterpunkte (Grau und etwas kleiner) */
-#navPanel .link.depth-1, 
-#navPanel .link.depth-2 {
-    color: rgba(255, 255, 255, 0.5) !important; /* Dein gewünschtes Grau */
-    font-size: 0.85em !important;
-    padding-left: 10px !important;
-}
-
-/* 3. Styling der Hauptpunkte (Weiß) */
+/* Hauptmenü-Links (weiß und normal) */
 #navPanel .link.depth-0 {
     color: #ffffff !important;
     font-weight: bold !important;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-/* 4. Entferne die Pfeile, da wir sie nicht mehr zum Klicken brauchen */
+/* UNTERPUNKTE: Grau und Eingerückt (wie in der fuessen.html gewünscht) */
+#navPanel .link.depth-1 {
+    color: rgba(255, 255, 255, 0.5) !important; /* Das typische Grau-Weiß */
+    padding-left: 2.5rem !important;            /* Die deutliche Einrückung */
+    font-size: 0.9em !important;                /* Etwas kleiner für die Optik */
+}
+
+/* Entferne die Klick-Pfeile (Opener), da alles immer offen ist */
 #navPanel .opener {
     display: none !important;
 }
