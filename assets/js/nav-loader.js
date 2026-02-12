@@ -1,14 +1,11 @@
 $(document).ready(function() {
-    // Wir holen den SAUBEREN HTML-Code der Navigation
+    // 1. Sauberes HTML holen
     $.get("nav.html", function(data) {
         
-        // ---------------------------------------------
-        // 1. Desktop Navigation füllen & starten
-        // ---------------------------------------------
+        // --- DESKTOP ---
         var $nav = $("#nav");
-        $nav.html(data); // Inhalt einfügen
-
-        // Dropotron (Dropdowns) aktivieren
+        $nav.html(data);
+        
         $nav.find('> ul').dropotron({
             mode: 'fade',
             noOpenerFade: true,
@@ -21,52 +18,39 @@ $(document).ready(function() {
         $nav.find('a[href="' + path + '"]').closest('li').addClass('current');
         $nav.find('a[href="' + path + '"]').closest('ul').parent('li').addClass('current');
 
-
-        // ---------------------------------------------
-        // 2. Mobile Navigation ("Wächter"-Funktion)
-        // ---------------------------------------------
-        // Wir prüfen alle 100ms, ob das mobile Panel (#navPanel) schon da ist.
-        // Das Original-Skript (main.js) braucht manchmal kurz, um es zu erstellen.
-        
+        // --- MOBILE (Der Wächter) ---
         var checkCount = 0;
         var panelChecker = setInterval(function() {
             var $navPanel = $('#navPanel');
             
-            // Wenn das Panel da ist ODER wir schon 5 Sekunden warten (Notausstieg)
             if ($navPanel.length > 0 || checkCount > 50) {
-                clearInterval(panelChecker); // Wächter stoppen
+                clearInterval(panelChecker);
                 
                 if ($navPanel.length > 0) {
                     var $mobileNav = $navPanel.find('nav');
                     
-                    // ALLES löschen, was vorher drin war (z.B. nur "Home")
-                    $mobileNav.empty();
+                    // Inhalt komplett austauschen
+                    $mobileNav.empty().html(data);
                     
-                    // Den sauberen HTML-Code von oben einfügen
-                    $mobileNav.html(data);
-                    
-                    // FORMATIERUNG: Klassen verteilen (depth-0, depth-1)
+                    // FORMATIERUNG ANWENDEN
                     $mobileNav.find('a').each(function() {
                         var $a = $(this);
                         var depth = $a.parents('ul').length - 1;
                         
-                        // Klasse setzen
-                        $a.attr('class', 'link depth-' + depth);
+                        // Hier setzen wir die wichtigen Klassen für das CSS
+                        $a.addClass('link depth-' + depth);
                         
-                        // Klick-Blocker für "#"-Links entfernen wir hier bewusst nicht,
-                        // damit man auf "Geplante Touren" klicken kann, ohne dass was passiert.
+                        // Verhindert Sprung nach oben bei "#" Links
                         if ($a.attr('href') === '#') {
                             $a.on('click', function(e) { e.preventDefault(); });
                         }
                     });
-                    
-                    console.log("Mobile Navigation erfolgreich aktualisiert.");
                 }
             }
             checkCount++;
-        }, 100); // Alle 100ms prüfen
+        }, 100);
 
     }).fail(function() {
-        console.error("Konnte nav.html nicht laden!");
+        console.error("Fehler: nav.html nicht gefunden.");
     });
 });
