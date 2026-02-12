@@ -1,13 +1,17 @@
 $(document).ready(function() {
+    // 1. Load the centralized nav file
     $("#nav-placeholder").load("nav.html", function() {
-        var path = window.location.pathname.split("/").pop();
-        if (path == '') { path = 'index.html'; }
         
+        // 2. Automatic Highlighting logic
+        var path = window.location.pathname.split("/").pop();
+        if (path == '' || path == 'new/') { path = 'index.html'; }
+        
+        // Find the link matching the current file and add 'current' class
         var targetLink = $('#nav a[href="' + path + '"]');
         targetLink.closest('li').addClass('current');
         targetLink.closest('ul').parent('li').addClass('current');
 
-        // Format for Desktop
+        // 3. Re-initialize Dropotron (Desktop Menu)
         $('#nav > ul').dropotron({
             mode: 'fade',
             noOpenerFade: true,
@@ -15,12 +19,12 @@ $(document).ready(function() {
             alignment: 'center'
         });
 
-        // FIX FOR MOBILE: 
-        // If the mobile panel exists, we might need to trigger the template's 
-        // built-in responsive handler. Most HTML5 UP templates use 'navPanel'.
-        if ($('.navPanel').length > 0) {
-            // This forces the mobile menu to re-read the loaded nav.html
-            $(window).trigger('resize'); 
+        // 4. FIX FOR MOBILE (Hamburger Menu)
+        // If the mobile panel already exists (but is empty), we remove it.
+        // Then we trigger a window resize to force main.js to rebuild it.
+        if ($('#navPanel').length > 0) {
+            $('#navPanel, #titleBar').remove();
         }
+        $(window).trigger('resize');
     });
 });
