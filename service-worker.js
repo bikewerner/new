@@ -1,22 +1,8 @@
-const CACHE_NAME = "bikewerner-pwa-v1";
+const CACHE_NAME = "bikewerner-pwa-v2";
 const urlsToCache = [
-    //"/new/index.html",
-    //"/new/absolviertetouren.html",
-    //"/new/2023-7-bodenmais.html,
-    //"/new/2023-9-badwiessee.html,
-    //"/new/2024-5-ettal.html,
-    //"/new/2024-8-ruhpolding.html,
-    //"/new/2025-05-kempten.html,
-    //"/new/assets/css/main.css",
-    //"/new/assets/js/jquery.min.js",
-    //"/new/assets/js/jquery.dropotron.min.js",
-    //"/new/assets/js/jquery.scrolly.min.js",
-    //"/new/assets/js/browser.min.js",
-    //"/new/assets/js/breakpoints.min.js",
-    //"/new/assets/js/util.js",
-    //"/new/assets/js/main.js",
-    //"/new/assets/js/wernerstats.js",
-    "/new/offline.html" // Falls eine Offline-Seite erstellt wird
+    "/new/nav.html",
+    "/new/assets/js/nav-loader.js",
+    "/new/offline.html" 
 ];
 
 self.addEventListener("install", (event) => {
