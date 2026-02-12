@@ -3350,43 +3350,65 @@ tbody {
 
 	}
 
-/* --- FINALE MOBILE NAVIGATION KORREKTUR --- */
+/* --- FINALE MOBILE NAVIGATION (Original-Design wiederherstellen) --- */
 
-/* 1. Container sichtbar machen */
-#navPanel nav,
-#navPanel nav ul,
-#navPanel nav li {
-    display: block !important;
-    width: 100% !important;
-    background: transparent !important;
+/* 1. Container & Listen */
+#navPanel nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+#navPanel nav ul li {
+    margin: 0;
+    padding: 0;
+    border: 0;
 }
 
-/* 2. Haupt-Links (Home, Geplante Touren...) */
+/* 2. Untermenüs immer anzeigen (aber im Original-Look) */
+#navPanel nav ul ul {
+    display: block !important;
+    margin: 0;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.15); /* Leichter Schatten für Untermenüs */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* 3. ALLE LINKS (Basis-Styling wie im Original) */
+#navPanel .link {
+    display: block !important;
+    text-decoration: none;
+    height: 48px;              /* Feste Höhe für Finger-Bedienung */
+    line-height: 48px;         /* Vertikale Zentrierung */
+    padding: 0 1.5em;          /* Abstand links/rechts */
+    border-top: solid 1px rgba(255, 255, 255, 0.2); /* Die feine Trennlinie oben */
+    color: #fff !important;    /* Immer Weiß */
+    font-weight: 400;
+    cursor: pointer;
+}
+
+/* 4. HAUPT-PUNKTE (Ebene 0) */
 #navPanel .link.depth-0 {
-    display: block !important;
-    color: #ffffff !important;     /* Weiß */
-    font-weight: 700 !important;
-    padding: 12px 0 !important;
-    border-top: solid 1px rgba(255, 255, 255, 0.1) !important;
-    text-decoration: none !important;
-    cursor: pointer !important;
+    font-weight: 700 !important; /* Fett gedruckt */
+    font-size: 1em;
+    color: #ffffff !important;
 }
 
-/* 3. Unter-Links (Füssen, Kempten...) - IMMER SICHTBAR */
+/* 5. UNTER-PUNKTE (Ebene 1) */
 #navPanel .link.depth-1 {
-    display: block !important;     /* Erzwingt Anzeige */
-    color: rgba(255, 255, 255, 0.6) !important; /* Grau */
-    font-size: 0.9em !important;
-    padding: 8px 0 8px 25px !important; /* Eingerückt */
-    border: none !important;
+    font-weight: 400 !important;
+    font-size: 0.9em;             /* Etwas kleiner */
+    color: rgba(255, 255, 255, 0.7) !important; /* Leicht transparentes Grau/Weiß */
+    padding-left: 3em !important; /* Deutliche Einrückung */
+    border-top: solid 1px rgba(255, 255, 255, 0.05); /* Schwächere Linie */
 }
 
-/* 4. Die Tiefe Ebene 2 (falls vorhanden) */
+/* 6. UNTER-UNTER-PUNKTE (Ebene 2, falls vorhanden) */
 #navPanel .link.depth-2 {
-    padding-left: 40px !important;
+    padding-left: 4.5em !important;
+    color: rgba(255, 255, 255, 0.5) !important;
 }
 
-/* 5. Alle "Opener" (Pfeile) killen */
+/* 7. Opener (Pfeile) ausblenden, da Menü immer offen ist */
 #navPanel .opener {
     display: none !important;
 }
