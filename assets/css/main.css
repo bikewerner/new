@@ -3349,3 +3349,36 @@ tbody {
 			}
 
 	}
+
+
+/* --- FIX FÜR IMMER SICHTBARE UNTERMENÜS (ALLE MOBILGERÄTE) --- */
+
+/* 1. Erzwinge die Sichtbarkeit der Listen */
+#navPanel nav ul ul {
+    display: block !important; 
+    visibility: visible !important;
+    height: auto !important;
+    opacity: 1 !important;
+    margin-left: 20px !important; /* Die Einrückung */
+    border-top: none !important;
+}
+
+/* 2. Styling der Unterpunkte (Grau und etwas kleiner) */
+#navPanel .link.depth-1, 
+#navPanel .link.depth-2 {
+    color: rgba(255, 255, 255, 0.5) !important; /* Dein gewünschtes Grau */
+    font-size: 0.85em !important;
+    padding-left: 10px !important;
+}
+
+/* 3. Styling der Hauptpunkte (Weiß) */
+#navPanel .link.depth-0 {
+    color: #ffffff !important;
+    font-weight: bold !important;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+/* 4. Entferne die Pfeile, da wir sie nicht mehr zum Klicken brauchen */
+#navPanel .opener {
+    display: none !important;
+}
