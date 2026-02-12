@@ -3350,33 +3350,43 @@ tbody {
 
 	}
 
-/* --- MOBILE NAVIGATION: ALLES ANZEIGEN --- */
+/* --- FINALE MOBILE NAVIGATION KORREKTUR --- */
 
-/* Verhindert, dass das Template die Untermenüs ausblendet */
-#navPanel nav ul ul {
+/* 1. Container sichtbar machen */
+#navPanel nav,
+#navPanel nav ul,
+#navPanel nav li {
     display: block !important;
-    visibility: visible !important;
-    height: auto !important;
-    opacity: 1 !important;
+    width: 100% !important;
+    background: transparent !important;
 }
 
-/* Hauptlinks: Weiß und kräftig */
+/* 2. Haupt-Links (Home, Geplante Touren...) */
 #navPanel .link.depth-0 {
-    color: #ffffff !important;
-    font-weight: bold !important;
-    display: block;
-    padding: 0.75em 1.5em !important;
+    display: block !important;
+    color: #ffffff !important;     /* Weiß */
+    font-weight: 700 !important;
+    padding: 12px 0 !important;
+    border-top: solid 1px rgba(255, 255, 255, 0.1) !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
 }
 
-/* Unterpunkte: Grau und eingerückt (wie in fuessen.html) */
+/* 3. Unter-Links (Füssen, Kempten...) - IMMER SICHTBAR */
 #navPanel .link.depth-1 {
-    color: rgba(255, 255, 255, 0.5) !important;
-    padding-left: 3em !important; /* Starke Einrückung */
+    display: block !important;     /* Erzwingt Anzeige */
+    color: rgba(255, 255, 255, 0.6) !important; /* Grau */
     font-size: 0.9em !important;
-    display: block;
+    padding: 8px 0 8px 25px !important; /* Eingerückt */
+    border: none !important;
 }
 
-/* Die Pfeile (Opener) löschen, da wir keine Klapp-Funktion brauchen */
+/* 4. Die Tiefe Ebene 2 (falls vorhanden) */
+#navPanel .link.depth-2 {
+    padding-left: 40px !important;
+}
+
+/* 5. Alle "Opener" (Pfeile) killen */
 #navPanel .opener {
     display: none !important;
 }
