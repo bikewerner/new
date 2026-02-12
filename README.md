@@ -13,21 +13,19 @@ Folgende Seite füllen die Homepage mit Leben:
 - wernerstats.html
 
 
+Folgende Seite ist Die Navigationsleiste und wird zentral verwaltet (aktuell nicht in Verwendung):
+- nav.html
+
 Folgende Seiten sind für die PWA Anwendung:
 - appstart.html (Seite bzw. Bild, dass beim Start der PWA eingeblendet wird, bevor man auf index.html kommt)
 - manifest.json
 - service-worker.js
 - offline.html (ist eingebaut, aber wird irgendwie nie aufgerufen)
 
-
-Folgende Seite ist Die Navigationsleiste und wird zentral verwaltet (aktuell nicht in Verwendung):
-- nav.html
-
 Das ganze Design und die Formatierung sind in  assets/css/main.css
 
 In diesem google sheet werden die Wernerstats bearbeitet undd ann automatisch auf der Homepage geupdatet:
 https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/edit?gid=1438425073#gid=1438425073
-
 
 
 Quelle des Ganzen ist:
