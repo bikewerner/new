@@ -207,20 +207,27 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
+// Leaflet-Elevation Control initialisieren
     const elevationControl = L.control.elevation({
       theme: "lightblue",
       detached: true,
-      elevationDiv: "#elevation-div"
-    });
-    elevationControl.addTo(map);
+      elevationDiv: "#elevation-div",
+      
+      // Optik der Linie auf der Karte übernehmen
+      polyline: { color: '#008800', weight: 3, opacity: 0.75 },
+      
+      // Start-, Ziel- und Schatten-Fähnchen ausblenden (wie in deinem alten Code)
+      gpxOptions: {
+        marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
+      },
+      
+      // Diese Optionen aktivieren das native synchrone Durchfahren (in beide Richtungen)
+      followMarker: true,     
+      autofitBounds: true     
+    }).addTo(map);
 
-    const gpxLayer = new L.GPX(gpxPath, {
-      async: true,
-      marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null },
-      polyline_options: { color: '#008800', weight: 3, opacity: 0.75 }
-    }).on("loaded", e => map.fitBounds(e.target.getBounds()))
-      .on("addline", e => elevationControl.addData(e.line))
-      .addTo(map);
+    // Die GPX-Datei direkt über das Elevation-Plugin laden!
+    elevationControl.load(gpxPath);
 
     const weatherLayer = L.layerGroup().addTo(map);
 
@@ -368,29 +375,6 @@
 
     document.getElementById('loadWeatherBtn').addEventListener('click', loadWeather);
 
-    // Synchronisierung der Mausbewegung über das Höhenprofil mit einem Marker auf der Karte
-    map.on('elechart_change', function(e) {
-      let latlng = e.latlng || (e.data && e.data.latlng);
-      if (!latlng) return;
-
-      if (!window.elevationHoverMarker) {
-        window.elevationHoverMarker = L.circleMarker(latlng, {
-          radius: 6,
-          color: "#f00",
-          weight: 2,
-          fillOpacity: 0.6
-        }).addTo(map);
-      } else {
-        window.elevationHoverMarker.setLatLng(latlng);
-      }
-    });
-
-    map.on('elechart_out', function() {
-      if (window.elevationHoverMarker) {
-        map.removeLayer(window.elevationHoverMarker);
-        window.elevationHoverMarker = null;
-      }
-    });
 
   </script>
 </section>
