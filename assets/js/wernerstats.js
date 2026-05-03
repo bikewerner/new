@@ -13,7 +13,7 @@ window.onload = () => {
                 "WalzerHoehenmeter", "WCHoehenmeter", "WindelHoehenmeter", "WuHoehenmeter", "WurstHoehenmeter", "WeggieHoehenmeter",
                 "WalzerPlatten", "WCPlatten", "WindelPlatten", "WuPlatten", "WurstPlatten", "WeggiePlatten",
                 "WalzerVerletzung", "WCVerletzung", "WindelVerletzung", "WuVerletzung", "WurstVerletzung", "WeggieVerletzung",
-                "WalzerDnf", "WCDnf", "WindelDnf", "WuDnf", "WurstDnf", "WeggieDnf<"
+                "WalzerDnf", "WCDnf", "WindelDnf", "WuDnf", "WurstDnf", "WeggieDnf"
             ];
 
             rows.forEach((row, rowIndex) => {
