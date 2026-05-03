@@ -1,5 +1,5 @@
 window.onload = () => {
-    const mainUrl = "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AF2:AK7";
+    const mainUrl = "https://docs.google.com/spreadsheets/d/1mHrH9Og6JcrQZttzevMcsIC3CPmaxY9SZdTTM9wI8JY/gviz/tq?tqx=out:csv&range=AF2:AK9";
 
     fetch(mainUrl)
         .then(res => res.text())
@@ -11,7 +11,9 @@ window.onload = () => {
                 "WalzerTeilnahmen", "WCTeilnahmen", "WindelTeilnahmen", "WuTeilnahmen", "WurstTeilnahmen", "WeggieTeilnahmen",
                 "WalzerKilometer", "WCKilometer", "WindelKilometer", "WuKilometer", "WurstKilometer", "WeggieKilometer",
                 "WalzerHoehenmeter", "WCHoehenmeter", "WindelHoehenmeter", "WuHoehenmeter", "WurstHoehenmeter", "WeggieHoehenmeter",
-                "WalzerPlatten", "WCPlatten", "WindelPlatten", "WuPlatten", "WurstPlatten", "WeggiePlatten"
+                "WalzerPlatten", "WCPlatten", "WindelPlatten", "WuPlatten", "WurstPlatten", "WeggiePlatten",
+                "WalzerVerletzung", "WCVerletzung", "WindelVerletzung", "WuVerletzung", "WurstVerletzung", "WeggieVerletzung",
+                "WalzerDnf", "WCDnf", "WindelDnf", "WuDnf", "WurstDnf", "WeggieDnf<"
             ];
 
             rows.forEach((row, rowIndex) => {
