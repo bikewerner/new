@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html lang="de">
+	<head>
+		<title>GPX Weather</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="icon" type="image/x-icon" href="images/BW.ico" />
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.css" />
+		<style>
+		  #elevation-div {
+		    z-index: 999;
+		    position: relative;
+		    background: white;
+		    margin-bottom: 8em; /* mehr Abstand nach unten */
+		    padding-bottom: 2em;
+		  }
+		</style>
+
+	</head>
+	<body class="homepage is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<!-- Bike Werner Logo -->
+				<br>
+				<br>
+				<div align="center">
+					<img src="images/BikeWernerLogo.png" alt="" width="33%" height="auto"><br>	
+				</div>
+			
+				<header id="header">
+					<div class="logo container">
+						<div>
+							<h1><a href="#" id="logo">GPX Weather</a></h1>
+						</div>
+					</div>
+				</header>
+
+			<!-- Nav -->
+			<nav id="nav"></nav>
+			
+
+
+<section class="box features">
+  <h2 class="major"><span>Tour & Wetter</span></h2>
+
+  <!-- Eingabefelder -->
+  <div style="margin-bottom:1em; font-family:sans-serif;">
+    <label for="starttime">🚴 Tourstart (Datum & Uhrzeit):</label>
+    <input type="datetime-local" id="starttime" value="2026-02-28T10:00">
+
+    <label for="avgSpeed" style="margin-left:1em;">Ø-Geschwindigkeit (km/h):</label>
+    <input type="number" id="avgSpeed" value="20" min="5" max="50" step="1" style="width:60px;">
+
+    <br><br>
+
+    <label for="pauseAtKm">🛑 Pause bei (km):</label>
+    <input type="number" id="pauseAtKm" value="53" min="1" step="0.1" style="width:60px;">
+
+    <label for="pauseDuration" style="margin-left:1em;">⏱️ Pausendauer (hh:mm):</label>
+    <input type="time" id="pauseDuration" value="01:15">
+
+    <br><br>
+
+    <button id="loadWeatherBtn">Wetter abrufen</button>
+  </div>
+
+  <!-- Info-Anzeige -->
+  <div id="infoBox" style="margin-top:1em; font-family:sans-serif;"></div>
+
+  <!-- Karte -->
+  <div id="map" style="width:100%; height:500px;"></div>
+  <div id="elevation-div" style="width:100%; height:250px; margin-top:1em;"></div>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-gpx/1.5.0/gpx.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@raruto/leaflet-elevation@2.5.1/dist/leaflet-elevation.min.js"></script>	
+
+  <script>
+    const apiKey = '6051678f687734a26fbc6c962e0b4820';
+    const gpxPath = 'gpx/Rennrad - Mammendorf, Etterschlag.gpx';
+
+    const map = L.map('map').setView([47.7, 10.3], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+	// Leaflet-Elevation Control initialisieren
+    const elevationControl = L.control.elevation({
+      theme: "lightblue",
+      detached: true,
+      elevationDiv: "#elevation-div",
+      
+      // Optik der Linie auf der Karte übernehmen
+      polyline: { color: '#008800', weight: 3, opacity: 0.75 },
+      
+      // Start-, Ziel- und Schatten-Fähnchen ausblenden (wie in deinem alten Code)
+      gpxOptions: {
+        marker_options: { startIconUrl: null, endIconUrl: null, shadowUrl: null }
+      },
+      
+      // Diese Optionen aktivieren das native synchrone Durchfahren (in beide Richtungen)
+      followMarker: true,     
+      autofitBounds: true     
+    }).addTo(map);
+
+    // Die GPX-Datei direkt über das Elevation-Plugin laden!
+    elevationControl.load(gpxPath);
+
+    const weatherLayer = L.layerGroup().addTo(map);
+
+    // Funktion zur Distanzberechnung (Haversine)
+    function distance(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const toRad = deg => deg * Math.PI / 180;
+      const dLat = toRad(lat2 - lat1);
+      const dLon = toRad(lon2 - lon1);
+      const a = Math.sin(dLat/2)**2 +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon/2)**2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
+
+    async function loadWeather() {
+      weatherLayer.clearLayers();
+      const btn = document.getElementById('loadWeatherBtn');
+      btn.textContent = 'Lade…';
+      btn.disabled = true;
+
+      const startTime = new Date(document.getElementById('starttime').value);
+      const avgSpeed = parseFloat(document.getElementById('avgSpeed').value || '20');
+      const pauseAtKm = parseFloat(document.getElementById('pauseAtKm').value || '0');
+      const pauseDurationStr = document.getElementById('pauseDuration').value || '00:00';
+      const [pauseH, pauseM] = pauseDurationStr.split(':').map(Number);
+      const pauseDurationMin = pauseH * 60 + pauseM;
+
+      if (isNaN(startTime) || isNaN(avgSpeed) || avgSpeed <= 0) {
+        alert('Bitte gültige Startzeit und Geschwindigkeit eingeben.');
+        btn.textContent = 'Wetter abrufen';
+        btn.disabled = false;
+        return;
+      }
+
+      // GPX laden & Trackpunkte extrahieren
+      const resp = await fetch(gpxPath);
+      const gpxText = await resp.text();
+      const xml = new DOMParser().parseFromString(gpxText,'application/xml');
+      const trkpts = Array.from(xml.getElementsByTagName('trkpt'))
+        .map(pt => ({
+          lat: +pt.getAttribute('lat'),
+          lon: +pt.getAttribute('lon')
+        }));
+
+      // Gesamtdistanz berechnen
+      let totalDist = 0;
+      for (let i = 1; i < trkpts.length; i++) {
+        totalDist += distance(trkpts[i-1].lat, trkpts[i-1].lon, trkpts[i].lat, trkpts[i].lon);
+      }
+
+      const totalDurationMin = (totalDist / avgSpeed) * 60 + (totalDist >= pauseAtKm ? pauseDurationMin : 0);
+      const arrivalTime = new Date(startTime.getTime() + totalDurationMin * 60000);
+
+      // Wetterpunkte entlang der Strecke
+      const totalPoints = Math.min(10, trkpts.length);
+      const selected = [];
+
+      for (let i = 0; i < totalPoints; i++) {
+        const fraction = i / (totalPoints - 1);
+        const idx = Math.floor(fraction * (trkpts.length - 1));
+
+        let distUntilPoint = 0;
+        for (let j = 1; j <= idx; j++) {
+          distUntilPoint += distance(trkpts[j - 1].lat, trkpts[j - 1].lon, trkpts[j].lat, trkpts[j].lon);
+        }
+
+        let timeMin = (distUntilPoint / avgSpeed) * 60;
+        if (distUntilPoint >= pauseAtKm) timeMin += pauseDurationMin;
+
+        selected.push({
+          ...trkpts[idx],
+          time: new Date(startTime.getTime() + timeMin * 60000)
+        });
+      }
+
+      let temps = [], rains = [], rainProbs = [];
+
+      for (let pt of selected) {
+        try {
+          // Bessere Methode, um das Datum im lokalen Format (YYYY-MM-DD) zu bekommen
+          const year = pt.time.getFullYear();
+          const month = String(pt.time.getMonth() + 1).padStart(2, '0');
+          const day = String(pt.time.getDate()).padStart(2, '0');
+          const date = `${year}-${month}-${day}`;
+          
+          const hour = pt.time.getHours();
+          const url = `https://api.open-meteo.com/v1/forecast?latitude=${pt.lat}&longitude=${pt.lon}&hourly=temperature_2m,precipitation_probability,precipitation,wind_speed_10m&start_date=${date}&end_date=${date}&timezone=auto`;
+          
+          const response = await fetch(url);
+          const w = await response.json();
+
+          // Prüfen, ob die API einen Fehler wirft (z.B. Datum zu weit in der Zukunft)
+          if (w.error) {
+            throw new Error(w.reason);
+          }
+
+          const idx = w.hourly.time.findIndex(t => new Date(t).getHours() === hour);
+          if (idx < 0) continue;
+
+          const temp = w.hourly.temperature_2m[idx];
+          const rain = w.hourly.precipitation[idx];
+          const rainProb = w.hourly.precipitation_probability?.[idx] ?? "–";
+          const wind = w.hourly.wind_speed_10m[idx];
+
+          temps.push(temp);
+          rains.push(rain);
+          rainProbs.push(rainProb);
+
+          const label = `
+            <b>${pt.time.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</b><br>
+            🌡️ ${temp}°C<br>
+            🌧️ ${rain} mm (${rainProb}%)<br>
+            💨 ${wind} km/h`;
+
+          L.marker([pt.lat, pt.lon]).bindPopup(label).addTo(weatherLayer);
+          
+        } catch (err) {
+          // Wenn ein API-Fehler auftritt, brechen wir hier ab und informieren den User
+          alert("Wetter konnte nicht geladen werden. Ist das Datum zu weit in der Zukunft? API meldet: " + err.message);
+          const btn = document.getElementById('loadWeatherBtn');
+          btn.textContent = 'Wetter abrufen';
+          btn.disabled = false;
+          return; // Stoppt die Ausführung
+        }
+      }
+
+      const minTemp = Math.min(...temps);
+      const maxTemp = Math.max(...temps);
+      const avgTemp = temps.reduce((a,b)=>a+b,0) / temps.length;
+      const totalRain = rains.reduce((a,b)=>a+b,0);
+      const avgRainProb = Math.round(rainProbs.reduce((a,b)=>a + (+b || 0), 0) / rainProbs.length);
+
+      const infoBox = document.getElementById('infoBox');
+      infoBox.innerHTML = `
+        <p><strong>Distanz:</strong> ${totalDist.toFixed(1)} km</p>
+        <p><strong>Fahrtdauer:</strong> ${Math.floor(totalDurationMin/60)}:${String(Math.round(totalDurationMin%60)).padStart(2,'0')} h</p>
+        <p><strong>Ankunft:</strong> ${arrivalTime.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</p>
+        <p><strong>Temperatur:</strong> Min ${minTemp.toFixed(1)}°C, Max ${maxTemp.toFixed(1)}°C, Ø ${avgTemp.toFixed(1)}°C</p>
+        <p><strong>Niederschlag:</strong> ${totalRain.toFixed(1)} mm (gesamt), ⌀ Wahrscheinlichkeit: ${avgRainProb}%</p>
+      `;
+
+      btn.textContent = 'Wetter abrufen';
+      btn.disabled = false;
+    }
+
+    document.getElementById('loadWeatherBtn').addEventListener('click', loadWeather);
+
+
+  </script>
+</section>
+
+						</div>
+						<br>
+						<br>
+
+					</div>
+				</div>
+			</section>
+
+			<!-- Footer -->
+			<footer id="footer">
+				<div class="container">
+					<!-- Copyright -->
+					<div id="copyright">
+						<ul class="menu">
+							<li>© Bike Werners. All rights reserved</li>
+						</ul>
+					</div>
+				</div>
+			</footer>
+
+		</div>
+
+		<!-- Scripts -->
+		<script src="assets/js/jquery.min.js"></script>
+		<script src="assets/js/jquery.dropotron.min.js"></script>
+		<script src="assets/js/jquery.scrolly.min.js"></script>
+		<script src="assets/js/browser.min.js"></script>
+		<script src="assets/js/breakpoints.min.js"></script>
+		<script src="assets/js/util.js"></script>
+		<script src="assets/js/main.js?v=2"></script>
+		<script src="assets/js/overlay.js"></script>
+		<script src="assets/js/nav-loader.js?v=10"></script>
+	</body>
+</html>
